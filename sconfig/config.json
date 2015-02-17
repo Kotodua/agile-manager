@@ -1,0 +1,19 @@
+{
+    "port":4300,
+    "mysql": {
+        "host": "176.38.81.16",
+        "user": "root",
+        "password" : "Twisteremp126",
+        "port": 3306,
+        "database": "nodejs"
+    },
+    "session": {
+        "secret": "helloThere",
+        "key": "sid",
+        "cookie": {
+            "path": "/",
+            "httpOnly": true,
+            "maxAge": null
+        }
+    }
+}

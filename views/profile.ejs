@@ -1,0 +1,46 @@
+<%- include layouts/header.ejs %>
+    <div class="toggle-unit">
+        <h2 class="toggle-control">User Info</h2>
+        <hr>
+        <div id="user_info" class="toggle-content">
+        </div><!-- /.toggle-content -->
+    </div><!-- /.toggle.unit -->
+    <div class="toggle-unit">
+        <h2 class="toggle-control">Stories</h2>
+        <hr>
+        <div class="toggle-content">
+            Stories list
+        </div><!-- /.toggle-content -->
+    </div><!-- /.toggle.unit -->
+    <div class="toggle-unit">
+        <h2 class="toggle-control">Tests</h2>
+        <hr>
+        <div class="toggle-content">
+            Tests list
+        </div><!-- /.toggle-content -->
+    </div><!-- /.toggle.unit -->
+    <div class="toggle-unit">
+        <h2 class="toggle-control">Tasks</h2>
+        <hr>
+
+        <div id="tasks" class="toggle-content">
+
+            <div id="tasks_timer" class="timer"></div><br>
+            <h3>Today tasks</h3>
+            <div id="tasks_today" class="tasksTables"></div><br>
+            <div id="new_task"></div>
+            <h3>Other tasks</h3>
+            <div id="tasks_other" class="tasksTables"></div><br><br>
+
+        </div>
+        <!-- /.toggle-content -->
+    </div><!-- /.toggle.unit -->
+
+</div>
+</body>
+<script>
+    window.onload = function() {
+        profile();
+    }
+</script>
+</html>

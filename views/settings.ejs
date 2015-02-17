@@ -1,0 +1,51 @@
+<%- include layouts/header.ejs %>
+
+<div class="page-data">
+    <div class="data-table">
+        <table id="users_tab" border="1" cellpadding="5" >
+            <tr id="users_tab_title">
+
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Id</th>
+                <th>Role</th>
+                <th width=150px>Action</th>
+
+                <% if(users.length){
+
+                        for(var i = 0;i < users.length;i++) { %>
+
+            <tr id="<%=users[i].id%>">
+
+                <td><%=users[i].name%></td>
+                <td><%=users[i].sname%></td>
+                <td><%=users[i].pname%></td>
+                <td><%=users[i].role%></td>
+                <td>
+                    <button id="edit_<%=users[i].id%>" class="a-inside edit">Edit</button>
+                    <button id="update_pass" class="a-inside edit">Password</button>
+
+                </td>
+            </tr>
+            <% }
+
+            }else{ %>
+            <tr>
+                <td colspan="3">No user</td>
+            </tr>
+            <% } %>
+
+
+
+        </table>
+    </div>
+    <div id="change_password" class="form">
+    </div>
+</div>
+</body>
+<script>
+    window.onload = function() {
+        settings();
+    }
+</script>
+</html>

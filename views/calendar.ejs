@@ -1,0 +1,56 @@
+<%- include layouts/header.ejs %>
+
+
+
+<table cellpadding="1" cellspacing="1">
+    <tbody>
+    <tr>
+        <td>
+                    <p>Update Date Status.</p>
+                    <select class="select" id="s_user" name="user">
+                        <% if(users.length){
+
+                            for(var i = 0;i < users.length;i++) { %>
+
+                        <option id="user_<%=users[i].id%>"><%=users[i].name+' '+users[i].sname%></option>
+                        <% }
+                        }else{ %>
+                        <option value="nouser">no user</option>
+                        <% } %>
+                    </select>
+
+                    <select class="select" id="leave_type" name="date">
+                        <option value="HalfDay Leave">Half-Day Leave</option>
+                        <option value="Leave">Leave</option>
+                        <option value="Vacation">Vacation</option>
+                    <% if(req.session.user == '187'){ %>
+                        <option value="Holiday">Holiday</option>
+                    <%}%>
+                    </select>
+                    <input class="select" type="date" id="date" name="status" />&nbsp;
+                    <p><button id="b_update" class="a-inside edit">Update</button></p>
+        </td>
+        <td>
+                    <p>Get Information for period.</p>
+                    <input class="select" type="date" id="s_status" name="status" />
+
+                   <p><button id="b_show" class="a-inside edit">Show</button></p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table id="calendar"></table>
+
+<form class="page-container" name="period_results">
+
+</form>
+
+
+
+</body>
+<script>
+    window.onload = function() {
+        calendar();
+    }
+</script>
+</html>
