@@ -28,6 +28,7 @@ function calendar(){
             success: function (data) {
                 var date = new Date($('#s_status').val());
                 var statuses = JSON.parse(data);
+                var midDay, lastDay;
 
                 $('#calendar').append('<table class="table_calendar" id="table_calendar"></table>');
                 $('#table_calendar').append('<tr id="tr_title"></tr>');
@@ -43,11 +44,18 @@ function calendar(){
                 }
 
                 /**Drawing cells*/
-                for (var i = 0; i < 31; i++) {
+                for (var i = 0; i < 32; i++) {
                     var dd = DateFormat.format.date(date, "dd-MM");
                     var e = DateFormat.format.date(date, "E");
                     $('#dd').append('<td>' + dd + '</td>');
                     $('#e').append('<td>' + e + '</td>');
+
+                    if (dd.match(/15-([0-9][0-9])/)){
+                        midDay = parseInt(DateFormat.format.date(date,"dd"));
+                    } else if ((dd.match(/01-([0-9][0-9])/))){
+                        lastDay = parseInt(DateFormat.format.date(date-86400000,"dd"));
+                    }
+
                     for (var j = 0; j < statuses[1].length; j++) {
                         var userName = statuses[1][j].name;
                         var userSName = statuses[1][j].sname;
@@ -58,6 +66,7 @@ function calendar(){
                         $('#uid_' + userId).append('<td id="day_'+userId+'_'+dd+'"></td>');
                         if (e == 'Sun' || e == 'Sat'){
                             $('#day_'+userId+'_'+dd).addClass('day-weekend');
+                            $('#day_'+userId+'_'+dd).attr('h', 0);
                         }
                     }
                     date.setDate(date.getDate() + 1);
@@ -74,26 +83,64 @@ function calendar(){
                     switch(leaveType){
                         case 'Leave':
                             $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-leave');
+                            $('#day_'+leaveUserId+'_'+leaveDate).attr('h', 0);
                             break;
                         case 'Half-Day Leave':
                             $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-half');
+                            $('#day_'+leaveUserId+'_'+leaveDate).attr('h', 4);
                             break;
                         case 'Vacation':
                             $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-vacation');
+                            $('#day_'+leaveUserId+'_'+leaveDate).attr('h', 0);
                             break;
                         case 'Holiday':
                             $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-holiday');
+                            $('#day_'+leaveUserId+'_'+leaveDate).attr('h', 0);
                             break;
                         case '':
                             $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-work');
+                            $('#day_'+leaveUserId+'_'+leaveDate).attr('h', 8);
                             break;
                         default :
                             $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-default');
                             break;
                     }
+                }
 
+                /**Adding time*/
+                for (var j = 0; j < statuses[1].length; j++) {
+                    var date = new Date($('#s_status').val());
+                    var timeCount = 0;
+                    for (var i = 1; i < 32; i++) {
+                        if (i < 10){
+                            i = '0'+i;
+                        }
+                        var month = DateFormat.format.date(date, "MM");
+                        var userId = statuses[1][j].id;
+                        if (i == midDay) {
+                            if ($('#day_'+userId+'_'+i+'-'+month).attr('h')){
+                                timeCount += parseInt($('#day_'+userId+'_'+i+'-'+month).attr('h'));
+                            } else {
+                                timeCount += 8;
+                            }
+                            $('#day_' + userId + '_' + i + '-' + month).append('<div title="time">' + timeCount + '</div>');
+                            timeCount = 0;
+                        } else if (i == lastDay) {
+                                $('#day_'+userId+'_'+i+'-'+month).append('<div title="time">'+timeCount+'</div>');
+                                timeCount = 0;
+                                i = 32;
+                        } else {
+                            if ($('#day_'+userId+'_'+i+'-'+month).attr('h')){
+                                timeCount += parseInt($('#day_'+userId+'_'+i+'-'+month).attr('h'));
+                            } else {
+                                timeCount += 8;
+                            }
+                        }
+                    }
 
                 }
+
+
             }
         })
     });

@@ -115,14 +115,14 @@ textarea{ border:1px solid #ddd;width:296px;}
 
 #footer{margin-left:60%;margin-top:10%}
 
-.day-weekend{background: #d7d6d7; color: transparent}
-.day-half{background: #fccca4; color: transparent}
-.day-leave{background: #ff583d; color: transparent}
-.day-vacation{background: #aeff7c; color: transparent}
-.day-holiday{background: #5d8745; color: transparent}
-.day-work{background: #fff0ed; color: transparent}
-.day-default{background: #4e4d47; color: transparent}
-.day-over{background: #faf9fc; color: transparent}
+.day-weekend{background: #d7d6d7; color: #808080}
+.day-half{background: #fccca4; color: #808080}
+.day-leave{background: #ff583d; color: #808080}
+.day-vacation{background: #aeff7c; color: #808080}
+.day-holiday{background: #5d8745; color: #808080}
+.day-work{background: #fff0ed; color: #808080}
+.day-default{background: #4e4d47; color: #808080}
+.day-over{background: #faf9fc; color: #808080}
 
 .table_calendar{border-collapse: collapse; background: #fafef8; border: 1px solid black;font-weight: bold;}
 
