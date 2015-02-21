@@ -123,6 +123,7 @@ textarea{ border:1px solid #ddd;width:296px;}
 .day-work{background: #fff0ed; color: #808080}
 .day-default{background: #4e4d47; color: #808080}
 .day-over{background: #faf9fc; color: #808080}
+.today{background: #faf9fc; color: #ff1107}
 
 .table_calendar{border-collapse: collapse; background: #fafef8; border: 1px solid black;font-weight: bold;}
 

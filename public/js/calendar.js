@@ -29,6 +29,8 @@ function calendar(){
                 var date = new Date($('#s_status').val());
                 var statuses = JSON.parse(data);
                 var midDay, lastDay;
+                var newDate = new Date();
+                var today = newDate.getDate();
 
                 $('#calendar').append('<table class="table_calendar" id="table_calendar"></table>');
                 $('#table_calendar').append('<tr id="tr_title"></tr>');
@@ -44,11 +46,21 @@ function calendar(){
                 }
 
                 /**Drawing cells*/
+                var oneTime = 0;
                 for (var i = 0; i < 32; i++) {
                     var dd = DateFormat.format.date(date, "dd-MM");
                     var e = DateFormat.format.date(date, "E");
-                    $('#dd').append('<td>' + dd + '</td>');
-                    $('#e').append('<td>' + e + '</td>');
+                    console.log(today + ' today');
+                    console.log(date + ' date');
+
+                    if (date.getDate() == today && oneTime == 0) {
+                        $('#dd').append('<td class="today">' + dd + '</td>');
+                        $('#e').append('<td class="today">' + e + '</td>');
+                        oneTime++;
+                    } else {
+                        $('#dd').append('<td>' + dd + '</td>');
+                        $('#e').append('<td>' + e + '</td>');
+                    }
 
                     if (dd.match(/15-([0-9][0-9])/)){
                         midDay = parseInt(DateFormat.format.date(date,"dd"));
