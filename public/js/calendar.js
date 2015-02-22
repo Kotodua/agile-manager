@@ -50,8 +50,6 @@ function calendar(){
                 for (var i = 0; i < 32; i++) {
                     var dd = DateFormat.format.date(date, "dd-MM");
                     var e = DateFormat.format.date(date, "E");
-                    console.log(today + ' today');
-                    console.log(date + ' date');
 
                     if (date.getDate() == today && oneTime == 0) {
                         $('#dd').append('<td class="today">' + dd + '</td>');
@@ -149,10 +147,7 @@ function calendar(){
                             }
                         }
                     }
-
                 }
-
-
             }
         })
     });

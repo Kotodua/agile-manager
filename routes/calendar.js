@@ -13,11 +13,6 @@ var Promise = require('q');
 
 function Calendar(){
 
-    /**
-     * @test myParam1
-     * @param myParam2
-     */
-
     this.getUsers = function(req, res) {
 
         var arrayOrPromises = [dbq.doSet('SELECT name, sname, id FROM user')];

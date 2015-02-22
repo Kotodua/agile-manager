@@ -47,7 +47,7 @@ function Users(){
         var arrayOrPromises = [dbq.doSet('SELECT * FROM user')];
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
             console.log(currentTime.getDateTime()+' ---> Response: Trying to render Users with '+{users:arrayOfResults[0]});
-            res.render('users', {users:arrayOfResults[0]});
+            res.render('users', {users:arrayOfResults[0], req: req});
         });
     }
 
@@ -88,6 +88,7 @@ function Users(){
                     console.log(queryResult[0].pname);
                     if (self.encryptPassword(input.password) == queryResult[0].password){
                         req.session.user = queryResult[0].id;
+                        req.session.admin = queryResult[0].admin;
                         console.log(currentTime.getDateTime()+' ---> Response: '+{'result': 'success'});
                         res.send({'result': 'success'});
                     } else {

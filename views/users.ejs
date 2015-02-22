@@ -22,9 +22,11 @@
                 <td><%=users[i].pname%></td>
                 <td><%=users[i].role%></td>
                 <td>
+                    <% if(req.session.admin == 'Y'){ %>
                     <button id="edit_<%=users[i].id%>" class="a-inside edit">Edit</button>
-
                     <button id="delete_<%=users[i].id%>" class="a-inside delete">Delete</button>
+                    <%}%>
+
 
                 </td>
             </tr>
