@@ -46,15 +46,12 @@ function calendar(){
                 }
 
                 /**Drawing cells*/
-                var oneTime = 0;
                 for (var i = 0; i < 32; i++) {
                     var dd = DateFormat.format.date(date, "dd-MM");
                     var e = DateFormat.format.date(date, "E");
-
-                    if (date.getDate() == today && oneTime == 0) {
+                    if (DateFormat.format.date(date, 'dd-MM')  == DateFormat.format.date(new Date(), 'dd-MM')) {
                         $('#dd').append('<td class="today">' + dd + '</td>');
                         $('#e').append('<td class="today">' + e + '</td>');
-                        oneTime++;
                     } else {
                         $('#dd').append('<td>' + dd + '</td>');
                         $('#e').append('<td>' + e + '</td>');
