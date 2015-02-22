@@ -131,10 +131,14 @@ textarea{ border:1px solid #ddd;width:296px;}
 }
 
 .day-weekend{background: #d7d6d7; color: #808080}
-.day-half{background: #fccca4; color: #808080}
-.day-leave{background: #ff583d; color: #808080}
-.day-vacation{background: #aeff7c; color: #808080}
-.day-holiday{background: #5d8745; color: #808080}
+.day-half-na{background: #ffd8c5; color: #808080}
+.day-leave-na{background: #ff5d5a; color: #808080}
+.day-vacation-na{background: #b0ffa9; color: #808080}
+
+.day-half{background: #fca777; color: transparent}
+.day-leave{background: #ff2d1f; color: transparent}
+.day-vacation{background: #4bff54; color: transparent}
+.day-holiday{background: #5d8745; color: transparent}
 .day-work{background: #fff0ed; color: #808080}
 .day-default{background: #4e4d47; color: #808080}
 .day-over{background: #faf9fc; color: #808080}

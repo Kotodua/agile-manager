@@ -103,6 +103,18 @@ function calendar(){
                             $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-vacation');
                             $('#day_'+leaveUserId+'_'+leaveDate).attr('h', 0);
                             break;
+                        case 'Leave(NA)':
+                            $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-leave-na');
+                            $('#day_'+leaveUserId+'_'+leaveDate).attr('h', 0);
+                            break;
+                        case 'Half-Day Leave(NA)':
+                            $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-half-na');
+                            $('#day_'+leaveUserId+'_'+leaveDate).attr('h', 4);
+                            break;
+                        case 'Vacation(NA)':
+                            $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-vacation-na');
+                            $('#day_'+leaveUserId+'_'+leaveDate).attr('h', 0);
+                            break;
                         case 'Holiday':
                             $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-holiday');
                             $('#day_'+leaveUserId+'_'+leaveDate).attr('h', 0);
@@ -168,5 +180,38 @@ function calendar(){
         $('[id*="uid_"]').attr('class', 'row-normal');
         $("#uid_"+$(this).children(":selected").attr("id").split('_')[1]).attr('class', 'today');
     })
+
+    /*$('body').on("click",'td[id*="day_"]', function(){
+        var clickedCellLeaveType = $(this).prop("class");
+        var clickedCellDate = $(this).prop("id");
+        switch(clickedCellLeaveType) {
+            case 'day-half-na':
+
+                break;
+            case 'day-leave-na':
+
+                break;
+            case 'day-vacation-na':
+
+                break;
+            default:
+                break;
+        }
+
+
+        console.log(a_property);
+    });*/
+
 }
 
+/*
+function updateLeaveFromNA(uid, date, leaveType){
+    $.ajax({
+        type: "POST",
+        data: {uid: uid, leaveType: leaveType, date: date},
+        dataType: "json",
+        url: mainURL+'/approve',
+        success: function (data) {
+        }
+    })
+}*/
