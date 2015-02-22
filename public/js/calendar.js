@@ -162,5 +162,11 @@ function calendar(){
         $(this).prop("class", a_property);
 
     });
+
+
+    $('#s_user').on("change", function(){
+        $('[id*="uid_"]').attr('class', 'row-normal');
+        $("#uid_"+$(this).children(":selected").attr("id").split('_')[1]).attr('class', 'today');
+    })
 }
 

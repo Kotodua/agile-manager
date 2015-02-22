@@ -8,8 +8,9 @@
         <td>
                     <p>Update Date Status.</p>
                     <select class="select" id="s_user" name="user">
-                        <% if(users.length){
-                            for(var i = 0;i < users.length;i++) { %>
+                        <% if(users.length){%>
+                        <option id=default">Select name</option>
+                            <% for(var i = 0;i < users.length;i++) { %>
                                 <% if(req.session.admin == 'N'){ %>
                                     <% if(req.session.user == users[i].id){ %>
                                     <option id="user_<%=users[i].id%>"><%=users[i].name+' '+users[i].sname%></option>
@@ -45,7 +46,7 @@
     </tr>
     </tbody>
 </table>
-<table id="calendar"></table>
+<table id="calendar" class="table_calendar"></table>
 
 <form class="page-container" name="period_results">
 

@@ -115,6 +115,21 @@ textarea{ border:1px solid #ddd;width:296px;}
 
 #footer{margin-left:60%;margin-top:10%}
 
+
+.table_calendar{
+    border-collapse: collapse;
+    background: #e3fef2;
+    border: 1px solid black;
+    font-weight: bold;
+}
+
+.row-normal{
+    background-color: #fafef8;
+}
+.row-highlited{
+    background-color: #c6fff0;
+}
+
 .day-weekend{background: #d7d6d7; color: #808080}
 .day-half{background: #fccca4; color: #808080}
 .day-leave{background: #ff583d; color: #808080}
@@ -123,20 +138,16 @@ textarea{ border:1px solid #ddd;width:296px;}
 .day-work{background: #fff0ed; color: #808080}
 .day-default{background: #4e4d47; color: #808080}
 .day-over{background: #faf9fc; color: #808080}
-.today{background: #faf9fc; color: #ff1107}
+.today{background: #fefcc2; color: #ff1207
+}
 
-.table_calendar{border-collapse: collapse; background: #fafef8; border: 1px solid black;font-weight: bold;}
+
 
 td{
     border: 1px solid #bababa;
 
 }
-.row-normal{
-    background-color: #fafef8;
-}
-.row-highlited{
-    background-color: #fffad9;
-}
+
 
 
 .clickable {
