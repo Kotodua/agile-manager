@@ -145,6 +145,11 @@ function calendar(){
                             $('#day_' + userId + '_' + i + '-' + month).append('<div title="time">' + timeCount + '</div>');
                             timeCount = 0;
                         } else if (i == lastDay) {
+                            if ($('#day_'+userId+'_'+i+'-'+month).attr('h')){
+                                timeCount += parseInt($('#day_'+userId+'_'+i+'-'+month).attr('h'));
+                            } else {
+                                timeCount += 8;
+                            }
                                 $('#day_'+userId+'_'+i+'-'+month).append('<div title="time">'+timeCount+'</div>');
                                 timeCount = 0;
                                 i = 32;
