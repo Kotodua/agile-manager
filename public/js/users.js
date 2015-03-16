@@ -20,7 +20,7 @@ function users(){
         if(verifier.verify($(this).val(), 'pname')){
             $('#save').prop('disabled', false);
             $('#save').prop("class", "a-inside edit");
-            //$(this).prop("class", "text pass");
+            $(this).prop("class", "text pass");
         } else {
             $(this).prop("class", "text fail");
             $('#save').prop('disabled', true);
