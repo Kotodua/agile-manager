@@ -41,10 +41,15 @@
                     <p align="right"><button id="b_update" class="a-inside edit">Update</button></p>
         </td>
         <td>
-                    <p>Get Information for period.</p>
-                    <input class="select" type="date" id="s_status" name="status" />
-
-                   <p align="right"><button id="b_show" class="a-inside edit">Show</button></p>
+                    <p>Get Information for period.</p></br>
+                    <input class="select" type="date" id="s_status" name="status" /></br>
+                    <select class="select" id="team" name="team">
+                        <option value="HalfDay Leave na">Team</option>
+                    <% if(req.session.admin == 'Y'){ %>
+                        <option value="Holiday">Any</option>
+                    <%}%>
+                    </select>
+                   <button id="b_show" class="a-inside edit">Show</button>
         </td>
     </tr>
     </tbody>

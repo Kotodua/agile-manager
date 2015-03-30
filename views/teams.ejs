@@ -1,0 +1,45 @@
+<%- include layouts/header.ejs %>
+
+<div class="page-data">
+    <div class="data-table">
+        <table id="teams_tab" border="1" cellpadding="5" >
+            <tr id="teams_tab_title">
+
+                <th>Team</th>
+                <th width=150px>Action</th>
+
+            <% if(teams.length){
+
+                    for(var i = 0;i < teams.length;i++) { %>
+
+            <tr id="<%=teams[i].id%>">
+                <td><%=teams[i].title%></td>
+                <td>
+                    <% if(req.session.admin == 'Y'){ %>
+                    <button id="edit_<%=teams[i].id%>" class="a-inside edit">Edit</button>
+                    <button id="delete_<%=teams[i].id%>" class="a-inside delete">Delete</button>
+                    <%}%>
+                </td>
+            </tr>
+            <% }
+
+            }else{ %>
+            <tr>
+                <td colspan="3">No Team</td>
+            </tr>
+            <% } %>
+        </table>
+    </div>
+    <div class="data-btn">
+        <button id="addTeam">+ Add</button>
+    </div>
+</div>
+</body>
+<script>
+    window.onload = function() {
+        teams();
+    }
+</script>
+</html>
+
+

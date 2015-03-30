@@ -4,6 +4,7 @@ var MySQLStore  = require('express-mysql-session');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var Users = require('./routes/users');
+var Teams = require('./routes/teams');
 var Calendar = require('./routes/calendar');
 var Task = require('./routes/task');
 var session = require('express-session');
@@ -13,6 +14,7 @@ var router = express.Router();
 
 var app = express();
 var user = new Users();
+var team = new Teams();
 var pomodoro = new Task();
 
 var currentTime = new Time();
@@ -62,10 +64,11 @@ app.post('/login', function(req, res){console.log(currentTime.getDateTime()+' <-
 app.get('/login', function(req, res){console.log(currentTime.getDateTime()+' <--- Request GET /login'); res.render('login')});
 app.get('/logout',function(req,res){console.log(currentTime.getDateTime()+' <--- Request GET /logout'); req.session.destroy(function(err){if(err){console.log(err)} else {res.redirect('login')}})});
 
-app.get('/teams', function(req, res){console.log(currentTime.getDateTime()+' <--- Request GET /login'); res.render('login')});
+//app.get('/teams', function(req, res){console.log(currentTime.getDateTime()+' <--- Request GET /teams'); res.render('teams')});
 //app.get('/calendar', function(req, res){console.log(currentTime.getDateTime()+' <--- Request GET /calendar');var calendar = new Calendar(); calendar.getUsers(req, res)});
 app.post('/api/calendar/add', function(req, res){console.log(currentTime.getDateTime()+' <--- Request POST /api/calendar/add ');var calendar = new Calendar(); calendar.addDateInfo(req, res, req.body)});
 app.get('/api/calendar/get', function(req, res){console.log(currentTime.getDateTime()+' <--- Request GET /api/calendar/get ');var calendar = new Calendar(); calendar.getMonthInfo(req, res)});
+
 
 app.get('/releases', function(req, res){console.log(currentTime.getDateTime()+' <--- Request GET /login'); res.render('login')});
 app.get('/sprints', function(req, res){console.log(currentTime.getDateTime()+' <--- Request GET /login'); res.render('login')});
@@ -82,9 +85,13 @@ app.delete('/api/task/delete/:id', function(req, res){console.log(currentTime.ge
 
 app.use(function(req, res, next){
     if (req.session.user){
-        if (req.url == '/users'){
-            console.log(currentTime.getDateTime()+' <--- Request GET /users '+ req.session.user);
+        if (req.url == '/users') {
+            console.log(currentTime.getDateTime() + ' <--- Request GET /users ' + req.session.user);
             user.getUsers(req, res);
+        }
+        else if (req.url == '/teams'){
+                console.log(currentTime.getDateTime()+' <--- Request GET /teams ' + req.session.user);
+                team.getTeams(req, res, req.session.user);
         } else if (req.url == '/settings'){
             console.log(currentTime.getDateTime()+' <--- Request GET /settings ' + req.session.user);
             user.getCurrentUser(req, res, req.session.user);
