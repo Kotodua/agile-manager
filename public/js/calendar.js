@@ -21,6 +21,7 @@ function calendar(){
     $('#b_show').on("click", function () {
         $('#table_calendar').remove();
         var id = $('#s_user option:selected').prop('id').split('_');
+
         $.ajax({
             type: "GET",
             dataType: "html",
@@ -33,10 +34,10 @@ function calendar(){
                 var today = newDate.getDate();
 
                 $('#calendar').append('<table class="table_calendar" id="table_calendar"></table>');
-                $('#table_calendar').append('<tr id="tr_title"></tr>');
+                $('#table_calendar').append('<tr team="na" id="tr_title"></tr>');
 
-                $('#table_calendar').append('<tr id="dd"><td>Date</td></tr>');
-                $('#table_calendar').append('<tr id="e"><td>Name</td></tr>');
+                $('#table_calendar').append('<tr team="na" id="dd"><td>Date</td></tr>');
+                $('#table_calendar').append('<tr team="na" id="e"><td>Name</td></tr>');
 
                 /**Converting dates to real Date*/
                 for(var i = 0; i < statuses[0].length; i++){
@@ -65,10 +66,11 @@ function calendar(){
 
                     for (var j = 0; j < statuses[1].length; j++) {
                         var userName = statuses[1][j].name;
+                        var teamId = statuses[1][j].tid;
                         var userSName = statuses[1][j].sname;
                         var userId = statuses[1][j].id;
                         if (i == 0) {
-                            $('#table_calendar').append('<tr class="row-normal" id="uid_' + userId + '"><td class="user_name">' + userName +' '+userSName+ '</td></tr>');
+                            $('#table_calendar').append('<tr team='+teamId+' class="row-normal" id="uid_' + userId + '"><td class="user_name">' + userName +' '+userSName+ '</td></tr>');
                         }
                         $('#uid_' + userId).append('<td id="day_'+userId+'_'+dd+'"></td>');
                         if (e == 'Sun' || e == 'Sat'){
@@ -181,6 +183,15 @@ function calendar(){
     $('#s_user').on("change", function(){
         $('[id*="uid_"]').attr('class', 'row-normal');
         $("#uid_"+$(this).children(":selected").attr("id").split('_')[1]).attr('class', 'today');
+    });
+
+
+    // Remove rows != selected Team
+    $('body').on('change', '#team', function(){
+        var monthId = $('#team option:selected').prop('id');
+
+        $("tr[team!='na'][team!=monthId]").remove();
+
     })
 
     /*$('body').on("click",'td[id*="day_"]', function(){

@@ -4,7 +4,7 @@
 
 <table cellpadding="1" cellspacing="1">
     <tbody>
-    <tr>
+    <tr team="na">
         <td>
                     <p>Update Date Status.</p>
                     <select class="select" id="s_user" name="user">
@@ -41,13 +41,20 @@
                     <p align="right"><button id="b_update" class="a-inside edit">Update</button></p>
         </td>
         <td>
-                    <p>Get Information for period.</p></br>
-                    <input class="select" type="date" id="s_status" name="status" /></br>
+                    <p>Get Information for period.</p>
+                    <input class="select" type="date" id="s_status" name="status" /></br></br>
                     <select class="select" id="team" name="team">
-                        <option value="HalfDay Leave na">Team</option>
-                    <% if(req.session.admin == 'Y'){ %>
-                        <option value="Holiday">Any</option>
-                    <%}%>
+                        <option id="0">Any</option>
+
+                        <% for(var i = 0;i < teams.length;i++) { %>
+
+                        <option id="<%=teams[i].id%>"><%=teams[i].title%></option>
+                        <%}%>
+
+
+
+
+
                     </select>
                    <button id="b_show" class="a-inside edit">Show</button>
         </td>

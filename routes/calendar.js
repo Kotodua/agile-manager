@@ -15,9 +15,9 @@ function Calendar(){
 
     this.getUsers = function(req, res) {
 
-        var arrayOrPromises = [dbq.doSet('SELECT name, sname, id FROM user')];
+        var arrayOrPromises = [dbq.doSet('SELECT name, sname, id FROM user'), dbq.doSet('SELECT * FROM team')];
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
-            res.render('calendar', {users:arrayOfResults[0], req:req});
+            res.render('calendar', {users:arrayOfResults[0], teams:arrayOfResults[1], req:req});
         });
     }
 
@@ -53,7 +53,8 @@ function Calendar(){
     }
 
     this.getMonthInfo = function(req, res){
-        var arrayOrPromises = [dbq.doSet("SELECT * FROM calendar ORDER BY date, uid"), dbq.doSet("SELECT id, name, sname FROM user")];
+        var query = "SELECT id, name, sname, tid FROM user";
+        var arrayOrPromises = [dbq.doSet("SELECT * FROM calendar ORDER BY date, uid"), dbq.doSet(query)];
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
             res.send(arrayOfResults);
             res.end();
