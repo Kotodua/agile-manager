@@ -4,16 +4,7 @@ function users(){
     var verifier = new Verifier();
 
     $('#addUser').on("click", function () {
-        $('#users_tab').append('<tr id="newUser"></tr>');
-        $('#newUser').append('<th><input id="name_edit" class="text"></input></th>');
-        $('#newUser').append('<th><input id="sname_edit" class="text"></input></th>');
-        $('#newUser').append('<th><input id="pname_edit" class="text"></input></th>');
-        $('#newUser').append('<th><input id="role_edit" class="text"></input></th>');
-        $('#newUser').append('<button id="save" class="a-inside edit">Save</button>');
-        $('#newUser').append('<button id="cancel" class="a-inside delete">Cancel</button>');
-        $('#addUser').prop('disabled', true);
-        $('#save').prop('disabled', true);
-        $('#save').prop("class", "a-inside");
+        addNewUser();
     });
 
     $("body").on('focusout', '#pname_edit', function(){
@@ -33,8 +24,6 @@ function users(){
 
     $("body").on("click", "button[id^='delete_']", function(event){
         var id_btn = event.target.id.split('_')[1];
-        var url = mainURL+'/'+id_btn;
-        console.log('Del clicked '+id_btn);
 
         $.ajax({
             type: "DELETE",
@@ -110,4 +99,17 @@ function users(){
         $(this).prop("class", b_property);
     });
 
+}
+
+function addNewUser(){
+    $('#users_tab').append('<tr id="newUser"></tr>');
+    $('#newUser').append('<th><input id="name_edit" class="text"></input></th>');
+    $('#newUser').append('<th><input id="sname_edit" class="text"></input></th>');
+    $('#newUser').append('<th><input id="pname_edit" class="text"></input></th>');
+    $('#newUser').append('<th><input id="role_edit" class="text"></input></th>');
+    $('#newUser').append('<button id="save" class="a-inside edit">Save</button>');
+    $('#newUser').append('<button id="cancel" class="a-inside delete">Cancel</button>');
+    $('#addUser').prop('disabled', true);
+    $('#save').prop('disabled', true);
+    $('#save').prop("class", "a-inside");
 }

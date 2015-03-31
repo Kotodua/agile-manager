@@ -2,10 +2,10 @@
 
 
 
-<table cellpadding="1" cellspacing="1">
+<table width="80%">
     <tbody>
     <tr team="na">
-        <td>
+        <td valign="top">
                     <p>Update Date Status.</p>
                     <select class="select" id="s_user" name="user">
                         <% if(users.length){%>
@@ -36,27 +36,26 @@
                         <option value="Leave">Leave</option>
                         <option value="Vacation">Vacation</option>
                     <%}%>
-                    </select>
-                    <input class="select" type="date" id="date" name="status" />&nbsp;
+                    </select></br></br>
+                    <input class="select" type="date" id="date" name="status" />
                     <p align="right"><button id="b_update" class="a-inside edit">Update</button></p>
         </td>
-        <td>
+        <td valign="top">
                     <p>Get Information for period.</p>
                     <input class="select" type="date" id="s_status" name="status" /></br></br>
-                    <select class="select" id="team" name="team">
-                        <option id="0">Any</option>
+                    <p align="right"><button id="b_show" class="a-inside edit">Show</button></p>
+        </td>
+        <td valign="top">
+            <p>Filter by team</p>
+            <select class="select" id="team" name="team">
+                <option id="0">Any</option>
 
-                        <% for(var i = 0;i < teams.length;i++) { %>
+                <% for(var i = 0;i < teams.length;i++) { %>
 
-                        <option id="<%=teams[i].id%>"><%=teams[i].title%></option>
-                        <%}%>
+                <option id="<%=teams[i].id%>"><%=teams[i].title%></option>
+                <%}%>
+            </select>
 
-
-
-
-
-                    </select>
-                   <button id="b_show" class="a-inside edit">Show</button>
         </td>
     </tr>
     </tbody>

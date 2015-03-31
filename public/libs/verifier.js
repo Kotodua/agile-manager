@@ -22,7 +22,6 @@ Verifier.prototype.verifyEmail = function(string){
 }
 
 Verifier.prototype.verifyPName = function(string){
-
     if (string.length < 3  || !isNaN(parseFloat(string)) || isFinite(string) || string.match(/\d+/g) != null){
         console.log('wrong pname');
         return false;
