@@ -99,7 +99,11 @@ app.use(function(req, res, next){
         else if (req.url == '/teams'){
                 console.log(currentTime.getDateTime()+' <--- Request GET /teams ' + req.session.user);
                 team.getTeams(req, res, req.session.user);
-        } else if (req.url == '/settings'){
+        } else if (req.url == '/testlab'){
+            console.log(currentTime.getDateTime()+' <--- Request GET /testlab ' + req.session.user);
+            res.render('testlab');
+        }
+        else if (req.url == '/settings'){
             console.log(currentTime.getDateTime()+' <--- Request GET /settings ' + req.session.user);
             user.getCurrentUser(req, res, req.session.user);
         } else if (req.url == '/calendar'){

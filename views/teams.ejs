@@ -1,8 +1,8 @@
 <%- include layouts/header.ejs %>
 
 <div class="page-data">
-    <div class="data-table">
-        <table id="teams_tab" border="1" cellpadding="5" >
+    <div class="team-table">
+        <table id="teams_tab" border="1" cellpadding="5">
             <tr id="teams_tab_title">
 
                 <th>Team</th>
@@ -13,8 +13,8 @@
                     for(var i = 0;i < teams.length;i++) { %>
 
             <tr id="<%=teams[i].id%>">
-                <td><%=teams[i].title%></td>
-                <td>
+                <td class="td-border"><%=teams[i].title%></td>
+                <td class="td-border">
                     <% if(req.session.admin == 'Y'){ %>
                     <button id="edit_<%=teams[i].id%>" class="a-inside edit">Edit</button>
                     <button id="delete_<%=teams[i].id%>" class="a-inside delete">Delete</button>

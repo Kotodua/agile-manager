@@ -75,8 +75,8 @@ function drawCalendar(){
             $('#calendar').append('<table class="table_calendar" id="table_calendar"></table>');
             $('#table_calendar').append('<tr team="na" id="tr_title"></tr>');
 
-            $('#table_calendar').append('<tr team="na" id="dd"><td>Date</td></tr>');
-            $('#table_calendar').append('<tr team="na" id="e"><td>Name</td></tr>');
+            $('#table_calendar').append('<tr team="na" id="dd"><td class="td-border">Date</td></tr>');
+            $('#table_calendar').append('<tr team="na" id="e"><td class="td-border">Name</td></tr>');
 
             /**Converting dates to real Date*/
             for(var i = 0; i < statuses[0].length; i++){
@@ -93,8 +93,8 @@ function drawCalendar(){
                     $('#dd').append('<td class="today">' + dd + '</td>');
                     $('#e').append('<td class="today">' + e + '</td>');
                 } else {
-                    $('#dd').append('<td>' + dd + '</td>');
-                    $('#e').append('<td>' + e + '</td>');
+                    $('#dd').append('<td class="td-border">' + dd + '</td>');
+                    $('#e').append('<td class="td-border">' + e + '</td>');
                 }
 
                 if (dd.match(/15-([0-9][0-9])/)){
@@ -111,7 +111,7 @@ function drawCalendar(){
                     if (i == 0) {
                         $('#table_calendar').append('<tr team='+teamId+' class="row-normal" id="uid_' + userId + '"><td class="user_name">' + userName +' '+userSName+ '</td></tr>');
                     }
-                    $('#uid_' + userId).append('<td id="day_'+userId+'_'+dd+'"></td>');
+                    $('#uid_' + userId).append('<td class="td-border" id="day_'+userId+'_'+dd+'"></td>');
                     if (e == 'Sun' || e == 'Sat'){
                         $('#day_'+userId+'_'+dd).addClass('day-weekend');
                         $('#day_'+userId+'_'+dd).attr('h', 0);

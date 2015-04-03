@@ -17,11 +17,11 @@
 
             <tr id="<%=users[i].id%>">
 
-                <td><%=users[i].name%></td>
-                <td><%=users[i].sname%></td>
-                <td><%=users[i].pname%></td>
-                <td><%=users[i].role%></td>
-                <td>
+                <td class="td-border"><%=users[i].name%></td>
+                <td class="td-border"><%=users[i].sname%></td>
+                <td class="td-border"><%=users[i].pname%></td>
+                <td class="td-border"><%=users[i].role%></td>
+                <td class="td-border">
                     <% if(req.session.admin == 'Y'){ %>
                     <button id="edit_<%=users[i].id%>" class="a-inside edit">Edit</button>
                     <button id="delete_<%=users[i].id%>" class="a-inside delete">Delete</button>
