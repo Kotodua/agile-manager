@@ -37,6 +37,7 @@ function testlab(){
 
     treeCase.attachEvent("onSelect", function(id){
         $('#test-case-add').removeAttr("disabled");
+        $('#test-new').removeAttr("disabled");
         $('[id^="case_"]').remove();
         activeElement = id;
         console.log(id);
@@ -48,6 +49,7 @@ function testlab(){
         if (type[1] == 'case'){
             getCase(type[0]);
             $('#test-case-add').attr("disabled", true);
+            $('#test-new').attr("disabled", true);
         }
     });
 
@@ -213,7 +215,8 @@ function testlab(){
 
                 for (var i = 0; i < allData.case.length; i++){
                     //arrFolders.push([allData.case[i].id,,allData.case[i].name]);
-                    tree.insertNewItem(allData.case[i].cfid,allData.case[i].id+'_case',allData.case[i].name,0,0,0,0,'SELECT');
+                    tree.insertNewItem(allData.case[i].cfid, allData.case[i].id + '_case', allData.case[i].name, 0, 0, 0, 0);
+
 
                 }
 
