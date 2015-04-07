@@ -47,6 +47,8 @@ function saveNewTeam(){
     $('#newTeam').remove();
 
     console.log('append new team');
+
+    //--------------------------------- Doesn't work
     $.ajax({
         type: "GET",
         dataType: "html",

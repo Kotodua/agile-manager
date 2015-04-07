@@ -14,38 +14,40 @@
                     </tr>
                     <tr><!-- Row 2 -->
                         <td class="td-border">
+
                             <div class="dhtmlxTree"
-                                 id="treeboxbox_tree"
-                                 setImagePath="vendor/dhtmlx/sources/dhtmlxTree/codebase/imgs/dhxtree_terrace/"
-                                 style="width:250px; height:218px;overflow:auto;">
-                                <ul>
-                                    <li>Root
-                                        <ul>
-                                            <li id="c1">Child1
-                                                <ul>
-                                                    <li>Child 1-1</li>
-                                                </ul>
-                                            <li>Child2</li>
-                                            <li><b>Bold</b> <i>Italic</i></li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                                 id="treebox_case"
+                                 style="width:200px; height:350px;overflow:auto;">
                             </div>
                         </td><!-- Col 1 -->
+                        <td class="td-border">
+
+                            <div class="dhtmlxTree"
+                                 id="treebox_test"
+                                 style="width:200px; height:350px;overflow:auto;">
+                            </div>
+                        </td><!-- Col 2 -->
                     </tr>
                 </table>
             </td><!-- Col 1 -->
             <td width="50%" class="td-border">
 
-                <table border="1" width="100%">
+                <table id="tc" border="1" width="100%">
                     <tr><!-- Row 1 -->
                         <td width="10%" class="td-border">Id</td><!-- Col 1 -->
                         <td width="45%" class="td-border">Steps</td><!-- Col 2 -->
                         <td width="32%" class="td-border">Expected</td><!-- Col 3 -->
                         <td width="3%"><input type="button" value="x"></td><!-- Col 3 -->
                     </tr>
+                    <tr id="new-case" hidden="true"><!-- Row 1 -->
+                        <td width="10%" class="td-border"><textarea style="width: 80px" rows="10" id="case-id"></textarea></td><!-- Col 1 -->
+                        <td width="45%" class="td-border"><textarea rows="10" id="case-steps"></textarea></td><!-- Col 2 -->
+                        <td width="32%" class="td-border"><textarea rows="10" id="case-expected"></textarea></td><!-- Col 3 -->
+                        <td width="3%"><input type="button" value="x"></td><!-- Col 3 -->
+                    </tr>
                 </table>
-                <input id="test-step-add" type="button" value="Add">
+                <input id="test-case-add" type="button" value="Add">
+                <input id="test-case-save" type="button" value="Save">
             </td><!-- Col 2 -->
             <td width="20%" class="td-border">
                 <table border="0"  width="100%">
@@ -73,7 +75,7 @@
                     </tr>
                     <tr><!-- Row 4 -->
                         <td>Notes:</td><!-- Col 1 -->
-                        <td><textarea id="test_notes" width="100%"></textarea></td><!-- Col 2 -->
+                        <td><textarea id="test-notes" style="width: 200px" rows="5"></textarea></td><!-- Col 2 -->
                     </tr>
 
                 </table>

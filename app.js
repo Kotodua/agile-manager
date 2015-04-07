@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var Users = require('./routes/users');
 var Teams = require('./routes/teams');
+var TestLab = require('./routes/testlab');
 var Calendar = require('./routes/calendar');
 var Task = require('./routes/task');
 var session = require('express-session');
@@ -18,6 +19,7 @@ var currentTime = new Time();
 var calendar = new Calendar();
 var user = new Users();
 var team = new Teams();
+var tl = new TestLab();
 
 
 app.set('port', config.get('port'));
@@ -82,6 +84,13 @@ app.post('/api/teams/add', function(req, res){team.createTeam(req, res, req.body
 app.post('/api/calendar/add', function(req, res){calendar.addDateInfo(req, res, req.body)});
 app.get('/api/calendar/get', function(req, res){calendar.getMonthInfo(req, res)});
 
+
+//------------------------------ TEST LAB
+app.get('/api/testlab/getCTree', function(req, res){tl.getCaseTree(req, res)});
+app.post('/api/testlab/createFolder', function(req, res){tl.createFolder(req, res, req.body)});
+app.delete('/api/testlab/:id', function(req, res){tl.deleteFolder(req, res, req.params.id)});
+app.get('/api/testlab/:id', function(req, res){tl.getCase(req, res, req.params.id)});
+app.post('/api/testlab/saveCase', function(req, res){tl.saveCase(req, res, req.body)});
 
 //------------------------------ TASKS
 app.post('/api/task/create', function(req, res){pomodoro.createTask(req, res, req.body)});
