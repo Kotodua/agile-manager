@@ -40,7 +40,16 @@ TestLab.prototype = {
         var arrayOrPromises = [dbq.doSet('DELETE FROM case_folder WHERE id = ?', id)];
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
             console.log(currentTime.getDateTime()+' ---> Response: Folder Deleted');
-            res.send('success');
+            res.send(arrayOfResults);
+        });
+        this.deletChildFolders(req, res, id);
+    },
+
+    deletChildFolders: function(req, res, pid){
+        var arrayOrPromises = [dbq.doSet('SELECT * FROM case_folder WHERE pid = ?', pid)];
+        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
+            console.log("nested count"+arrayOfResults[0].length);
+            console.log(arrayOfResults);
         });
     },
 
@@ -61,7 +70,7 @@ TestLab.prototype = {
         };
         var arrayOrPromises = [dbq.doSet("INSERT INTO case_folder set ? ",data)];
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
-            res.send('ok');
+            res.send(arrayOfResults);
         });
     },
 

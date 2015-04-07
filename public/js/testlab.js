@@ -41,6 +41,7 @@ function testlab(){
         activeElement = id;
         console.log(id);
 
+
         var type = id.split('_');
         console.log('You selected '+type[0]);
         console.log('You selected '+type[1]);
@@ -51,8 +52,7 @@ function testlab(){
     });
 
     treeTest.attachEvent("onSelect", function(id){
-        activeElement = id;
-
+        //activeElement = id;
         console.log('You selected '+id);
     });
 
@@ -93,6 +93,7 @@ function testlab(){
              url: mainURL + '/' + id,
              success: function (data) {
                 console.log(data);
+                return data;
              }
         })
         tree.deleteItem(id,true);
@@ -106,12 +107,11 @@ function testlab(){
             dataType: "json",
             url: mainURL + '/createFolder',
             success: function (res) {
-                if (res == 'ok'){
-                }
+                tree.insertNewItem(activeElement,res[0].insertId,name,0,0,0,0,'SELECT');
             }
         })
         console.log('adding '+name+' to the tree');
-        tree.insertNewItem(parent,date,name,0,0,0,0,'SELECT');
+        //tree.insertNewItem(parent,date,name,0,0,0,0,'SELECT');
 
     }
 
@@ -119,6 +119,7 @@ function testlab(){
         $.ajax({
             type: "POST",
             data: {
+                //dhtmlxId: tree.,
                 id: $('#case-id').val(),
                 cfid : activeElement,
                 steps: $('#case-steps').val(),
