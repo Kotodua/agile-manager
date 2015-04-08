@@ -18,6 +18,7 @@ function TestLab(){
 }
 
 TestLab.prototype = {
+    //------------------ CASES
     getCase: function (req, res, id) {
         console.log('getting info');
         var arrayOrPromises = [dbq.doSet('SELECT * FROM case_points WHERE id = ?', id)];
@@ -37,6 +38,50 @@ TestLab.prototype = {
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
             res.type("text/json");
             res.send({folder:arrayOfResults[0], case:arrayOfResults[1], test:arrayOfResults[2], testcases:arrayOfResults[3]});
+        });
+    },
+
+    moveCaseToTest: function (req, res){
+        var input = JSON.parse(JSON.stringify(req.body));
+        var data = {
+            cid  : input.cid,
+            tid : input.tid
+        };
+        var arrayOrPromises = [dbq.doSet("INSERT INTO casetotest set ? ",data)];
+        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
+            res.type("text/json");
+            res.send(arrayOfResults[0]);
+        });
+    },
+
+    saveCase: function(req, res, data) {
+        var input = JSON.parse(JSON.stringify(data));
+        var data = {
+            name : input.id,
+            cfid : input.cfid,
+            steps: input.steps,
+            expected: input.expected,
+            status: input.status,
+            description: input.notes
+            //owner: input.owner
+        };
+        var arrayOrPromises = [dbq.doSet("INSERT INTO case_points set ? ",data)];
+        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
+            res.send(arrayOfResults);
+        });
+    },
+
+    //------------------ FOLDERS
+
+    createFolder: function(req, res, folder) {
+        var input = JSON.parse(JSON.stringify(folder));
+        var data = {
+            name  : input.name,
+            pid : input.parent
+        };
+        var arrayOrPromises = [dbq.doSet("INSERT INTO case_folder set ? ",data)];
+        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
+            res.send(arrayOfResults);
         });
     },
 
@@ -66,47 +111,7 @@ TestLab.prototype = {
         });
     },
 
-    moveCaseToTest: function (req, res){
-        var input = JSON.parse(JSON.stringify(req.body));
-        var data = {
-            cid  : input.cid,
-            tid : input.tid
-        };
-        var arrayOrPromises = [dbq.doSet("INSERT INTO casetotest set ? ",data)];
-        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
-            res.type("text/json");
-            res.send(arrayOfResults[0]);
-        });
-    },
-
-    createFolder: function(req, res, folder) {
-        var input = JSON.parse(JSON.stringify(folder));
-        var data = {
-            name  : input.name,
-            pid : input.parent
-        };
-        var arrayOrPromises = [dbq.doSet("INSERT INTO case_folder set ? ",data)];
-        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
-            res.send(arrayOfResults);
-        });
-    },
-
-    saveCase: function(req, res, data) {
-        var input = JSON.parse(JSON.stringify(data));
-        var data = {
-            name : input.id,
-            cfid : input.cfid,
-            steps: input.steps,
-            expected: input.expected,
-            status: input.status,
-            description: input.notes
-            //owner: input.owner
-        };
-        var arrayOrPromises = [dbq.doSet("INSERT INTO case_points set ? ",data)];
-        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
-            res.send(arrayOfResults);
-        });
-    },
+    //------------------ TESTS
 
     createTest: function(req, res, data) {
         var input = JSON.parse(JSON.stringify(data));
