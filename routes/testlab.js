@@ -29,10 +29,14 @@ TestLab.prototype = {
 
     getCaseTree: function (req, res) {
         console.log('getting info');
-        var arrayOrPromises = [dbq.doSet('SELECT * FROM case_folder'), dbq.doSet('SELECT * FROM case_points')];
+        var arrayOrPromises = [dbq.doSet('SELECT * FROM case_folder'),
+            dbq.doSet('SELECT * FROM case_points'),
+            dbq.doSet('SELECT * FROM test'),
+            dbq.doSet('SELECT * FROM casetotest'),
+        ];
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
             res.type("text/json");
-            res.send({folder:arrayOfResults[0], case:arrayOfResults[1]});
+            res.send({folder:arrayOfResults[0], case:arrayOfResults[1], test:arrayOfResults[2], testcases:arrayOfResults[3]});
         });
     },
 
@@ -56,6 +60,19 @@ TestLab.prototype = {
     moveFolder: function (req, res){
         console.log('moving folder');
         var arrayOrPromises = [dbq.doSet('SELECT * FROM case_folder')];
+        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
+            res.type("text/json");
+            res.send(arrayOfResults[0]);
+        });
+    },
+
+    moveCaseToTest: function (req, res){
+        var input = JSON.parse(JSON.stringify(req.body));
+        var data = {
+            cid  : input.cid,
+            tid : input.tid
+        };
+        var arrayOrPromises = [dbq.doSet("INSERT INTO casetotest set ? ",data)];
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
             res.type("text/json");
             res.send(arrayOfResults[0]);
@@ -86,6 +103,22 @@ TestLab.prototype = {
             //owner: input.owner
         };
         var arrayOrPromises = [dbq.doSet("INSERT INTO case_points set ? ",data)];
+        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
+            res.send(arrayOfResults);
+        });
+    },
+
+    createTest: function(req, res, data) {
+        var input = JSON.parse(JSON.stringify(data));
+        var data = {
+            name : input.name,
+            pid : input.pid,
+            //expected: input.expected,
+            status: input.status,
+            description: input.description
+            //owner: input.owner
+        };
+        var arrayOrPromises = [dbq.doSet("INSERT INTO test set ? ",data)];
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
             res.send(arrayOfResults);
         });

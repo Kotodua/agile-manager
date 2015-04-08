@@ -8,8 +8,11 @@
                 <table class="table_tree"  width="100%" >
                     <tr><!-- Row 1 -->
                         <td class="td-border">
-                            <input id="test-new" type="button" value="New">
+                            <input id="folder-new" type="button" value="+F">
+                            <input id="test-new" type="button" value="+T">
                             <input id="test-delete" type="button" value="Delete">
+                            <input id="tree-expand" type="button" value="+">
+                            <input id="tree-collaps" type="button" value="-">
                         </td><!-- Col 1 -->
                     </tr>
                     <tr><!-- Row 2 -->
@@ -22,10 +25,38 @@
                         </td><!-- Col 1 -->
                         <td class="td-border">
 
-                            <div class="dhtmlxTree"
-                                 id="treebox_test"
-                                 style="width:200px; height:400px;overflow:auto;">
-                            </div>
+                           <!-- Test Details here -->
+                            <table border="0"  width="100%">
+                                <tr><!-- Row 1 -->
+                                    <td>Name:</td><!-- Col 1 -->
+                                    <td><input id="test-name" type="text" name="testName" value="test name"></td><!-- Col 2 -->
+                                </tr>
+                                <tr><!-- Row 2 -->
+                                    <td>Owner:</td><!-- Col 1 -->
+                                    <td>
+                                        <select id="test-owner" name="owner"></select>
+                                    </td><!-- Col 2 -->
+                                </tr>
+                                <tr><!-- Row 3 -->
+                                    <td>Status: </td><!-- Col 1 -->
+                                    <td>
+                                        <select id="test-status" name="Status">
+                                            <option selected value="new">New</option>
+                                            <option value="design">Design</option>
+                                            <option value="to-review">ToReview</option>
+                                            <option value="valid">Valid</option>
+                                            <option value="invalide">Invalide</option>
+                                        </select>
+                                    </td><!-- Col 2 -->
+                                </tr>
+                                <tr><!-- Row 4 -->
+                                    <td>Notes:</td><!-- Col 1 -->
+                                    <td><textarea id="test-notes" style="width: 200px" rows="5"></textarea></td><!-- Col 2 -->
+                                </tr>
+
+                            </table>
+
+
                         </td><!-- Col 2 -->
                     </tr>
                 </table>
@@ -49,37 +80,7 @@
                 <input id="test-case-add" type="button" value="Add">
                 <input id="test-case-save" type="button" value="Save">
             </td><!-- Col 2 -->
-            <td width="20%" class="td-border">
-                <table border="0"  width="100%">
-                    <tr><!-- Row 1 -->
-                        <td>Name:</td><!-- Col 1 -->
-                        <td><input id="test-name" type="text" name="testName" value="test name"></td><!-- Col 2 -->
-                    </tr>
-                    <tr><!-- Row 2 -->
-                        <td>Owner:</td><!-- Col 1 -->
-                        <td>
-                            <select id="test-owner" name="owner"></select>
-                        </td><!-- Col 2 -->
-                    </tr>
-                    <tr><!-- Row 3 -->
-                        <td>Status: </td><!-- Col 1 -->
-                        <td>
-                            <select id="test-status" name="Status">
-                                <option selected value="new">New</option>
-                                <option value="design">Design</option>
-                                <option value="to-review">ToReview</option>
-                                <option value="valid">Valid</option>
-                                <option value="invalide">Invalide</option>
-                            </select>
-                        </td><!-- Col 2 -->
-                    </tr>
-                    <tr><!-- Row 4 -->
-                        <td>Notes:</td><!-- Col 1 -->
-                        <td><textarea id="test-notes" style="width: 200px" rows="5"></textarea></td><!-- Col 2 -->
-                    </tr>
 
-                </table>
-            </td><!-- Col 3 -->
         </tr>
     </table>
 

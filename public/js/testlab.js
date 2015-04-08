@@ -10,26 +10,15 @@ function testlab(){
     var verifier = new Verifier();
 
      // for script conversion
-    var treeTest = dhtmlXTreeFromHTML("treebox_test","100%","100%",0); // for script conversion
     var treeCase = dhtmlXTreeFromHTML("treebox_case","100%","100%",0);
     var d=new Date();
 
     var activeElement;
 
     treeCase.setImagePath("vendor/dhtmlx/sources/dhtmlxTree/codebase/imgs/dhxtree_terrace/");
-    treeTest.setImagePath("vendor/dhtmlx/sources/dhtmlxTree/codebase/imgs/dhxtree_terrace/");
-
-    var myArray2 = [["1","0","Test Folser 1"],
-        ["2","1","Test Folder 2"],
-        ["3","2","test1"],
-        ["4","0","test2"]];
-
 
     drawCases(treeCase);
-
-    treeTest.enableDragAndDrop(true);
-    treeTest.loadJSArray(myArray2);
-
+    treeCase.enableDragAndDrop(true);
     //treeCase.showItemCheckbox(4, true)
     //myTree.setDragBehavior("complex");
 
@@ -38,36 +27,59 @@ function testlab(){
     treeCase.attachEvent("onSelect", function(id){
         $('#test-case-add').removeAttr("disabled");
         $('#test-new').removeAttr("disabled");
+        $('#folder-new').removeAttr("disabled");
         $('[id^="case_"]').remove();
         activeElement = id;
-        console.log(id);
-
-
         var type = id.split('_');
-        console.log('You selected '+type[0]);
-        console.log('You selected '+type[1]);
         if (type[1] == 'case'){
             getCase(type[0]);
             $('#test-case-add').attr("disabled", true);
+            $('#folder-new').attr("disabled", true);
+            $('#test-new').attr("disabled", true);
+        } else if(type[1] == 'test'){
+            //getCase(type[0]);
+            $('#folder-new').attr("disabled", true);
             $('#test-new').attr("disabled", true);
         }
     });
 
-    treeTest.attachEvent("onSelect", function(id){
-        //activeElement = id;
-        console.log('You selected '+id);
-    });
-
     treeCase.setDragHandler(function(idMoveFrom, idMoveTo){
-        moveFolder(treeCase, idMoveFrom, idMoveTo);
+
+        var idMoveWhat = idMoveFrom.split('_');
+        var idMoveWhere = idMoveTo.split('_');
+
+        if (idMoveWhere[1] == 'case'){
+            treeCase.enableDragAndDrop(false);
+        } else if(idMoveWhat[1] == 'case' && idMoveWhere[1] == 'test'){
+            treeCase.enableMercyDrag(true);
+            moveCaseToTest(treeCase, idMoveWhat[0]+'_case', idMoveWhere[0]+'_test');
+            treeCase.enableMercyDrag(false);
+        }
+
+
+        //moveFolder(treeCase, idMoveFrom, idMoveTo);
     })
 
 
     //tree.makeAllDraggable();
 
-    $('body').on('click', '#test-new', function(){
+    $('body').on('click', '#folder-new', function(){
         //if($([activeElement]).getParent == )
         createFolder(treeCase, d.valueOf(), document.getElementById('test-name').value, activeElement);
+        fixImage(treeCase, d.valueOf());
+    });
+
+    $('body').on('click', '#tree-expand', function(){
+        treeCase.openAllItems(activeElement);
+    });
+
+    $('body').on('click', '#tree-collaps', function(){
+        treeCase.closeAllItems(activeElement);
+    });
+
+    $('body').on('click', '#test-new', function(){
+        //if($([activeElement]).getParent == )
+        createTest(treeCase, d.valueOf(), document.getElementById('test-name').value, activeElement);
         fixImage(treeCase, d.valueOf());
 
     });
@@ -112,9 +124,28 @@ function testlab(){
                 tree.insertNewItem(activeElement,res[0].insertId,name,0,0,0,0,'SELECT');
             }
         })
-        console.log('adding '+name+' to the tree');
-        //tree.insertNewItem(parent,date,name,0,0,0,0,'SELECT');
+    }
 
+    function createTest(tree, date, name, parent){
+        $.ajax({
+            type: "POST",
+            data: {
+                //dhtmlxId: tree.,
+                name: name,
+                pid: activeElement,
+                //owner: $('#case-steps').val(),
+                //expected: $('#case-expected').val(),
+                status: $('#test-status').val(),
+                description: $('#test-notes').val()
+            },
+            dataType: "json",
+            url: mainURL + '/createTest',
+            success: function (res) {
+                console.log(res);
+                //getCase(res[0].insertId);
+                tree.insertNewItem(activeElement,res[0].insertId+'_test',name,0,0,0,0,'SELECT');
+            }
+        })
     }
 
     function saveCase(tree){
@@ -194,6 +225,23 @@ function testlab(){
         return confirm(tree.getItemText(moveFrom)+' '+ tree.getItemText(moveTo));
     }
 
+    function moveCaseToTest(tree, caseId, testId){
+        var r = confirm('Would you like to move "'+tree.getItemText(caseId)+'" case to "'+ tree.getItemText(testId)+'" test.');
+        if (r == true) {
+            $.ajax({
+                type: "POST",
+                data: {cid: caseId, tid: testId},
+                dataType: "json",
+                url: mainURL + '/moveCaseToTest',
+                success: function (res) {
+                    tree.insertNewItem(testId+'_test',caseId+'_case',tree.getItemText(caseId+'_case'),0,0,0,0,'SELECT');
+                }
+            })
+        } else {
+            txt = "You pressed Cancel!";
+        }
+    }
+
     function drawCases(tree){
         //var tree = dhtmlXTreeFromHTML(treeId,"100%","100%",0);
         console.log('drawingCases');
@@ -205,26 +253,32 @@ function testlab(){
                 var allData = JSON.parse(data);
                 var arrFolders =[];
                 var arrCases =[];
+
+                //--------------- Drawing Folders
                 for (var i = 0; i < allData.folder.length; i++){
                     arrFolders.push([allData.folder[i].id,allData.folder[i].pid,allData.folder[i].name]);
                 }
-
-                console.log(allData.case[0]);
-
                 tree.loadJSArray(arrFolders);
 
+                //--------------- Drawing Cases
                 for (var i = 0; i < allData.case.length; i++){
-                    //arrFolders.push([allData.case[i].id,,allData.case[i].name]);
                     tree.insertNewItem(allData.case[i].cfid, allData.case[i].id + '_case', allData.case[i].name, 0, 0, 0, 0);
-
-
                 }
 
-                console.log(arrFolders);
+                //--------------- Drawing Tests
+                for (var i = 0; i < allData.test.length; i++){
+                    tree.insertNewItem(allData.test[i].pid, allData.test[i].id + '_test', allData.test[i].name, 0, 0, 0, 0);
+                }
+
+                for (var i = 0; i < allData.testcases.length; i++){
+                    tree.insertNewItem(allData.testcases[i].tid + '_test', allData.testcases[i].cid + '_case', i, 0, 0, 0, 0);
+                }
+
+
 
 
                 //tree.loadJSArray(arrCases);
-                //tree.enableDragAndDrop(true);
+
                 //tree.enableMercyDrag(true);
             }
         })
