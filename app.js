@@ -90,6 +90,7 @@ app.get('/api/testlab/getCTree', function(req, res){tl.getCaseTree(req, res)});
 app.post('/api/testlab/createFolder', function(req, res){tl.createFolder(req, res, req.body)});
 app.delete('/api/testlab/:id', function(req, res){tl.deleteFolder(req, res, req.params.id)});
 app.get('/api/testlab/:id', function(req, res){tl.getCase(req, res, req.params.id)});
+app.get('/api/testlab/getTestCases/:id', function(req, res){tl.getTestCases(req, res, req.params.id)});
 app.post('/api/testlab/saveCase', function(req, res){tl.saveCase(req, res, req.body)});
 app.post('/api/testlab/createTest', function(req, res){tl.createTest(req, res, req.body)});
 app.post('/api/testlab/moveCaseToTest', function(req, res){tl.moveCaseToTest(req, res)});
