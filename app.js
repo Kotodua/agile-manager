@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var Users = require('./routes/users');
 var Teams = require('./routes/teams');
+var Configurations = require('./routes/configurations');
 var TestLab = require('./routes/testlab');
 var Calendar = require('./routes/calendar');
 var Task = require('./routes/task');
@@ -20,6 +21,7 @@ var calendar = new Calendar();
 var user = new Users();
 var team = new Teams();
 var tl = new TestLab();
+var configurations = new Configurations();
 
 
 app.set('port', config.get('port'));
@@ -94,6 +96,12 @@ app.post('/api/testlab/saveCase', function(req, res){tl.saveCase(req, res, req.b
 app.post('/api/testlab/createTest', function(req, res){tl.createTest(req, res, req.body)});
 app.post('/api/testlab/moveCaseToTest', function(req, res){tl.moveCaseToTest(req, res)});
 
+
+//------------------------------ TEST LAB
+
+
+
+
 //------------------------------ TASKS
 app.post('/api/task/create', function(req, res){pomodoro.createTask(req, res, req.body)});
 app.get('/api/task/get', function(req, res){pomodoro.getTasks(req, res)});
@@ -113,6 +121,9 @@ app.use(function(req, res, next){
         } else if (req.url == '/testlab'){
             console.log(currentTime.getDateTime()+' <--- Request GET /testlab ' + req.session.user);
             res.render('testlab');
+        } else if (req.url == '/configurations'){
+            console.log(currentTime.getDateTime()+' <--- Request GET /configurations' + req.session.user);
+            res.render('configurations');
         }
         else if (req.url == '/settings'){
             console.log(currentTime.getDateTime()+' <--- Request GET /settings ' + req.session.user);
