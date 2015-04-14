@@ -28,6 +28,15 @@ TestLab.prototype = {
         });
     },
 
+    getTestCases: function (req, res, id) {
+        console.log('getting info');
+        var arrayOrPromises = [dbq.doSet('SELECT * FROM casetotest WHERE tid = ?', id)];
+        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
+            res.type("text/json");
+            res.send(arrayOfResults[0]);
+        });
+    },
+
     getCaseTree: function (req, res) {
         console.log('getting info');
         var arrayOrPromises = [dbq.doSet('SELECT * FROM case_folder'),
