@@ -88,7 +88,7 @@ app.get('/api/calendar/get', function(req, res){calendar.getMonthInfo(req, res)}
 
 
 //------------------------------ TEST LAB
-app.get('/api/testlab/getCTree', function(req, res){tl.getCaseTree(req, res)});
+app.get('/api/testlab/getCaseTree', function(req, res){tl.getCaseTree(req, res)});
 app.post('/api/testlab/createFolder', function(req, res){tl.createFolder(req, res, req.body)});
 app.delete('/api/testlab/:id', function(req, res){tl.deleteFolder(req, res, req.params.id)});
 app.get('/api/testlab/:id', function(req, res){tl.getCase(req, res, req.params.id)});
@@ -98,7 +98,8 @@ app.post('/api/testlab/createTest', function(req, res){tl.createTest(req, res, r
 app.post('/api/testlab/moveCaseToTest', function(req, res){tl.moveCaseToTest(req, res)});
 
 
-//------------------------------ TEST LAB
+//------------------------------ CONFIGURATIONS
+app.get('/api/configurations/getConfs', function(req, res){configurations.getConfs(req, res)});
 
 
 

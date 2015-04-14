@@ -18,13 +18,12 @@ function Configurations(){
 }
 
 Configurations.prototype = {
-    //------------------ CASES
-    getConfs: function (req, res, id) {
+    getConfs: function (req, res) {
         console.log('getting info');
-        var arrayOrPromises = [dbq.doSet('SELECT * FROM configurations')];
+        var arrayOrPromises = [dbq.doSet('SELECT * FROM conf_configuration'), dbq.doSet('SELECT * FROM conf_list'), dbq.doSet('SELECT * FROM conf_listitems')];
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
             res.type("text/json");
-            res.send(arrayOfResults[0]);
+            res.send({conf_configurations:arrayOfResults[0], conf_list:arrayOfResults[1], conf_listitems:arrayOfResults[2]});
         });
     }
 

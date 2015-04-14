@@ -206,17 +206,24 @@ function testlab(){
     }
 
 
-    function getCase(id, increnent){
+    function getCase(id, increment){
         $.ajax({
             type: "GET",
             dataType: "html",
             url: mainURL + '/'+id,
             success: function (data) {
                 var allData = JSON.parse(data);
-                $('#tc').append('<tr id=case_'+allData[0].id+'_'+increnent+'></tr>');
-                $('#case_'+allData[0].id+'_'+increnent).append('<th><textarea class="added" style="width: 80px" rows="1" id="case_text">'+allData[0].name+'</textarea></th>');
-                $('#case_'+allData[0].id+'_'+increnent).append('<th><textarea class="added" rows="1" id="case_text">'+allData[0].steps+'</textarea></th>');
-                $('#case_'+allData[0].id+'_'+increnent).append('<th><textarea class="added" rows="1" id="case_text">'+allData[0].expected+'</textarea></th>');
+                $('#tc').append('<tr id=case_'+allData[0].id+'_'+increment+'></tr>');
+                $('#case_'+allData[0].id+'_'+increment).append('<th><textarea class="added" style="width: 80px" rows="1" id="case_data_'+increment+'">'+allData[0].name+'</textarea></th>');
+                $('#case_'+allData[0].id+'_'+increment).append('<th><textarea class="added" rows="1" id="case_data_'+increment+'">'+allData[0].steps+'</textarea></th>');
+                $('#case_'+allData[0].id+'_'+increment).append('<th><textarea class="added" rows="1" id="case_data_'+increment+'">'+allData[0].expected+'</textarea></th>');
+                $('#case_data_'+increment).height( $("#case_data_"+increment)[0].scrollHeight+1 );
+
+
+                /*window.setTimeout( function() {
+                    $('#case_data_'+increment).height( $('#case_data_'+increment)[0].scrollHeight+1 );
+                }, 1);
+*/
                 $('#test-name').val(allData[0].name);
                 $('#test-owner').val(allData[0].owner);
                 $('#test-notes').val(allData[0].description);
@@ -259,7 +266,7 @@ function testlab(){
         $.ajax({
             type: "GET",
             dataType: "html",
-            url: mainURL + '/getCTree',
+            url: mainURL + '/getCaseTree',
             success: function (data) {
                 var allData = JSON.parse(data);
                 var arrFolders =[];
