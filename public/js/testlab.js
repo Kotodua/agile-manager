@@ -111,7 +111,7 @@ function testlab(){
         $('#test-case-add').attr("disabled", false);
     });
 
-    $('body').on('keypress', '#case_text', function( event ) {
+    $('body').on('keypress', 'textarea', function( event ) {
         if (event.which == 13) {
             this.rows = $(this).val().lineCount()+1;
         }

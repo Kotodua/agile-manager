@@ -7,10 +7,19 @@ function configurations(){
     var verifier = new Verifier();
 
 
-    drawConfs();
+    var treeConfigs = dhtmlXTreeFromHTML("treebox_configurations","100%","100%",0);
+    treeConfigs.enableTreeLines(true);
+
+    var activeElement;
+
+    treeConfigs.setImagePath("vendor/dhtmlx/sources/dhtmlxTree/codebase/imgs/dhxtree_terrace/");
 
 
-    function drawConfs(){
+
+    drawConfs(treeConfigs);
+
+
+    function drawConfs(tree){
         $.ajax({
             type: "GET",
             dataType: "html",
@@ -18,6 +27,13 @@ function configurations(){
             success: function (data) {
                 var allData = JSON.parse(data);
 
+                var arrFolders = [];
+
+                //--------------- Drawing Folders
+                for (var i = 0; i < allData.conf_configurations.length; i++){
+                    arrFolders.push([allData.conf_configurations[i].id,0,allData.conf_configurations[i].name]);
+                }
+                tree.loadJSArray(arrFolders);
 
 
                 for (var i = 0; i < allData.conf_configurations.length; i++){
