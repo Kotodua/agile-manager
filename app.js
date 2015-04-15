@@ -100,7 +100,8 @@ app.post('/api/testlab/moveCaseToTest', function(req, res){tl.moveCaseToTest(req
 
 //------------------------------ CONFIGURATIONS
 app.get('/api/configurations/getConfs', function(req, res){configurations.getConfs(req, res)});
-
+app.get('/api/configurations/getListElement/:eid/:lid', function(req, res){configurations.getListElementById(req, res, req.params.eid, req.params.lid)});
+app.get('/api/configurations/getConfInfo/:id', function(req, res){configurations.getConfInfo(req, res, req.params.id)});
 
 
 

@@ -28,15 +28,27 @@
                     </tbody>
                 </table>
             </td>
-            <td class="td-border" width="60%">Configuration Matrix</td>
+            <td class="td-border" width="60%">Configuration Matrix
+            <table id="config-matrix-table"></table>
+            </td>
             <td class="td-border" width="20%">
                 <table border="1" cellpadding="1" cellspacing="1" width="100%">
                     <tbody>
                     <tr>
-                        <td class="td-border" width="100%">Top<input name="add_top" type="button" value="+"><input name="remove_top" type="button" value="-"></td>
+                        <td class="td-border" width="100%">Top<input name="add_top" type="button" value="+"><input name="remove_top" type="button" value="-">
+                            <div class="dhtmlxTree"
+                                 id="treebox_top"
+                                 style="width:280px; height:200px;overflow:auto;">
+                            </div>
+                        </td>
                     </tr>
                     <tr>
-                        <td class="td-border" width="100%">Left<input name="add_left" type="button" value="+"><input name="remove_left" type="button" value="-"></td>
+                        <td class="td-border" width="100%">Left<input name="add_left" type="button" value="+"><input name="remove_left" type="button" value="-">
+                            <div class="dhtmlxTree"
+                                 id="treebox_left"
+                                 style="width:280px; height:200px;overflow:auto;">
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

@@ -71,7 +71,8 @@ function testlab(){
             treeCase.enableDragAndDrop(false);
         } else if(idMoveWhat[1] == 'case' && idMoveWhere[1] == 'test'){
             treeCase.enableMercyDrag(true);
-            moveCaseToTest(treeCase, idMoveWhat[0]+'_case', idMoveWhere[0]+'_test');
+            return moveCaseToTest(treeCase, idMoveWhat[0]+'_case', idMoveWhere[0]+'_test');
+
         }
     })
 
@@ -259,6 +260,9 @@ function testlab(){
                     tree.insertNewItem(testId+'_test',caseId+'_testcase', 'NAME'/*tree.getItemText(caseId+'_case')*/,0,0,0,0,'SELECT');
                 }
             })
+            return true;
+        } else {
+            return false;
         }
     }
 
