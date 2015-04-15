@@ -13,36 +13,14 @@ function configurations(){
     treeConfigs.setImagePath("vendor/dhtmlx/sources/dhtmlxTree/codebase/imgs/dhxtree_terrace/");
 
     var treeLists = dhtmlXTreeFromHTML("treebox_lists","100%","100%",0);
-    treeLists.enableTreeLines(true);
-    treeLists.setImagePath("vendor/dhtmlx/sources/dhtmlxTree/codebase/imgs/dhxtree_terrace/");
-    treeLists.enableMercyDrag(true);
-    treeLists.setDragHandler(function(idMoveFrom, idMoveTo){
-        console.log('id move from: '+idMoveFrom);
-        console.log('id move to: '+idMoveTo);
-        return true;
-    })
-
+    initiateTree(treeLists);
 
     var treeTop = dhtmlXTreeFromHTML("treebox_top","100%","100%",0);
-    treeTop.enableTreeLines(true);
-    treeTop.setImagePath("vendor/dhtmlx/sources/dhtmlxTree/codebase/imgs/dhxtree_terrace/");
-    treeTop.enableDragAndDrop(true);
-    treeTop.setDragHandler(function(idMoveFrom, idMoveTo){
-        console.log('id move from: '+idMoveFrom);
-        console.log('id move to: '+idMoveTo);
-        return true;
-    })
+    initiateTree(treeTop);
 
     var treeLeft = dhtmlXTreeFromHTML("treebox_left","100%","100%",0);
-    treeLeft.enableTreeLines(true);
-    treeLeft.setImagePath("vendor/dhtmlx/sources/dhtmlxTree/codebase/imgs/dhxtree_terrace/");
-    treeLeft.enableDragAndDrop(true);
-    //treeLeft.enableMercyDrag(true);
-    treeLeft.setDragHandler(function(idMoveFrom, idMoveTo){
-        console.log('id move from: '+idMoveFrom);
-        console.log('id move to: '+idMoveTo);
-        return true;
-    });
+    initiateTree(treeLeft);
+
 
 
     drawConfs(treeConfigs, treeLists);
@@ -51,10 +29,38 @@ function configurations(){
     treeConfigs.attachEvent("onSelect", function(id){
        //console.log(id);
        activeConfigurationElement = id;
+        treeTop.deleteChildItems('0');
+        treeLeft.deleteChildItems('0');
        getConfInfo(id, treeLists, treeTop, treeLeft);
 
     });
 
+    function initiateTree(tree){
+        tree.enableTreeLines(true);
+        tree.setImagePath("vendor/dhtmlx/sources/dhtmlxTree/codebase/imgs/dhxtree_terrace/");
+        tree.enableDragAndDrop(true);
+        tree.enableMercyDrag(true);
+        tree.setDragHandler(function(idMoveFrom, idMoveTo){
+            moveListItemToConfiguration(idMoveFrom, idMoveTo);
+            console.log('id move from: '+idMoveFrom);
+            console.log('id move to: '+idMoveTo);
+            return true;
+        });
+    }
+
+
+// ----------------- DOESN'T WORK
+    function moveListItemToConfiguration(idMoveFrom, idMoveTo){
+        //  cid: activeConfigurationElement
+        // ppid: idMoveTo
+        //  pid: AI
+        //  lid: <got>
+        var idFrom = treeLists.getParentId(treeLists.getSelectedItemId()).split('_');
+        console.log('PARENT ID: '+idFrom[0]);
+        // liid: idMoveFrom
+        // tl:
+        //var idTo = idMoveTo//treeLists.getParentId(treeLists.getSelectedItemId()).split('_');
+    }
 
 
 
@@ -103,14 +109,9 @@ function configurations(){
                 for (var i = allData.length; i > 0 ; i--){
                     if (allData[i-1].tl == '0'){
                         drawListElement(treeLeft, allData[i-1].liid, allData[i-1].lid, allData[i-1].ppid, allData[i-1].pid);
-                       /* drawListElement(treeLeft, allData[i].lid, positionLeft);
-                        treeLists.deleteItem(allData[i].lid+'_list');
-                        positionLeft = allData[i].lid+'_list';*/
                     }
                     if (allData[i-1].tl == '1') {
                         drawListElement(treeTop, allData[i-1].liid, allData[i-1].lid, allData[i-1].ppid, allData[i-1].pid);
-                        //treeLists.deleteItem(allData[i].lid);
-                        //positionTop = allData[i].pid;
                     }
                 }
             }
