@@ -36,12 +36,28 @@ Configurations.prototype = {
         });
     },
 
-    getConfInfo: function (req, res, id) {
-        console.log('getting info');
-        var arrayOrPromises = [dbq.doSet('SELECT * FROM conf_configtolists WHERE cid= ?', id)];
+    moveListItemToConfiguration: function (req, res){
+        var input = JSON.parse(JSON.stringify(req.body));
+        var data = {
+            cid  : input.cid,
+            ppid : input.ppid,
+            lid  : input.lid,
+            liid : input.liid,
+            tl   : input.tl
+        };
+        var arrayOrPromises = [dbq.doSet("INSERT INTO conf_configtolists set ? ",data)];
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
             res.type("text/json");
             res.send(arrayOfResults[0]);
+        });
+    },
+
+    getConfInfo: function (req, res, id) {
+        console.log('getting info');
+        var arrayOrPromises = [dbq.doSet('SELECT * FROM conf_configtolists WHERE cid= ?', id), dbq.doSet('SELECT * FROM conf_list'), dbq.doSet('SELECT * FROM conf_listitems')];
+        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
+            res.type("text/json");
+            res.send({conf_items: arrayOfResults[0], conf_lists: arrayOfResults[1], conf_listitems: arrayOfResults[2]});
         });
     }
 

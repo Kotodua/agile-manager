@@ -40,26 +40,52 @@ function configurations(){
         tree.setImagePath("vendor/dhtmlx/sources/dhtmlxTree/codebase/imgs/dhxtree_terrace/");
         tree.enableDragAndDrop(true);
         tree.enableMercyDrag(true);
-        tree.setDragHandler(function(idMoveFrom, idMoveTo){
-            moveListItemToConfiguration(idMoveFrom, idMoveTo);
-            console.log('id move from: '+idMoveFrom);
-            console.log('id move to: '+idMoveTo);
-            return true;
+        tree.attachEvent("onDrop", function(sId, tId, id, sObject, tObject){
+            var parentTreeId = tObject.parentObject.id.split('_');
+            var idFrom = treeLists.getParentId(treeLists.getSelectedItemId()).split('_');
+            var liid = splitId(sId+'_', '_');
+            var targetTree;
+            var tl = parentTreeId[1];
+            if (tl == 'top'){
+                tl = 1;
+                targetTree = treeTop;
+            } else if(tl == 'left'){
+                tl = 0;
+                targetTree = treeLeft;
+            }
+            tree.deleteItem(sId);
+            moveListItemToConfiguration(activeConfigurationElement, tId, idFrom[0], liid, tl, targetTree);
         });
+        tree.attachEvent("onSelect", function(id){
+            console.log('selected '+id);
+        });
+
+    }
+
+    function splitId(item, symbol){
+        if(item.indexOf(symbol) === -1)
+        {
+            return item;
+        } else {
+           var result = item.split(symbol);
+           return result[0];
+        }
     }
 
 
-// ----------------- DOESN'T WORK
-    function moveListItemToConfiguration(idMoveFrom, idMoveTo){
-        //  cid: activeConfigurationElement
-        // ppid: idMoveTo
-        //  pid: AI
-        //  lid: <got>
-        var idFrom = treeLists.getParentId(treeLists.getSelectedItemId()).split('_');
-        console.log('PARENT ID: '+idFrom[0]);
-        // liid: idMoveFrom
-        // tl:
-        //var idTo = idMoveTo//treeLists.getParentId(treeLists.getSelectedItemId()).split('_');
+    function moveListItemToConfiguration(cid, ppid, lid, liid, tl, tTree){
+
+        $.ajax({
+            type: "POST",
+            data: {cid: cid, ppid: ppid, lid: lid, liid: liid, tl: tl},
+            dataType: "json",
+            url: mainURL + '/moveItemToConfig',
+            success: function (res) {
+                console.log(res.insertId);
+                tTree.insertNewItem(ppid, res.insertId, treeLists.getItemText(liid),0,0,0,0,'SELECT');
+
+            }
+        })
     }
 
 
@@ -93,46 +119,93 @@ function configurations(){
         })
     }
 
-    function getConfInfo(id, treeLists, treeTop, treeLeft){
+    function getConfInfo(id, treeList, treeTop, treeLeft){
         $.ajax({
             type: "GET",
             dataType: "html",
             url: mainURL + '/getConfInfo/'+id,
             success: function (data) {
                 var allData = JSON.parse(data);
-                var positionLeft = 0;
-                var positionTop = 0;
+                var listName;
+                var listItemName;
+                $('#config-matrix-table tr').remove();
 
-                var tableElement = {};
-                var configTable;
 
-                for (var i = allData.length; i > 0 ; i--){
-                    if (allData[i-1].tl == '0'){
-                        drawListElement(treeLeft, allData[i-1].liid, allData[i-1].lid, allData[i-1].ppid, allData[i-1].pid);
+                for (var i = 0; i < allData.conf_items.length ; i++){
+                    if (allData.conf_items[i].tl == '0'){
+
+                        for (var j = 0; j < allData.conf_lists.length; j++){
+                            if (allData.conf_items[i].lid == allData.conf_lists[j].id){
+                                listName = allData.conf_lists[j].name;
+
+                            }
+                        }
+                        for (var k = 0; k < allData.conf_listitems.length; k++){
+                            if (allData.conf_items[i].liid == allData.conf_listitems[k].id){
+                                listItemName = allData.conf_listitems[k].name;
+                                //$('#config-matrix-table').append('<tr><td class="td-border">'+allData.conf_listitems[k].name+'</td></tr>');
+                            }
+                        }
+                        drawListElement(treeLeft, listItemName, listName, allData.conf_items[i].ppid, allData.conf_items[i].id);
                     }
-                    if (allData[i-1].tl == '1') {
-                        drawListElement(treeTop, allData[i-1].liid, allData[i-1].lid, allData[i-1].ppid, allData[i-1].pid);
+
+                    if (allData.conf_items[i].tl == '1') {
+                        for (var j = 0; j < allData.conf_lists.length; j++){
+                            if (allData.conf_items[i].lid == allData.conf_lists[j].id){
+                                listName = allData.conf_lists[j].name;
+
+                            }
+                        }
+                        for (var k = 0; k < allData.conf_listitems.length; k++){
+                            if (allData.conf_items[i].liid == allData.conf_listitems[k].id){
+                                listItemName = allData.conf_listitems[k].name;
+                                //$('#1').append('<td class="td-border">'+allData.conf_listitems[k].name+'</td>');
+                            }
+                        }
+                        drawListElement(treeTop, listItemName, listName, allData.conf_items[i].ppid, allData.conf_items[i].id);
                     }
                 }
+
+
+
+                /////////////////////////////////////////////////////////       MATRIX Experiments
+/*                //console.log(treeTop.getAllFatItems());
+                var list = treeTop.getAllFatItems();
+
+                var listAll = treeTop.getAllLeafs();
+
+                console.log(list);
+                console.log(listAll);
+
+                var listOfItems = list.split(',');
+
+                function getFatElements(listOfItems){
+                    for (var i = 0; i < listOfItems.length; i++){
+                        $('#config-matrix-table').append('<tr></tr>');
+                        console.log(listOfItems[i]);
+                        console.log('name is '+treeTop.getItemText(listOfItems[i]) ); //  getIdByIndex(listOfItems[i]));
+                    }
+                }
+
+                function getLeafsElements(listOfItems){
+                    for (var i = 0; i < listOfItems.length; i++){
+                        console.log(listOfItems[i]);
+                        console.log('name is '+treeTop.getItemText(listOfItems[i]) ); //  getIdByIndex(listOfItems[i]));
+                    }
+                }*/
+
+
+
+
+
             }
         })
     }
 
-    function drawListElement(tree, elementId, listId, parent, position){
-        $.ajax({
-            type: "GET",
-            dataType: "html",
-            url: mainURL + '/getListElement/' + elementId +'/' + listId,
-            success: function (data) {
-                var allData = JSON.parse(data);
+    function drawListElement(tree, name, hint, parent, position){
+        tree.insertNewItem(parent, position, name, 0, 0, 0, 0);
+        tree.setItemText(position, name , hint);
 
-                console.log('name = '+allData.conf_listitems[0].name+'    parent = '+parent+'   position = '+position);
-
-                tree.insertNewItem(parent, position, allData.conf_listitems[0].name, 0, 0, 0, 0);
-                tree.setItemText(position, allData.conf_listitems[0].name ,allData.conf_list[0].name);
-
-            }
-        });
     }
 }
 
