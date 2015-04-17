@@ -1,6 +1,18 @@
 /**
  * Created by k.allakhvierdov on 4/2/2015.
  */
+
+Array.prototype.move = function (old_index, new_index) {
+    if (new_index >= this.length) {
+        var k = new_index - this.length;
+        while ((k--) + 1) {
+            this.push(undefined);
+        }
+    }
+    this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+    //return this; // for testing purposes
+};
+
 function configurations(){
 
     mainURL = config.url+"/api/configurations";
@@ -130,74 +142,90 @@ function configurations(){
                 var listItemName;
                 $('#config-matrix-table tr').remove();
 
+                console.log(allData.conf_items);
 
-                for (var i = 0; i < allData.conf_items.length ; i++){
-                    if (allData.conf_items[i].tl == '0'){
 
-                        for (var j = 0; j < allData.conf_lists.length; j++){
-                            if (allData.conf_items[i].lid == allData.conf_lists[j].id){
+                // sorting array by id
+                for (var j = 0; j < allData.conf_items.length; j++) {
+                    for (var i = 0; i < allData.conf_items.length - 1; i++) {
+                        if (allData.conf_items[i].id > allData.conf_items[i + 1].id) {
+                            allData.conf_items.move(i, i + 1);
+                        }
+                    }
+                }
+
+                for (var i = 0; i < allData.conf_items.length; i++) {
+                    if (allData.conf_items[i].tl == '0') {
+                        for (var j = 0; j < allData.conf_lists.length; j++) {
+                            if (allData.conf_items[i].lid == allData.conf_lists[j].id) {
                                 listName = allData.conf_lists[j].name;
-
                             }
                         }
-                        for (var k = 0; k < allData.conf_listitems.length; k++){
-                            if (allData.conf_items[i].liid == allData.conf_listitems[k].id){
+                        for (var k = 0; k < allData.conf_listitems.length; k++) {
+                            if (allData.conf_items[i].liid == allData.conf_listitems[k].id) {
                                 listItemName = allData.conf_listitems[k].name;
-                                //$('#config-matrix-table').append('<tr><td class="td-border">'+allData.conf_listitems[k].name+'</td></tr>');
+
                             }
                         }
                         drawListElement(treeLeft, listItemName, listName, allData.conf_items[i].ppid, allData.conf_items[i].id);
                     }
 
                     if (allData.conf_items[i].tl == '1') {
-                        for (var j = 0; j < allData.conf_lists.length; j++){
-                            if (allData.conf_items[i].lid == allData.conf_lists[j].id){
+                        for (var j = 0; j < allData.conf_lists.length; j++) {
+                            if (allData.conf_items[i].lid == allData.conf_lists[j].id) {
                                 listName = allData.conf_lists[j].name;
 
                             }
                         }
-                        for (var k = 0; k < allData.conf_listitems.length; k++){
-                            if (allData.conf_items[i].liid == allData.conf_listitems[k].id){
+                        for (var k = 0; k < allData.conf_listitems.length; k++) {
+                            if (allData.conf_items[i].liid == allData.conf_listitems[k].id) {
                                 listItemName = allData.conf_listitems[k].name;
-                                //$('#1').append('<td class="td-border">'+allData.conf_listitems[k].name+'</td>');
                             }
                         }
                         drawListElement(treeTop, listItemName, listName, allData.conf_items[i].ppid, allData.conf_items[i].id);
                     }
                 }
 
-
-
-                /////////////////////////////////////////////////////////       MATRIX Experiments
-/*                //console.log(treeTop.getAllFatItems());
-                var list = treeTop.getAllFatItems();
-
-                var listAll = treeTop.getAllLeafs();
-
-                console.log(list);
-                console.log(listAll);
-
-                var listOfItems = list.split(',');
-
-                function getFatElements(listOfItems){
-                    for (var i = 0; i < listOfItems.length; i++){
-                        $('#config-matrix-table').append('<tr></tr>');
-                        console.log(listOfItems[i]);
-                        console.log('name is '+treeTop.getItemText(listOfItems[i]) ); //  getIdByIndex(listOfItems[i]));
+                // sorting array by pid
+                for (var j = 0; j < allData.conf_items.length; j++) {
+                    for (var i = 0; i < allData.conf_items.length - 1; i++) {
+                        if (allData.conf_items[i].ppid > allData.conf_items[i + 1].ppid) {
+                            allData.conf_items.move(i, i + 1);
+                        }
                     }
                 }
 
-                function getLeafsElements(listOfItems){
-                    for (var i = 0; i < listOfItems.length; i++){
-                        console.log(listOfItems[i]);
-                        console.log('name is '+treeTop.getItemText(listOfItems[i]) ); //  getIdByIndex(listOfItems[i]));
+
+                var map = {}, node, roots = [];
+                for (var i = 0; i < allData.conf_items.length; i += 1) {
+                    node = allData.conf_items[i];
+                    node.children = [];
+                    map[node.id] = i; // use map to look-up the parents
+                    if (node.ppid !== 0) {
+                        allData.conf_items[map[node.ppid]].children.push(node);
+                    } else {
+                        roots.push(node);
                     }
-                }*/
+                }
+
+                for (i = 0; i < roots.length; i++){
+                    drawTree(roots[i]);
+                }
 
 
+                function drawTree(e){
+                    if (e.children.length == 0){
+                        $('#' + e.ppid + '_tr').append('<td class="td-border" id="' + e.ppid + '_td">' + e.id + '</td>');
+                    }
 
-
-
+                    if (e.children.length !== 0){
+                        $('#config-matrix-table').append('<tr id="' + e.id + '_tr"></tr>')
+                        $('#' + e.id + '_tr').append('<td class="td-border" id="' + e.id + '_td">' + e.id + '</td>');
+                        for (var i = 0; i < e.children.length; i++){
+                            drawTree(e.children[i]);
+                        }
+                    }
+                }
             }
         })
     }
