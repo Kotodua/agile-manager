@@ -1,0 +1,77 @@
+<%- include layouts/header.ejs %>
+
+<div id="defects-main">
+    <div id="d-fields" style="float:left; width:30%">
+        <div>
+            Summary<br>
+            <textarea id="d-summary"></textarea>
+        </div>
+        <table border="1">
+            <tr><!-- Row 2 -->
+                <td>Id</td>
+                <td><input type="text" name="d-id" disabled="true"></td>
+            </tr>
+            <tr><!-- Row 2 -->
+                <td>Status</td>
+                <td><input type="text" name="d-status"></td>
+            </tr>
+            <tr><!-- Row 3 -->
+                <td>Severity</td>
+                <td><input type="text" name="d-severity"></td>
+            </tr>
+            <tr><!-- Row 4 -->
+                <td>Priority</td>
+                <td><input type="text" name="d-priority"></td>
+            </tr>
+            <tr><!-- Row 5 -->
+                <td>Reporter</td>
+                <td><input type="text" name="d-reporter"></td>
+            </tr>
+            <tr><!-- Row 6 -->
+                <td>Developer</td>
+                <td><input type="text" name="d-developer"></td>
+            </tr>
+            <tr><!-- Row 7 -->
+                <td>Build Found</td>
+                <td><input type="text" name="d-build-found"></td>
+            </tr>
+            <tr><!-- Row 8 -->
+                <td>Build Fixed</td>
+                <td><input type="text" name="d-build-fixed"></td>
+            </tr>
+        </table>
+        Description<br>
+        <textarea id="d-description"></textarea><br>
+
+        Comments<br>
+        <textarea id="d-comments"></textarea><br>
+        <input type="button" value="New">
+        <input type="button" value="Submit">
+
+    </div>
+    <div id="d-list" style="float:right; width:70%">
+        <table border="1">
+            <tr>
+                <td><input style="width:3%;" type="text" name="d-t-id" value="id"></td>
+                <td><input style="width:50%;" type="text" name="d-t-summary" value="summary"></td>
+                <td><input style="width:5%;" type="text" name="d-t-status" value="status"></td>
+                <td><input style="width:7%;" type="text" name="d-t-severity" value="severity"></td>
+                <td><input style="width:7%;" type="text" name="d-t-priority" value="priority"></td>
+                <td><input style="width:7%;" type="text" name="d-t-reporter" value="reporter"></td>
+                <td><input style="width:7%;" type="text" name="d-t-developer" value="developer"></td>
+                <td><input style="width:7%;" type="text" name="d-t-build-found" value="found in"></td>
+                <td><input style="width:7%;" type="text" name="d-t-build-fixed" value="fixed in"></td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+</body>
+
+<script>
+    window.onload = function() {
+        defects();
+    }
+</script>
+</html>
