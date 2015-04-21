@@ -1,7 +1,12 @@
 <%- include layouts/header.ejs %>
 
+<head>
+    <script type="text/javascript"  src="/js/defects.js"></script>
+</head>
+
+
 <div id="defects-main">
-    <div id="d-fields" style="float:left; width:30%">
+    <div id="d-fields" style="float:left; width:15%">
         <div>
             Summary<br>
             <textarea id="d-summary"></textarea>
@@ -9,23 +14,29 @@
         <table border="1">
             <tr><!-- Row 2 -->
                 <td>Id</td>
-                <td><input type="text" name="d-id" disabled="true"></td>
+                <td><input type="text" id="d-id" disabled="true"></td>
             </tr>
             <tr><!-- Row 2 -->
                 <td>Status</td>
-                <td><input type="text" name="d-status"></td>
+                <td><select type="text" id="d-status"/></td>
             </tr>
             <tr><!-- Row 3 -->
                 <td>Severity</td>
-                <td><input type="text" name="d-severity"></td>
+                <td><select type="text" id="d-severity"/></td>
             </tr>
             <tr><!-- Row 4 -->
                 <td>Priority</td>
-                <td><input type="text" name="d-priority"></td>
+                <td>
+                    <select type="text" id="d-priority">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </td>
             </tr>
             <tr><!-- Row 5 -->
                 <td>Reporter</td>
-                <td><input type="text" name="d-reporter"></td>
+                <td><input type="text" id="d-reporter"></td>
             </tr>
             <tr><!-- Row 6 -->
                 <td>Developer</td>
@@ -49,18 +60,33 @@
         <input type="button" value="Submit">
 
     </div>
-    <div id="d-list" style="float:right; width:70%">
-        <table border="1">
+    <div style="float:right; width:84%">
+        <table id="d-list" border="1">
+            <colgroup>
+                <col span="1" style="width: 3%;">
+                <col span="1" style="width: 50%;">
+                <col span="1" style="width: 5%;">
+                <col span="1" style="width: 5%;">
+                <col span="1" style="width: 4%;">
+                <col span="1" style="width: 7%;">
+                <col span="1" style="width: 7%;">
+                <col span="1" style="width: 4%;">
+                <col span="1" style="width: 4%;">
+                <col span="1" style="width: 6%;">
+                <col span="1" style="width: 6%;">
+            </colgroup>
             <tr>
-                <td><input style="width:3%;" type="text" name="d-t-id" value="id"></td>
-                <td><input style="width:50%;" type="text" name="d-t-summary" value="summary"></td>
-                <td><input style="width:5%;" type="text" name="d-t-status" value="status"></td>
-                <td><input style="width:7%;" type="text" name="d-t-severity" value="severity"></td>
-                <td><input style="width:7%;" type="text" name="d-t-priority" value="priority"></td>
-                <td><input style="width:7%;" type="text" name="d-t-reporter" value="reporter"></td>
-                <td><input style="width:7%;" type="text" name="d-t-developer" value="developer"></td>
-                <td><input style="width:7%;" type="text" name="d-t-build-found" value="found in"></td>
-                <td><input style="width:7%;" type="text" name="d-t-build-fixed" value="fixed in"></td>
+                <td><input style="width: 100%;" type="text" name="d-t-id" value="id"/></td>
+                <td><input style="width: 100%;" type="text" name="d-t-summary" value="summary"></td>
+                <td><input style="width: 100%;" type="text" name="d-t-status" value="status"></td>
+                <td><input style="width: 100%;" type="text" name="d-t-severity" value="severity"></td>
+                <td><input style="width: 100%;" type="text" name="d-t-priority" value="priority"></td>
+                <td><input style="width: 100%;" type="text" name="d-t-reporter" value="reporter"></td>
+                <td><input style="width: 100%;" type="text" name="d-t-developer" value="developer"></td>
+                <td><input style="width: 100%;" type="text" name="d-t-build-found" value="found in"></td>
+                <td><input style="width: 100%;" type="text" name="d-t-build-fixed" value="fixed in"></td>
+                <td><input style="width: 100%;" type="text" name="d-t-type" value="type"></td>
+                <td><input style="width: 100%;" type="text" name="d-t-feature" value="feature"></td>
             </tr>
         </table>
 

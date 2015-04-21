@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var Users = require('./routes/users');
 var Teams = require('./routes/teams');
 var Configurations = require('./routes/configurations');
+var Defects = require('./routes/defects');
 var TestLab = require('./routes/testlab');
 var Calendar = require('./routes/calendar');
 var Task = require('./routes/task');
@@ -22,6 +23,7 @@ var user = new Users();
 var team = new Teams();
 var tl = new TestLab();
 var configurations = new Configurations();
+var d = new Defects();
 
 
 app.set('port', config.get('port'));
@@ -105,6 +107,9 @@ app.get('/api/configurations/getConfInfo/:id', function(req, res){configurations
 app.post('/api/configurations/moveItemToConfig', function(req, res){configurations.moveListItemToConfiguration(req, res, req.body)});
 
 
+//------------------------------ DEFECTS
+app.get('/api/defects/getDefects', function(req, res){d.getDefects(req, res)});
+
 //------------------------------ TASKS
 app.post('/api/task/create', function(req, res){pomodoro.createTask(req, res, req.body)});
 app.get('/api/task/get', function(req, res){pomodoro.getTasks(req, res)});
@@ -127,8 +132,10 @@ app.use(function(req, res, next){
         } else if (req.url == '/configurations'){
             console.log(currentTime.getDateTime()+' <--- Request GET /configurations' + req.session.user);
             res.render('configurations');
-        }
-        else if (req.url == '/settings'){
+        } else if (req.url == '/defects') {
+            console.log(currentTime.getDateTime() + ' <--- Request GET /configurations' + req.session.user);
+            res.render('defects');
+        } else if (req.url == '/settings'){
             console.log(currentTime.getDateTime()+' <--- Request GET /settings ' + req.session.user);
             user.getCurrentUser(req, res, req.session.user);
         } else if (req.url == '/calendar'){
