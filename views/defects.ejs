@@ -36,7 +36,7 @@
             </tr>
             <tr><!-- Row 5 -->
                 <td>Reporter</td>
-                <td><input type="text" id="d-reporter"></td>
+                <td><input type="text" id="d-reporter" disabled="true"></td>
             </tr>
             <tr><!-- Row 6 -->
                 <td>Developer</td>
@@ -56,12 +56,12 @@
 
         Comments<br>
         <textarea id="d-comments"></textarea><br>
-        <input type="button" id="new" value="New">
+        <input type="button" id="clear" value="Clear">
         <input type="button" id="submit" value="Submit">
 
     </div>
-    <div style="float:right; width:84%">
-        <table id="d-list" border="1">
+    <div style="float:right; width:84%" class="tasksTables">
+        <table id="d-list" border="1" class="tasks">
             <colgroup>
                 <col span="1" style="width: 3%;">
                 <col span="1" style="width: 50%;">
@@ -75,6 +75,19 @@
                 <col span="1" style="width: 6%;">
                 <col span="1" style="width: 6%;">
             </colgroup>
+            <tr>
+                <td>id</td>
+                <td>summary</td>
+                <td>status</td>
+                <td>severity</td>
+                <td>priority</td>
+                <td>reporter</td>
+                <td>developer</td>
+                <td>found in</td>
+                <td>fixed in</td>
+                <td>type</td>
+                <td>feature</td>
+            </tr>
             <tr>
                 <td><input style="width: 100%;" type="text" name="d-t-id" value="id"/></td>
                 <td><input style="width: 100%;" type="text" name="d-t-summary" value="summary"></td>

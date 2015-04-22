@@ -18,6 +18,15 @@ function Defects(){
 }
 
 Defects.prototype = {
+    postDefect: function(req, res){
+        req.body.rid = req.session.user;
+        var arrayOrPromises = [dbq.doSet("INSERT INTO defect set ? ",req.body)];
+        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
+            res.type("text/json");
+            res.send(arrayOfResults[0]);
+        });
+    },
+
     getDefects: function (req, res) {
         console.log('getting info');
         var arrayOrPromises = [
@@ -37,7 +46,8 @@ Defects.prototype = {
                 defect_severity: arrayOfResults[2],
                 defect_type: arrayOfResults[3],
                 user: arrayOfResults[4],
-                feature: arrayOfResults[5]
+                feature: arrayOfResults[5],
+                currentUser: req.session.user
             });
         });
     }

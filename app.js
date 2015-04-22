@@ -109,6 +109,7 @@ app.post('/api/configurations/moveItemToConfig', function(req, res){configuratio
 
 //------------------------------ DEFECTS
 app.get('/api/defects/getDefects', function(req, res){d.getDefects(req, res)});
+app.post('/api/defects/postDefect', function(req, res){d.postDefect(req, res)});
 
 //------------------------------ TASKS
 app.post('/api/task/create', function(req, res){pomodoro.createTask(req, res, req.body)});

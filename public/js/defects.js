@@ -12,29 +12,39 @@ function defects() {
     var type;
     var feature;
     var defects2;
+    var sessionUser;
     drawDefects();
 
 
     $("body").on("click",'tr[id^="defect_"]', function(){
         var id = $(this).prop("id");
         id = id.split('_');
+        $('#submit').val("Update");
         showDefectInfo(parseInt(id[1]))
-
     });
 
-    $('#new').on("click", function(){
+    $('#clear').on("click", function(){
         $('#d-id').val("");
         $('#d-status').val("1");
         $('#d-severity').val("1");
         $('#d-summary').val("");
         $('#d-description').val("");
         $('#d-priority').val("");
-        $('#d-reporter').val("");
+        $('#d-reporter').val(user[sessionUser]);
         $('#d-developer').val("");
         $('#d-build-found').val("");
         $('#d-build-fixed').val("");
         $('#d-comments').val("");
+        $('#submit').val("Submit");
     });
+
+    $('#submit').on("click", function(){
+        if($('#d-id').val() == ''){
+            postDefect();
+        } else {
+            updateDefect();
+        }
+    })
 
     function showDefectInfo(id){
         console.log(defects2[id]);
@@ -52,6 +62,36 @@ function defects() {
     }
 
 
+    function postDefect(){
+        var data;
+        //console.log(sid);
+        $.ajax({
+            type: "POST",
+            data: {
+                sid: $('#d-status').val(),
+                summary: $('#d-summary').val(),
+                description: $('#d-description').val(),
+                pid: $('#d-priority').val(),
+                rid: $('#d-reporter').val(),
+                did: $('#d-developer').val(),
+                bdetected: $('#d-build-found').val(),
+                bfixed: $('#d-build-fixed').val(),
+                sevid: $('#d-severity').val(),
+                comments: $('#d-comments').val()
+            },
+            dataType: "json",
+            url: mainURL + '/postDefect',
+            success: function (res) {
+                console.log(res.insertId);
+            }
+        })
+    }
+
+    function updateDefect(){
+
+    }
+
+
     function drawDefects() {
         $.ajax({
             type: "GET",
@@ -60,6 +100,8 @@ function defects() {
             success: function (data) {
                 var allData = JSON.parse(data);
                 defects = allData.defect;
+                sessionUser = allData.currentUser;
+
 
                 defects2 = allData.defect.reduce(function(previousValue, currentDigit, currentIndex, array){
                     previousValue[array[currentIndex].id] = array[currentIndex];
@@ -127,6 +169,7 @@ function defects() {
                      '</tr>'
 
                  $('#d-list').append(html);
+                 $('#d-reporter').val(user[sessionUser]);
 
                 }
 
