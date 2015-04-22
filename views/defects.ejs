@@ -42,6 +42,14 @@
                 <td>Developer</td>
                 <td><select type="text" id="d-developer"/></td>
             </tr>
+            <tr><!-- Row 6 -->
+                <td>Type</td>
+                <td><select type="text" id="d-type"/></td>
+            </tr>
+            <tr><!-- Row 6 -->
+                <td>Feature</td>
+                <td><select type="text" id="d-feature"/></td>
+            </tr>
             <tr><!-- Row 7 -->
                 <td>Build Found</td>
                 <td><input type="text" id="d-build-found"></td>
@@ -52,15 +60,15 @@
             </tr>
         </table>
         Description<br>
-        <textarea id="d-description"></textarea><br>
+        <textarea id="d-description" rows="7"></textarea><br>
 
         Comments<br>
-        <textarea id="d-comments"></textarea><br>
+        <textarea id="d-comments" rows="7"></textarea><br>
         <input type="button" id="clear" value="Clear">
         <input type="button" id="submit" value="Submit">
 
     </div>
-    <div style="float:right; width:84%" class="tasksTables">
+    <div style="float:right; width:84%;" class="tasksTables">
         <table id="d-list" border="1" class="tasks">
             <colgroup>
                 <col span="1" style="width: 3%;">
@@ -75,32 +83,34 @@
                 <col span="1" style="width: 6%;">
                 <col span="1" style="width: 6%;">
             </colgroup>
-            <tr>
-                <td>id</td>
-                <td>summary</td>
-                <td>status</td>
-                <td>severity</td>
-                <td>priority</td>
-                <td>reporter</td>
-                <td>developer</td>
-                <td>found in</td>
-                <td>fixed in</td>
-                <td>type</td>
-                <td>feature</td>
-            </tr>
-            <tr>
-                <td><input style="width: 100%;" type="text" name="d-t-id" value="id"/></td>
-                <td><input style="width: 100%;" type="text" name="d-t-summary" value="summary"></td>
-                <td><input style="width: 100%;" type="text" name="d-t-status" value="status"></td>
-                <td><input style="width: 100%;" type="text" name="d-t-severity" value="severity"></td>
-                <td><input style="width: 100%;" type="text" name="d-t-priority" value="priority"></td>
-                <td><input style="width: 100%;" type="text" name="d-t-reporter" value="reporter"></td>
-                <td><input style="width: 100%;" type="text" name="d-t-developer" value="developer"></td>
-                <td><input style="width: 100%;" type="text" name="d-t-build-found" value="found in"></td>
-                <td><input style="width: 100%;" type="text" name="d-t-build-fixed" value="fixed in"></td>
-                <td><input style="width: 100%;" type="text" name="d-t-type" value="type"></td>
-                <td><input style="width: 100%;" type="text" name="d-t-feature" value="feature"></td>
-            </tr>
+
+                <tr>
+                    <td>id</td>
+                    <td>summary</td>
+                    <td>status</td>
+                    <td>severity</td>
+                    <td>priority</td>
+                    <td>reporter</td>
+                    <td>developer</td>
+                    <td>found in</td>
+                    <td>fixed in</td>
+                    <td>type</td>
+                    <td>feature</td>
+                </tr>
+                <tr>
+                    <td><input style="width: 100%;" type="text" name="d-t-id" value="id"/></td>
+                    <td><input style="width: 100%;" type="text" name="d-t-summary" value="summary"></td>
+                    <td><input style="width: 100%;" type="text" name="d-t-status" value="status"></td>
+                    <td><input style="width: 100%;" type="text" name="d-t-severity" value="severity"></td>
+                    <td><input style="width: 100%;" type="text" name="d-t-priority" value="priority"></td>
+                    <td><input style="width: 100%;" type="text" name="d-t-reporter" value="reporter"></td>
+                    <td><input style="width: 100%;" type="text" name="d-t-developer" value="developer"></td>
+                    <td><input style="width: 100%;" type="text" name="d-t-build-found" value="found in"></td>
+                    <td><input style="width: 100%;" type="text" name="d-t-build-fixed" value="fixed in"></td>
+                    <td><input style="width: 100%;" type="text" name="d-t-type" value="type"></td>
+                    <td><input style="width: 100%;" type="text" name="d-t-feature" value="feature"></td>
+                </tr>
+
         </table>
 
     </div>

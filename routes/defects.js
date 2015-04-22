@@ -18,6 +18,13 @@ function Defects(){
 }
 
 Defects.prototype = {
+    updateDefect: function(req, res){
+        var arrayOrPromises = [dbq.doSet("UPDATE defect set ? WHERE id = ?", [req.body, req.params.id])];
+        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
+            res.send('ok');
+        });
+    },
+
     postDefect: function(req, res){
         req.body.rid = req.session.user;
         var arrayOrPromises = [dbq.doSet("INSERT INTO defect set ? ",req.body)];
