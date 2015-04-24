@@ -41,6 +41,10 @@ thead, tbody { display: block; }
     overflow-x: hidden;  /* Hide the horizontal scroll */
 }
 
+.defects{
+    overflow-y: scroll;
+}
+
 th {
     font-size: 1em;
     padding-top: 5px;
