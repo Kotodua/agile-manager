@@ -5,22 +5,16 @@
 function defects() {
     mainURL = config.url + "/api/defects";
     var verifier = new Verifier();
-    var defects;
-    var user;
-    var status;
-    var severity;
-    var type;
-    var feature;
-    var defects2;
-    var sessionUser;
-    drawDefects();
+    var defects, user, status, severity, type, feature, defects2, sessionUser;
 
+    drawDefects();
+    filtering();
 
     $("body").on("click",'tr[id^="defect_"]', function(){
         var id = $(this).prop("id");
         id = id.split('_');
         $('#submit').val("Update");
-        showDefectInfo(parseInt(id[1]))
+        showDefectInfo(parseInt(id[1]));
     });
 
     $('#clear').on("click", function(){
@@ -45,6 +39,38 @@ function defects() {
             updateDefect($('#d-id').val());
         }
     })
+
+    function filtering(){
+        //------------------------filtering
+        $('.filterable .filters input').keyup(function(e){
+            /* Ignore tab key */
+            var code = e.keyCode || e.which;
+            if (code == '9') return;
+            /* Useful DOM data and selectors */
+            var $input = $(this),
+                inputContent = $input.val().toLowerCase(),
+                $panel = $input.parents('.filterable'),
+                column = $panel.find('.filters th').index($input.parents('th')),
+                $table = $panel.find('.table'),
+                $rows = $table.find('tbody tr');
+            /* Dirtiest filter function ever ;) */
+            var $filteredRows = $rows.filter(function(){
+                var value = $(this).find('td').eq(column).text().toLowerCase();
+                return value.indexOf(inputContent) === -1;
+            });
+            /* Clean previous no-result if exist */
+            $table.find('tbody .no-result').remove();
+            /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
+            $rows.show();
+            $filteredRows.hide();
+            /* Prepend no-result row if all rows are filtered */
+            if ($filteredRows.length === $rows.length) {
+                $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="'+ $table.find('.filters th').length +'">No result found</td></tr>'));
+            }
+        });
+
+
+    }
 
     function showDefectInfo(id){
         console.log(defects2[id].feature);
@@ -201,8 +227,26 @@ function defects() {
 
                 for (var i = 0; i < defects.length; i++){
                      drawDefect(i);
+
                 }
 
+                // Change the selector if needed
+                var $table = $('table.table'),
+                    $bodyCells = $table.find('thead tr:first').children(),
+                    colWidth;
+
+                // Adjust the width of thead cells when window resizes
+                $(window).resize(function() {
+                    // Get the tbody columns width array
+                    colWidth = $bodyCells.map(function() {
+                        return $(this).width();
+                    }).get();
+
+                    // Set the width of thead columns
+                    $table.find('tbody tr').children().each(function(i, v) {
+                        $(v).width(colWidth[i]);
+                    });
+                }).resize(); // Trigger resize handler
             }
         })
     }

@@ -1,0 +1,59 @@
+.filterable {
+    margin-top: 15px;
+}
+.filterable .panel-heading .pull-right {
+    margin-top: -20px;
+}
+.filterable .filters input[disabled] {
+    background-color: transparent;
+    border: none;
+    cursor: auto;
+    box-shadow: none;
+    padding: 0;
+    height: auto;
+}
+
+input{
+    vertical-align:middle;
+}
+
+.filterable .filters input[disabled]::-webkit-input-placeholder {
+    font-size: 1.1em;
+    color: #ffffff;
+
+}
+.filterable .filters input[disabled]::-moz-placeholder {
+    color: #333;
+}
+.filterable .filters input[disabled]:-ms-input-placeholder {
+    color: #333;
+}
+
+table, th {
+    border: 1px solid black;
+}
+
+thead, tbody { display: block; }
+
+.scroll-content {
+    height: 500px;       /* Just for the demo          */
+    overflow-y: auto;    /* Trigger vertical scroll    */
+    overflow-x: hidden;  /* Hide the horizontal scroll */
+}
+
+th {
+    font-size: 1em;
+    padding-top: 5px;
+    padding-bottom: 4px;
+    background-color: #a1775f;
+    color: #fff;
+    text-align: center;
+    vertical-align:middle;
+}
+
+#d-list tr td {
+    font-family: "Times New Roman", Times, serif;
+    color: #000000;
+    background-color: #f5fdde;
+}
+

@@ -2,6 +2,7 @@
 
 <head>
     <script type="text/javascript"  src="/js/defects.js"></script>
+    <link rel="stylesheet" type="text/css" href="/defects.css">
 </head>
 
 
@@ -68,51 +69,42 @@
         <input type="button" id="submit" value="Submit">
 
     </div>
-    <div style="float:right; width:84%;" class="tasksTables">
-        <table id="d-list" border="1" class="tasks">
-            <colgroup>
-                <col span="1" style="width: 3%;">
-                <col span="1" style="width: 50%;">
-                <col span="1" style="width: 5%;">
-                <col span="1" style="width: 5%;">
-                <col span="1" style="width: 4%;">
-                <col span="1" style="width: 7%;">
-                <col span="1" style="width: 7%;">
-                <col span="1" style="width: 4%;">
-                <col span="1" style="width: 4%;">
-                <col span="1" style="width: 6%;">
-                <col span="1" style="width: 6%;">
-            </colgroup>
-
-                <tr>
-                    <td>id</td>
-                    <td>summary</td>
-                    <td>status</td>
-                    <td>severity</td>
-                    <td>priority</td>
-                    <td>reporter</td>
-                    <td>developer</td>
-                    <td>found in</td>
-                    <td>fixed in</td>
-                    <td>type</td>
-                    <td>feature</td>
+    <div style="float:right; width:84%;">
+        <div class="panel panel-primary filterable">
+            <table class="table" id="d-list">
+                <thead class="fixed-header">
+                <tr >
+                    <th style="width: 3%;">Id</th>
+                    <th style="width: 50%;">Summary</th>
+                    <th style="width: 5%;">Status</th>
+                    <th style="width: 5%;">Severity</th>
+                    <th style="width: 4%;">Priority</th>
+                    <th style="width: 7%;">Reporter</th>
+                    <th style="width: 7%;">Developer</th>
+                    <th style="width: 4%;">d in</th>
+                    <th style="width: 4%;">f in</th>
+                    <th style="width: 6%;">Type</th>
+                    <th style="width: 6%;">Feature</th>
                 </tr>
-                <tr>
-                    <td><input style="width: 100%;" type="text" name="d-t-id" value="id"/></td>
-                    <td><input style="width: 100%;" type="text" name="d-t-summary" value="summary"></td>
-                    <td><input style="width: 100%;" type="text" name="d-t-status" value="status"></td>
-                    <td><input style="width: 100%;" type="text" name="d-t-severity" value="severity"></td>
-                    <td><input style="width: 100%;" type="text" name="d-t-priority" value="priority"></td>
-                    <td><input style="width: 100%;" type="text" name="d-t-reporter" value="reporter"></td>
-                    <td><input style="width: 100%;" type="text" name="d-t-developer" value="developer"></td>
-                    <td><input style="width: 100%;" type="text" name="d-t-build-found" value="found in"></td>
-                    <td><input style="width: 100%;" type="text" name="d-t-build-fixed" value="fixed in"></td>
-                    <td><input style="width: 100%;" type="text" name="d-t-type" value="type"></td>
-                    <td><input style="width: 100%;" type="text" name="d-t-feature" value="feature"></td>
+                <tr class="filters">
+                    <th style="width: 3%;"><input style="width: 100%;" type="text" class="form-control" name="d-t-id" placeholder="id"></th>
+                    <th style="width: 50%;"><input style="width: 100%;" type="text" name="d-t-summary" placeholder="summary" ></th>
+                    <th style="width: 5%;"><input style="width: 100%;" type="text" name="d-t-status" placeholder="status" ></th>
+                    <th style="width: 5%;"><input style="width: 100%;" type="text" name="d-t-severity" placeholder="severity" ></th>
+                    <th style="width: 4%;"><input style="width: 100%;" type="text" name="d-t-priority" placeholder="priority" ></th>
+                    <th style="width: 7%;"><input style="width: 100%;" type="text" name="d-t-reporter" placeholder="reporter" ></th>
+                    <th style="width: 7%;"><input style="width: 100%;" type="text" name="d-t-developer" placeholder="developer" ></th>
+                    <th style="width: 4%;"><input style="width: 100%;" type="text" name="d-t-build-found" placeholder="found in" ></th>
+                    <th style="width: 4%;"><input style="width: 100%;" type="text" name="d-t-build-fixed" placeholder="fixed in" ></th>
+                    <th style="width: 6%;"><input style="width: 100%;" type="text" name="d-t-type" placeholder="type" ></th>
+                    <th style="width: 6%;"><input style="width: 100%;" type="text" name="d-t-feature" placeholder="feature" ></th>
                 </tr>
+                </thead>
+                <tbody  id="scroll" class="scroll-content">
 
-        </table>
-
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
