@@ -227,7 +227,6 @@ function defects() {
 
                 for (var i = 0; i < defects.length; i++){
                      drawDefect(i);
-
                 }
 
                 // Change the selector if needed

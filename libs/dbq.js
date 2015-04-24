@@ -9,7 +9,11 @@ var connection = mysql.createConnection({
     user: 'nodejs_admin',
     password: '',
     port: 3306,
+<<<<<<< HEAD
     database: 'nodejs_test'
+=======
+    database: 'nodejs'
+>>>>>>> 0a468d286748d14c80052c531c3368ee6285323d
 });
 
 function Dbq(){
