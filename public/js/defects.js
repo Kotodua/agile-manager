@@ -179,50 +179,43 @@ function defects() {
                 }, {});
 
                 user = allData.user.reduce(function(previousValue, currentDigit, currentIndex, array){
-                    previousValue[array[currentIndex].id] = array[currentIndex].pname;
-                    $('#d-developer').append($('<option>', {
-                        value: array[currentIndex].id,
-                        text: array[currentIndex].pname
-                    }));
-                    return  previousValue;
+                    return  fillArray(previousValue, currentDigit, currentIndex, array, '#d-developer');
                 }, {});
 
                 status = allData.defect_status.reduce(function(previousValue, currentDigit, currentIndex, array){
-                    previousValue[array[currentIndex].id] = array[currentIndex].name;
-                    $('#d-status').append($('<option>', {
-                        value: array[currentIndex].id,
-                        text: array[currentIndex].name
-                    }));
-                    return  previousValue;
+                    return  fillArray(previousValue, currentDigit, currentIndex, array, '#d-status');
                 }, {});
 
                 severity = allData.defect_severity.reduce(function(previousValue, currentDigit, currentIndex, array){
-                    previousValue[array[currentIndex].id] = array[currentIndex].name;
-                    $('#d-severity').append($('<option>', {
-                        value: array[currentIndex].id,
-                        text: array[currentIndex].name
-                    }));
-                    return  previousValue;
+                    return  fillArray(previousValue, currentDigit, currentIndex, array, '#d-severity');
                 }, {});
 
                 type = allData.defect_type.reduce(function(previousValue, currentDigit, currentIndex, array){
-                    previousValue[array[currentIndex].id] = array[currentIndex].name;
-                    $('#d-type').append($('<option>', {
-                        value: array[currentIndex].id,
-                        text: array[currentIndex].name
-                    }));
-                    return  previousValue;
+                    return  fillArray(previousValue, currentDigit, currentIndex, array, '#d-type');
                 }, {});
 
                 feature = allData.feature.reduce(function(previousValue, currentDigit, currentIndex, array){
-                    previousValue[array[currentIndex].id] = array[currentIndex].name;
-                    $('#d-feature').append($('<option>', {
-                        value: array[currentIndex].id,
-                        text: array[currentIndex].name
-                    }));
-                    return  previousValue;
+                    return fillArray(previousValue, currentDigit, currentIndex, array, '#d-feature');
                 }, {});
 
+                function fillArray(pv, cd, ci, arr, obj){
+                    if (obj == '#d-developer'){
+                        pv[arr[ci].id] = arr[ci].pname;
+                        $(obj).append($('<option>', {
+                            value: arr[ci].id,
+                            text: arr[ci].pname
+                        }))
+                    }else {
+                        pv[arr[ci].id] = arr[ci].name;
+                        $(obj).append($('<option>', {
+                            value: arr[ci].id,
+                            text: arr[ci].name
+                        }))
+                    }
+
+
+                    return  pv;
+                }
 
 
                 for (var i = 0; i < defects.length; i++){

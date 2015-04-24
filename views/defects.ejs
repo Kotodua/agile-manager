@@ -8,10 +8,7 @@
 
 <div id="defects-main">
     <div id="d-fields" style="float:left; width:15%">
-        <div>
-            Summary<br>
-            <textarea id="d-summary"></textarea>
-        </div>
+
         <table border="1">
             <tr><!-- Row 2 -->
                 <td>Id</td>
@@ -60,11 +57,7 @@
                 <td><input type="text" id="d-build-fixed"></td>
             </tr>
         </table>
-        Description<br>
-        <textarea id="d-description" rows="7"></textarea><br>
 
-        Comments<br>
-        <textarea id="d-comments" rows="7"></textarea><br>
         <input type="button" id="clear" value="Clear">
         <input type="button" id="submit" value="Submit">
 
@@ -105,6 +98,24 @@
                 </tbody>
             </table>
         </div>
+    </div>
+    <div>
+        <div style="float:right; width:84%;">
+            Summary<br>
+            <textarea rows="1" id="d-summary"></textarea>
+        </div>
+    </div>
+    <div>
+        <div style="float:right; width:41%;">
+            Comments<br>
+            <textarea id="d-comments" rows="7"></textarea><br>
+        </div>
+        <div style="float:right; width:2%;">&nbsp</div>
+        <div style="float:right; width:41%;">
+        Description<br>
+        <textarea id="d-description" rows="7"></textarea><br>
+        </div>
+
     </div>
 </div>
 
