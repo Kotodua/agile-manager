@@ -31,6 +31,7 @@ input{
 
 table, th {
     border: 1px solid black;
+
 }
 
 thead, tbody { display: block; }
@@ -60,4 +61,33 @@ th {
     color: #000000;
     background-color: #f7fdf4;
 }
+
+#d_details {
+    width: 100%;
+}
+
+input#d-l-summary { margin-bottom:3px; width:62%; padding: .2em; }
+
+#td_id{width: 3%;}
+#td_summary{width: 50%;}
+
+
+
+body { font-size: 80%; }
+label, input { display:block; }
+
+input.text { margin-bottom:3px; width:50%;}
+select { margin-bottom:3px; width:100%; padding: .2em; }
+textarea { margin-bottom:3px; width:100%; padding: .2em; }
+fieldset { padding:0; border:0; margin-top:10px; }
+h1 { font-size: 1.2em; margin: .6em 0; }
+div#newDefect { width: 500px; margin: 10px 0; }
+div#newDefect table { margin: .5em 0; border-collapse: collapse; width: 100%; }
+div#newDefect table td, div#newDefect table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+.ui-dialog .ui-state-error { padding: .3em; }
+.validateTips { border: 1px solid transparent; padding: 0.3em; }
+
+
+
+
 

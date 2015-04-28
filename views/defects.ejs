@@ -46,89 +46,120 @@
             </table>
         </div>
     </div>
-    <div>
-        <div style="width:50;">
-            Summary
-            <input type="button" id="clear" value="New Defect">
-            <input type="button" id="d-edit" value="Edit">
-            <br>
-            <input type="text" id="d-l-summary" style="width:100%"/>
-        </div>
-    </div>
-    <div>
-        <div style="float:left; width:40%;">
-            Description<br>
-            <textarea id="d-l-description" rows="7" class="defects"></textarea><br>
-        </div>
-        <div style="float:left; width:40%;">
-            Comments
-            <input type="button" value="Insert" id="insert-l-comment"><br>
-            <textarea id="d-l-comments" rows="7" class="defects"></textarea><br>
-        </div>
-        <div style="float:right; width:4%;">&nbsp</div>
-    </div>
+
+    <table id="d_details">
+        <tr>
+            <td style="width: 100%">
+                <div style="width:100%;">
+                    <label for="d-l-summary">Summary</label>
+                    <input type="text" id="d-l-summary" disabled="true"/>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <input type="button" id="clear" value="New Defect">
+                    <input type="button" id="d-edit" value="Edit" disabled="true">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="float:left; width:30%;">
+                    <label for="d-l-description">Description</label>
+                    <textarea id="d-l-description" rows="6" class="defects" disabled="true"></textarea><br>
+                </div>
+                <div style="float:left; width:2%;">&nbsp</div>
+                <div style="float:left; width:30%;">
+                    <!--<input style="float:right;" type="button" value="Insert" id="insert-l-comment"><br>-->
+                    <label for="d-l-comments">Comments</label>
+                    <textarea id="d-l-comments" rows="6" class="defects" disabled="true"></textarea><br>
+                </div>
+            </td>
+            <td>
+            </td>
+        </tr>
+    </table>
+
+
 </div>
 
 <div id="newDefect" title="New Defect">
-    Summary 
-    <br> 
-    <input type="text" id="d-summary" style="width:100%"/>
-    <table> 
-        <tr> 
-            <td>Id</td> 
-            <td><input type="text" id="d-id" disabled="true"></td> 
-            </tr> 
-        <tr> 
-            <td>Status</td> 
-            <td><select type="text" id="d-status"/></td> 
-            </tr> 
-        <tr>
-            <td>Severity</td> 
-            <td><select type="text" id="d-severity"/></td>
-            </tr>
-        <tr>
-            <td>Priority</td>
-            <td>
-                <select type="text" id="d-priority">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    </select>
-                </td>
-            </tr>
-        <tr>
-            <td>Reporter</td>
-            <td><input type="text" id="d-reporter" disabled="true"></td>
-            </tr>
-        <tr>
-            <td>Developer</td>
-            <td><select type="text" id="d-developer"/></td>
-            </tr>
-        <tr>
-            <td>Type</td>
-            <td><select type="text" id="d-type"/></td>
-            </tr>
-        <tr>
-            <td>Feature</td>
-            <td><select type="text" id="d-feature"/></td>
-            </tr>
-        <tr>
-            <td>Build Found</td>
-            <td><input type="text" id="d-build-found"></td>
-            </tr>
-        <tr>
-            <td>Build Fixed</td>
-            <td><input type="text" id="d-build-fixed"></td> 
+    <form id="newDefectForm">
+        <fieldset>
+            <label for="d_summary">Summary</label>
+                <textarea name="d_summary" id="d_summary" minlength="10" rows="3" class="defects" required></textarea>
+            <table>
+                <tr>
+                    <td>
+                        <label for="d_id">Id</label>
+                        <input type="text" name="d_id" id="d_id" disabled="true" class="text ui-widget-content ui-corner-all">
+                    </td>
+                    <td>
+                        <label for="d-status">Status</label>
+                        <select type="text" id="d-status"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="d-severity">Severity</label>
+                        <select type="text" id="d-severity"/>
+                    </td>
+                    <td>
+                        <label for="d-priority">Priority</label>
+                        <select type="text" id="d-priority">
+                            <option value="1">P1&nbsp;&nbsp;&nbsp;</option>
+                            <option value="2">P2&nbsp;&nbsp;&nbsp;</option>
+                            <option value="3">P3&nbsp;&nbsp;&nbsp;</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="d-reporter">Reporter</label>
+                        <input type="text" id="d-reporter" disabled="true" class="text ui-widget-content ui-corner-all">
+                    </td>
+                    <td>
+                        <label for="d-developer">Developer</label>
+                        <select type="text" id="d-developer"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="d-type">Type</label>
+                        <select type="text" id="d-type"/>
+                    </td>
+                    <td>
+                        <label for="d-feature">Feature</label>
+                        <select type="text" id="d-feature"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="d-build-found">build found</label>
+                        <input type="text" id="d-build-found" class="text ui-widget-content ui-corner-all">
+                    </td>
+                    <td>
+                        <label for="d-build-fixed">build fixed</label>
+                        <input type="text" id="d-build-fixed" class="text ui-widget-content ui-corner-all">
+                    </td>
+                </tr>
+            </table>
 
-            </tr>
-        </table>
-    Description<br>
-    <textarea id="d-description" rows="7" class="defects"></textarea><br>
 
-    Comments 
-    <input type="button" value="Insert" id="insert-comment"><br>
-    <textarea id="d-comments" rows="7" class="defects"></textarea><br>
+            <!--<input type="text" name="d_summary" id="d_summary" value="" class="text ui-widget-content ui-corner-all">-->
 
+
+            <label for="d-description">Description</label>
+            <textarea id="d-description" rows="5" class="defects"></textarea>
+
+            <input type="button" value="Insert" id="insert-comment">
+            <label for="d-comments">Comments</label>
+            <textarea id="d-comments" rows="5" class="defects"></textarea>
+
+            <!-- Allow form submission with keyboard without duplicating the dialog button -->
+            <!--<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">-->
+        </fieldset>
+    </form>
     </div>
 
 
