@@ -5,40 +5,68 @@
 function defects() {
     mainURL = config.url + "/api/defects";
     var verifier = new Verifier();
-    var defects, user, status, severity, type, feature, defects2, sessionUser;
+    var defects, user, status, severity, type, feature, defects2, sessionUser, selectedId;
+
 
     drawDefects();
     filtering();
+    //$('#newDefect').style.visibility='hidden';
 
     $("body").on("click",'tr[id^="defect_"]', function(){
         var id = $(this).prop("id");
         id = id.split('_');
         $('#submit').val("Update");
+        selectedId = parseInt(id[1]);
         showDefectInfo(parseInt(id[1]));
     });
+
+    function getDate(){
+        var d = new Date();
+        var min = ''+d.getMinutes();
+        var hour = ''+d.getHours()
+        if (min.length < 2) min = '0' + min;
+        if (hour.length < 2) hour = '0' + hour;
+        return user[sessionUser]+' '+d.getFullYear()+'-'+ (parseInt(d.getMonth())+1)+'-'+d.getUTCDate()+' '+hour+':'+min+':\n\n\n';
+    }
+
+
+    $('#insert-l-comment').on("click", function(){
+        var comment = $('#d-l-comments').val();
+        $('#d-l-comments').val(getDate() + comment);
+    })
+
+    $('#insert-comment').on("click", function(){
+        var comment = $('#d-comments').val();
+        $('#d-comments').val(getDate() + comment);
+    })
+
+
+    $('#newDefect').hide();
 
     $('#clear').on("click", function(){
         $('#d-id').val("");
         $('#d-status').val("1");
         $('#d-severity').val("1");
         $('#d-summary').val("");
+        $('#d-l-summary').val("");
         $('#d-description').val("");
+        $('#d-l-description').val("");
         $('#d-priority').val("");
-        $('#d-reporter').val(user[sessionUser]);
         $('#d-developer').val("");
         $('#d-build-found').val("");
         $('#d-build-fixed').val("");
         $('#d-comments').val("");
+        $('#d-l-comments').val("");
         $('#submit').val("Submit");
+        newDefect();
     });
 
-    $('#submit').on("click", function(){
-        if($('#d-id').val() == ''){
-            postDefect();
-        } else {
-            updateDefect($('#d-id').val());
-        }
-    })
+    $('#d-edit').on("click", function(){
+        showDefectInfo(selectedId);
+        showForm();
+    });
+
+
 
     function filtering(){
         //------------------------filtering
@@ -73,11 +101,13 @@ function defects() {
     }
 
     function showDefectInfo(id){
-        console.log(defects2[id].feature);
+        //console.log(defects2[id].feature);
         $('#d-id').val(id);
         $('#d-status').val(defects2[id].sid);
         $('#d-severity').val(defects2[id].sevid);
         $('#d-summary').val(defects2[id].summary);
+        $('#d-l-summary').val(defects2[id].summary);
+        $('#d-l-description').val(defects2[id].description);
         $('#d-description').val(defects2[id].description);
         $('#d-priority').val(defects2[id].pid);
         $('#d-reporter').val(user[defects2[id].rid]);
@@ -86,6 +116,7 @@ function defects() {
         $('#d-developer').val(defects2[id].did);
         $('#d-build-found').val(defects2[id].bdetected);
         $('#d-build-fixed').val(defects2[id].bfixed);
+        $('#d-l-comments').val(defects2[id].comments);
         $('#d-comments').val(defects2[id].comments);
     }
 
@@ -137,7 +168,6 @@ function defects() {
             url: mainURL + '/postDefect/'+id,
             success: function (res) {
                 console.log(res);
-
             }
         })
     }
@@ -161,6 +191,37 @@ function defects() {
         $('#d-reporter').val(user[sessionUser]);
     }
 
+
+    function newDefect(){
+        $('#d-reporter').val(user[sessionUser]);
+        showForm();
+    }
+
+    function showForm(){
+
+        $('#newDefect').dialog({
+            modal: true,
+            buttons: {
+                Cancel: function () {
+                    $(this).dialog("close");
+                },
+                Submit: function(){
+                        if($('#d-id').val() == ''){
+                            postDefect();
+                        } else {
+                            updateDefect($('#d-id').val());
+                        }
+                }
+            }
+        })
+
+
+        $("#newDefect").show('bounce', {}, 500,     function callback() {
+            setTimeout(function() {
+                $( "#effect:visible" ).removeAttr( "style" ).fadeOut();
+            }, 1000 );
+        });
+    }
 
     function drawDefects() {
         $.ajax({
