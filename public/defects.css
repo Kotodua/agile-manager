@@ -37,7 +37,7 @@ table, th {
 thead, tbody { display: block; }
 
 .scroll-content {
-    height: 500px;       /* Just for the demo          */
+    height: 400px;       /* Just for the demo          */
     overflow-y: auto;    /* Trigger vertical scroll    */
     overflow-x: hidden;  /* Hide the horizontal scroll */
 }
@@ -59,8 +59,11 @@ th {
 #d-list tr td {
     font-family: "Times New Roman", Times, serif;
     color: #000000;
-    background-color: #f7fdf4;
 }
+
+tr.defect-selected {background-color: #ffe3d1;}
+tr.d-regular{background-color: #f5fff8;}
+
 
 #d_details {
     width: 100%;
@@ -87,7 +90,12 @@ div#newDefect table td, div#newDefect table th { border: 1px solid #eee; padding
 .ui-dialog .ui-state-error { padding: .3em; }
 .validateTips { border: 1px solid transparent; padding: 0.3em; }
 
-
+.ui-dialog .ui-dialog-buttonpane {
+    text-align: center;
+}
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    float: none;
+}
 
 
 
