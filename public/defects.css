@@ -34,7 +34,10 @@ table, th {
 
 }
 
-thead, tbody { display: block; }
+.odd{background-color: #fffbf4
+}
+.even{background-color: #f6f2eb
+}
 
 .scroll-content {
     height: 400px;       /* Just for the demo          */
@@ -69,7 +72,7 @@ tr.d-regular{background-color: #f5fff8;}
     width: 100%;
 }
 
-input#d-l-summary { margin-bottom:3px; width:62%; padding: .2em; }
+input#d-l-summary { margin-bottom:3px; width:79%; padding: .2em; }
 
 #td_id{width: 3%;}
 #td_summary{width: 50%;}
@@ -96,6 +99,69 @@ div#newDefect table td, div#newDefect table th { border: 1px solid #eee; padding
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
     float: none;
 }
+
+
+
+select[name=d-list_length] {width: 4%;}
+
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    box-sizing: border-box;
+    display: inline-block;
+    min-width: 1.5em;
+    padding: 0.5em 1em;
+    margin-left: 2px;
+    text-align: center;
+    text-decoration: none !important;
+    cursor: pointer;
+    *cursor: hand;
+    color: #333333 !important;
+    border: 1px solid transparent;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    color: #333333 !important;
+    border: 1px solid #cacaca;
+    background-color: white;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, gainsboro));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, white 0%, gainsboro 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -moz-linear-gradient(top, white 0%, gainsboro 100%);
+    /* FF3.6+ */
+    background: -ms-linear-gradient(top, white 0%, gainsboro 100%);
+    /* IE10+ */
+    background: -o-linear-gradient(top, white 0%, gainsboro 100%);
+    /* Opera 11.10+ */
+    background: linear-gradient(to bottom, white 0%, gainsboro 100%);
+    /* W3C */
+}
+
+
+
+table.dataTable thead .sorting {
+    background-image: url("http://cdn.datatables.net/1.10.6/images/sort_both.png");
+}
+table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc, table.dataTable thead .sorting_asc_disabled, table.dataTable thead .sorting_desc_disabled {
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc {
+    cursor: pointer;
+}
+table.dataTable thead th, table.dataTable thead td {
+    padding: 2px 18px;
+    border-bottom: 1px solid #111111;
+}
+
+table.dataTable thead .sorting_asc {
+    background-image: url("http://cdn.datatables.net/1.10.6/images/sort_asc.png");
+}
+
+table.dataTable thead .sorting_desc {
+    background-image: url("http://cdn.datatables.net/1.10.6/images/sort_desc.png");
+}
+
+
 
 
 

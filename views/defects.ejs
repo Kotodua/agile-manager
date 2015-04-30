@@ -4,40 +4,30 @@
     <script type="text/javascript"  src="/js/defects.js"></script>
     <link rel="stylesheet" href="/vendor/jquery-ui-1.11.4/jquery-ui.css">
     <script src="/vendor/jquery-ui-1.11.4/jquery-ui.js"></script>
+    <script src="http://cdn.datatables.net/1.10.6/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/defects.css">
+  <!--  <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.6/css/jquery.dataTables.css">-->
+
 </head>
 
 
 <div id="defects-main" >
     <div class="defects-list">
         <div class="panel panel-primary filterable">
-            <table class="table" id="d-list">
+            <table class="table" id="d-list" style="display: table-header-group;">
                 <thead class="fixed-header">
                 <tr >
-                    <th style="width: 3%;">Id</th>
-                    <th style="width: 50%;">Summary</th>
-                    <th style="width: 5%;">Status</th>
-                    <th style="width: 5%;">Severity</th>
-                    <th style="width: 4%;">Priority</th>
-                    <th style="width: 7%;">Reporter</th>
-                    <th style="width: 7%;">Developer</th>
-                    <th style="width: 4%;">d in</th>
-                    <th style="width: 4%;">f in</th>
-                    <th style="width: 6%;">Type</th>
-                    <th style="width: 6%;">Feature</th>
-                </tr>
-                <tr class="filters">
-                    <th style="width: 3%;"><input style="width: 100%;" type="text" class="form-control" name="d-t-id" placeholder="id"></th>
-                    <th style="width: 50%;"><input style="width: 100%;" type="text" name="d-t-summary" placeholder="summary" ></th>
-                    <th style="width: 5%;"><input style="width: 100%;" type="text" name="d-t-status" placeholder="status" ></th>
-                    <th style="width: 5%;"><input style="width: 100%;" type="text" name="d-t-severity" placeholder="severity" ></th>
-                    <th style="width: 4%;"><input style="width: 100%;" type="text" name="d-t-priority" placeholder="priority" ></th>
-                    <th style="width: 7%;"><input style="width: 100%;" type="text" name="d-t-reporter" placeholder="reporter" ></th>
-                    <th style="width: 7%;"><input style="width: 100%;" type="text" name="d-t-developer" placeholder="developer" ></th>
-                    <th style="width: 4%;"><input style="width: 100%;" type="text" name="d-t-build-found" placeholder="found in" ></th>
-                    <th style="width: 4%;"><input style="width: 100%;" type="text" name="d-t-build-fixed" placeholder="fixed in" ></th>
-                    <th style="width: 6%;"><input style="width: 100%;" type="text" name="d-t-type" placeholder="type" ></th>
-                    <th style="width: 6%;"><input style="width: 100%;" type="text" name="d-t-feature" placeholder="feature" ></th>
+                    <th>Id</th>
+                    <th>Summary</th>
+                    <th>Status</th>
+                    <th>Severity</th>
+                    <th>Priority</th>
+                    <th>Reporter</th>
+                    <th>Developer</th>
+                    <th>d in</th>
+                    <th>f in</th>
+                    <th>Type</th>
+                    <th>Feature</th>
                 </tr>
                 </thead>
                 <tbody  id="scroll" class="scroll-content">
@@ -175,5 +165,5 @@
         defects();
     }
 </script>
-<p align="right">v.1.0.0.115</p>
+<p align="right">v.1.0.0.120</p>
 </html>

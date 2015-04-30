@@ -4,10 +4,11 @@
 
 function defects() {
     mainURL = config.url + "/api/defects";
+    //$.fn.dataTableExt.sErrMode = 'throw';
     var verifier = new Verifier();
     var defects, user, status, severity, type, feature, sessionUser, selectedId;
     drawDefects();
-    filtering();
+
 
     $('#d-new').on("click", function () {
         showForm();
@@ -16,7 +17,7 @@ function defects() {
 
     $("body").on("click", 'tr[id^="defect_"]', function () {
 
-        $('tr[id^="defect_"]').attr('class', 'd-regular');
+        $('tr[id^="defect_"]').removeClass('defect-selected');
         var id = $(this).prop("id");
         id = id.split('_');
         $('#submit').val("Update");
@@ -26,7 +27,7 @@ function defects() {
         $('#d-l-comments').val(defects[selectedId].comments);
         $("#d-edit").attr('disabled', false);
         console.log(defects[selectedId]);
-        $(this).attr('class', 'defect-selected');
+        $(this).addClass('defect-selected');
     });
 
     $("body").on("dblclick", 'tr[id^="defect_"]', function () {
@@ -38,9 +39,7 @@ function defects() {
         $('.defect-dialog .ui-button-text:contains(Submit)').text('Update');
     })
 
-
-
-    $('#newDefect').hide();
+     $('#newDefect').hide();
 
     $('#d-edit').on("click", function () {
         showForm();
@@ -119,7 +118,19 @@ function defects() {
                 data.rid = sessionUser;
                 var key = res.insertId;
                 defects[key] = data;
-                drawDefect(data);
+                $('#d-list').DataTable().row.add({
+                        "id":       data.id,
+                        "summary":  data.summary,
+                        "status":   status[data.sid],
+                        "sev": severity[data.sevid],
+                        "pid": data.pid,
+                        "rname": user[sessionUser],
+                        "dname":user[data.did],
+                        "bdetected" :data.bdetected,
+                        "bfixed"    :data.bfixed,
+                        "type"     :type[data.tid],
+                        "feature"  :feature[data.fid]
+            }).draw();
             }
         })
     }
@@ -149,15 +160,30 @@ function defects() {
         data.id = id;
         data.rid = sessionUser;
         defects[id] = data;
-        $('#defect_'+id).remove();
-        drawDefect(data);
+        $('#d-list').DataTable().row( $('#defect_'+id))
+            .remove()
+            .draw();
+        $('#d-list').DataTable().row.add({
+            "id":       data.id,
+            "summary":  data.summary,
+            "status":   status[data.sid],
+            "sev": severity[data.sevid],
+            "pid": data.pid,
+            "rname": user[sessionUser],
+            "dname":user[data.did],
+            "bdetected" :data.bdetected,
+            "bfixed"    :data.bfixed,
+            "type"     :type[data.tid],
+            "feature"  :feature[data.fid]
+        }).draw();
+
     }
 
 
     function drawDefect(defect) {
         var html = '<tr class="d-regular" id=defect_' + defect.id + '>' +
-            '<td id="td_id">' + defect.id + '</td>' +
-            '<td id="td_summary">' + defect.summary + '</td>' +
+            '<td class="dId">' + defect.id + '</td>' +
+            '<td class="dSummary">' + defect.summary + '</td>' +
             '<td id="td_status">' + status[defect.sid] + '</td>' +
             '<td id="td_sev">' + severity[defect.sevid] + '</td>' +
             '<td id="td_p">' + defect.pid + '</td>' +
@@ -240,27 +266,6 @@ function defects() {
     }
 
 
-    function resizeTable() {
-        // Change the selector if needed
-        var $table = $('table.table'),
-            $bodyCells = $table.find('thead tr:first').children(),
-            colWidth;
-
-        // Adjust the width of thead cells when window resizes
-        $(window).resize(function () {
-            // Get the tbody columns width array
-            colWidth = $bodyCells.map(function () {
-                return $(this).width();
-            }).get();
-
-            // Set the width of thead columns
-            $table.find('tbody tr').children().each(function (i, v) {
-                $(v).width(colWidth[i]);
-            });
-        }).resize(); // Trigger resize handler
-    }
-
-
     function drawDefects() {
         $.ajax({
             type: "GET",
@@ -269,8 +274,12 @@ function defects() {
             success: function (data) {
                 var allData = JSON.parse(data);
                 sessionUser = allData.currentUser;
+                var def = allData.defect;
+
+
                 defects = allData.defect.reduce(function(previousValue, currentDigit, currentIndex, array){
                     previousValue[array[currentIndex].id] = array[currentIndex];
+
                     return  previousValue;
                 }, {});
 
@@ -294,6 +303,17 @@ function defects() {
                     return fillArray(previousValue, currentDigit, currentIndex, array, '#d-feature');
                 }, {});
 
+                def.forEach(function(entry){
+                    //console.log(entry);
+                    entry.rname = user[entry.rid];
+                    entry.status = status[entry.sid];
+                    entry.dname = user[entry.did];
+                    entry.sev = severity[entry.sevid];
+                    entry.type = type[entry.tid];
+                    entry.feature = feature[entry.fid];
+
+                })
+
                 function fillArray(pv, cd, ci, arr, obj){
                     if (obj == '#d-developer'){
                         pv[arr[ci].id] = arr[ci].pname;
@@ -311,13 +331,30 @@ function defects() {
                     return  pv;
                 }
 
-                for( var key in defects){
-                    if(defects.hasOwnProperty(key)){
-                        drawDefect(defects[key]);
+                $('#d-list').DataTable({
+                    "scrollY":        "400px",
+                    "scrollCollapse": true,
+                    data: def,
+                    columns: [
+                        { data: 'id'},
+                        { data: 'summary'},
+                        { data: 'status' },
+                        { data: 'sev'},
+                        { data: 'pid'},
+                        { data: 'rname'},
+                        { data: 'dname'},
+                        { data: 'bdetected'},
+                        { data: 'bfixed'},
+                        { data: 'type'},
+                        { data: 'feature'}
+                    ],
+                    "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                    $(nRow).attr("id",'defect_' + aData.id);
+                    return nRow;
                     }
-                }
+                });
 
-                resizeTable()
+                //resizeTable()
             }
         })
     }
@@ -345,40 +382,6 @@ function defects() {
 
             }
         }
-
-    }
-
-
-
-
-    function filtering() {
-        //------------------------filtering
-        $('.filterable .filters input').keyup(function (e) {
-            /* Ignore tab key */
-            var code = e.keyCode || e.which;
-            if (code == '9') return;
-            /* Useful DOM data and selectors */
-            var $input = $(this),
-                inputContent = $input.val().toLowerCase(),
-                $panel = $input.parents('.filterable'),
-                column = $panel.find('.filters th').index($input.parents('th')),
-                $table = $panel.find('.table'),
-                $rows = $table.find('tbody tr');
-            /* Dirtiest filter function ever ;) */
-            var $filteredRows = $rows.filter(function () {
-                var value = $(this).find('td').eq(column).text().toLowerCase();
-                return value.indexOf(inputContent) === -1;
-            });
-            /* Clean previous no-result if exist */
-            $table.find('tbody .no-result').remove();
-            /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
-            $rows.show();
-            $filteredRows.hide();
-            /* Prepend no-result row if all rows are filtered */
-            if ($filteredRows.length === $rows.length) {
-                $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="' + $table.find('.filters th').length + '">No result found</td></tr>'));
-            }
-        });
     }
 
     function getDate() {
