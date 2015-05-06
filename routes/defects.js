@@ -5,7 +5,6 @@ var async = require('async');
 
 var config = require('./../sconfig/index');
 var log = require('./../libs/log')(module);
-var crypto = require('crypto');
 var Time = require('./../libs/time');
 
 var Dbq = require('./../libs/dbq');

@@ -39,6 +39,7 @@ function defects() {
         $('.defect-dialog .ui-button-text:contains(Submit)').text('Update');
     })
 
+
      $('#newDefect').hide();
 
     $('#d-edit').on("click", function () {
@@ -90,7 +91,7 @@ function defects() {
         $('#d-comments').val("");
         $('#d-l-comments').val("");
         $('#submit').val("Submit");
-        refeshDefectFields()
+        refeshDefectFields();
     }
 
     function postDefect() {
@@ -135,6 +136,7 @@ function defects() {
         })
     }
 
+
     function updateDefect(id) {
         var data = {
             sid: $('#d-status').val(),
@@ -176,26 +178,10 @@ function defects() {
             "type"     :type[data.tid],
             "feature"  :feature[data.fid]
         }).draw();
-
-    }
-
-
-    function drawDefect(defect) {
-        var html = '<tr class="d-regular" id=defect_' + defect.id + '>' +
-            '<td class="dId">' + defect.id + '</td>' +
-            '<td class="dSummary">' + defect.summary + '</td>' +
-            '<td id="td_status">' + status[defect.sid] + '</td>' +
-            '<td id="td_sev">' + severity[defect.sevid] + '</td>' +
-            '<td id="td_p">' + defect.pid + '</td>' +
-            '<td id="td_r">' + user[defect.rid] + '</td>' +
-            '<td id="td_d">' + user[defect.did] + '</td>' +
-            '<td id="td_db">' + defect.bdetected + '</td>' +
-            '<td id="td_bf">' + defect.bfixed + '</td>' +
-            '<td id="td_t">' + type[defect.tid] + '</td>' +
-            '<td id="td_f">' + feature[defect.fid] + '</td>' +
-            '</tr>'
-        $('#d-list').append(html);
-        $('#d-reporter').val(user[sessionUser]);
+        $('#d-l-comments').val(data.comments);
+        $('#d-l-description').val(data.description);
+        $('#d-l-summary').val(data.summary);
+        $('#defect_'+id).addClass('defect-selected');
     }
 
 
@@ -217,7 +203,7 @@ function defects() {
                     $(this).dialog("close");
                     },
                     id: "btn_cancel",
-                    text: "Cancel"
+                    text: "Close"
                 },
                 Submit: {
                     click: function () {
@@ -250,14 +236,12 @@ function defects() {
                 $('#d-notification').remove();
             });
         });
-
         $("#d-status").selectmenu();
         $("#d-severity").selectmenu();
         $("#d-priority").selectmenu();
         $("#d-developer").selectmenu();
         $("#d-type").selectmenu();
         $("#d-feature").selectmenu();
-
         $("#newDefect").show('bounce', {}, 500, function callback() {
             setTimeout(function () {
                 $("#effect:visible").removeAttr("style").fadeOut();
@@ -354,10 +338,13 @@ function defects() {
                     }
                 });
 
-                //resizeTable()
             }
         })
     }
+
+
+
+
 
     function maxLength(){
         var txts = document.getElementsByTagName('textarea');
@@ -379,7 +366,6 @@ function defects() {
                 txts[i].onfocus = func;
             } else {
                    $('#d-notification').remove();
-
             }
         }
     }
