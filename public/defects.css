@@ -64,7 +64,7 @@ th {
     color: #000000;
 }
 
-tr.defect-selected {background-color: #ffe3d1;}
+tr.selected {background-color: #ffe3d1;}
 tr.d-regular{background-color: #f5fff8;}
 
 
@@ -87,11 +87,19 @@ select { margin-bottom:3px; width:100%; padding: .2em; }
 textarea { margin-bottom:3px; width:100%; padding: .2em; }
 fieldset { padding:0; border:0; margin-top:10px; }
 h1 { font-size: 1.2em; margin: .6em 0; }
+
+div{
+    display: block;
+}
 div#newDefect { width: 500px; margin: 10px 0; }
 div#newDefect table { margin: .5em 0; border-collapse: collapse; width: 100%; }
 div#newDefect table td, div#newDefect table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
 .ui-dialog .ui-state-error { padding: .3em; }
 .validateTips { border: 1px solid transparent; padding: 0.3em; }
+
+
+
+
 
 .ui-dialog .ui-dialog-buttonpane {
     text-align: center;
@@ -104,6 +112,17 @@ div#newDefect table td, div#newDefect table th { border: 1px solid #eee; padding
 
 select[name=d-list_length] {width: 4%;}
 
+
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+    text-align: right;
+    /* padding-top: 0.25em; */
+}
+.dataTables_wrapper .dataTables_info {
+    clear: both;
+    float: left;
+    padding-top: 0.755em;
+}
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
     box-sizing: border-box;

@@ -4,9 +4,7 @@
 
 function defects() {
     mainURL = config.url + "/api/defects";
-    //$.fn.dataTableExt.sErrMode = 'throw';
-    var verifier = new Verifier();
-    var defects, user, status, severity, type, feature, sessionUser, selectedId;
+    var defects, user, status, severity, type, feature, sessionUser, selectedId, table;
     drawDefects();
 
 
@@ -15,9 +13,17 @@ function defects() {
         showNewDefectInfo()
     });
 
-    $("body").on("click", 'tr[id^="defect_"]', function () {
 
-        $('tr[id^="defect_"]').removeClass('defect-selected');
+
+    $("body").on("click", 'tr[id^="defect_"]', function () {
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+        }
+        else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+
         var id = $(this).prop("id");
         id = id.split('_');
         $('#submit').val("Update");
@@ -27,7 +33,7 @@ function defects() {
         $('#d-l-comments').val(defects[selectedId].comments);
         $("#d-edit").attr('disabled', false);
         console.log(defects[selectedId]);
-        $(this).addClass('defect-selected');
+
     });
 
     $("body").on("dblclick", 'tr[id^="defect_"]', function () {
@@ -48,7 +54,7 @@ function defects() {
         $('.defect-dialog .ui-button-text:contains(Submit)').text('Update');
     });
 
-    function refeshDefectFields(){
+    function refreshDefectFields(){
         $('#d-status').selectmenu('refresh', true);
         $('#d-severity').selectmenu('refresh', true);
         $('#d-priority').selectmenu('refresh', true);
@@ -72,7 +78,7 @@ function defects() {
         $('#d-type').val(defects[id].tid);
         $('#d-feature').val(defects[id].fid);
         $('#d-developer').val(defects[id].did);
-        refeshDefectFields();
+        refreshDefectFields();
     }
 
     function showNewDefectInfo(){
@@ -91,7 +97,7 @@ function defects() {
         $('#d-comments').val("");
         $('#d-l-comments').val("");
         $('#submit').val("Submit");
-        refeshDefectFields();
+        refreshDefectFields();
     }
 
     function postDefect() {
@@ -162,9 +168,7 @@ function defects() {
         data.id = id;
         data.rid = sessionUser;
         defects[id] = data;
-        $('#d-list').DataTable().row( $('#defect_'+id))
-            .remove()
-            .draw();
+        $('#d-list').DataTable().row( $('#defect_'+id)).remove().draw();
         $('#d-list').DataTable().row.add({
             "id":       data.id,
             "summary":  data.summary,
@@ -181,7 +185,7 @@ function defects() {
         $('#d-l-comments').val(data.comments);
         $('#d-l-description').val(data.description);
         $('#d-l-summary').val(data.summary);
-        $('#defect_'+id).addClass('defect-selected');
+        $('#defect_'+id).addClass('selected');
     }
 
 
@@ -228,6 +232,7 @@ function defects() {
         })
 
         maxLength();
+
         $('#btn_submit').attr("disabled", true).addClass("ui-state-disabled");
         $('#newDefect').children().each(function (i, v) {
             $(v).on('change', function(){
@@ -248,6 +253,7 @@ function defects() {
             }, 1000);
         });
     }
+
 
 
     function drawDefects() {
@@ -288,7 +294,6 @@ function defects() {
                 }, {});
 
                 def.forEach(function(entry){
-                    //console.log(entry);
                     entry.rname = user[entry.rid];
                     entry.status = status[entry.sid];
                     entry.dname = user[entry.did];
@@ -315,7 +320,7 @@ function defects() {
                     return  pv;
                 }
 
-                $('#d-list').DataTable({
+                table = $('#d-list').DataTable({
                     "scrollY":        "400px",
                     "scrollCollapse": true,
                     data: def,
@@ -332,18 +337,16 @@ function defects() {
                         { data: 'type'},
                         { data: 'feature'}
                     ],
+                    "sDom": 'Rlfrtip',
                     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull) {
                     $(nRow).attr("id",'defect_' + aData.id);
                     return nRow;
                     }
-                });
 
+                });
             }
         })
     }
-
-
-
 
 
     function maxLength(){
