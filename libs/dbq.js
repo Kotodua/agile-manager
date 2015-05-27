@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
     user: 'nodejs_admin',
     password: '',
     port: 3306,
-    database: 'nodejs_test'
+    database: 'nodejs'
 
 });
 
