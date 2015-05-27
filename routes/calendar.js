@@ -60,6 +60,17 @@ function Calendar(){
             res.end();
         });
     }
+
+    this.deleteDate = function(req, res, id, month, day){
+        console.log(id);
+        var date = '%'+month+'-'+day;
+        var query = 'DELETE FROM calendar WHERE uid = '+id+' AND date LIKE ?';
+        var arrayOrPromises = [dbq.doSet(query, [date])];
+        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
+            res.send(arrayOfResults);
+            res.end();
+        });
+    }
 }
 
 

@@ -5,6 +5,12 @@ function calendar(){
     mainURL = config.url+"/api/calendar";
 
 
+
+    var dd = DateFormat.format.date(new Date(), "yyyy-MM-dd");
+    var dd_s = dd.split('-');
+    $('#s_status').val(dd_s[0]+'-'+dd_s[1]+'-'+'01');
+    drawCalendar();
+
     $('#b_update').on("click", function () {
         updateDateForPerson()
     });
@@ -31,6 +37,7 @@ function calendar(){
     });
 
 
+
     // Remove rows != selected Team
     $('body').on('change', '#team', function(){
         $("tr[team!='na']").show();
@@ -43,6 +50,8 @@ function calendar(){
 
 function updateDateForPerson(){
     var id = $('#s_user option:selected').prop('id').split('_');
+    var date = new Date($('#date').val());
+    var dd = DateFormat.format.date(date, "dd-MM");
     $.ajax({
         type: "POST",
         data: {uid: id[1], leaveType: $('#leave_type option:selected').text(), date: $('#date').val()},
@@ -51,6 +60,28 @@ function updateDateForPerson(){
         success: function (data) {
         }
     })
+    console.log($('#leave_type option:selected').text());
+    switch($('#leave_type option:selected').text()){
+        case 'Half-Day Leave(NA)':
+            $('#day_'+id[1]+'_'+dd).addClass('day-half-na');
+            break;
+        case 'Leave(NA)':
+            $('#day_'+id[1]+'_'+dd).addClass('day-leave-na');
+            break;
+        case 'Vacation(NA)':
+            $('#day_'+id[1]+'_'+dd).addClass('day-vacation-na');
+            break;
+        case 'Half-Day Leave':
+            $('#day_'+id[1]+'_'+dd).addClass('day-half');
+            break;
+        case 'Leave':
+            $('#day_'+id[1]+'_'+dd).addClass('day-leave');
+            break;
+        case 'Vacation':
+            $('#day_'+id[1]+'_'+dd).addClass('day-vacation');
+            break;
+    }
+
 }
 
 
@@ -202,6 +233,28 @@ function drawCalendar(){
                     }
                 }
             }
+
+
+            //------------------------ CONTEXT MENU
+            $('td[id^="day_"]').contextMenu('myMenu1', {
+                bindings: {
+                    'delete': function(t) {
+                        //alert('Trigger was '+t.id+'\nAction was Delete');
+                        var id = $('#'+t.id).prop('id').split('_');
+                        var date = id[2].split('-');
+                        alert(id+' '+date[0]+' '+date[1]);
+                        $.ajax({
+                            type: "DELETE",
+                            dataType: "html",
+                            url: mainURL+'/'+id[1]+'/'+date[1]+'/'+date[0],
+                            success: function (res) {
+                                $('#'+t.id).prop('class', 'td-border');
+                                $('#'+t.id).empty();
+                            }
+                        })
+                    }
+                }
+            });
         }
     })
 }
