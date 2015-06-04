@@ -80,6 +80,12 @@ function updateDateForPerson(){
         case 'Vacation':
             $('#day_'+id[1]+'_'+dd).addClass('day-vacation');
             break;
+        case 'L3 Day':
+            $('#day_'+id[1]+'_'+dd).addClass('day-l3');
+            break;
+        case 'L3 Leave':
+            $('#day_'+id[1]+'_'+dd).addClass('day-l3-leave');
+            break;
     }
 
 }
@@ -185,6 +191,14 @@ function drawCalendar(){
                         break;
                     case 'Holiday':
                         $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-holiday');
+                        $('#day_'+leaveUserId+'_'+leaveDate).attr('h', 0);
+                        break;
+                    case 'L3 Day':
+                        $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-l3');
+                        $('#day_'+leaveUserId+'_'+leaveDate).attr('h', 0);
+                        break;
+                    case 'L3 Leave':
+                        $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-l3-leave');
                         $('#day_'+leaveUserId+'_'+leaveDate).attr('h', 0);
                         break;
                     case '':

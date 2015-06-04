@@ -31,9 +31,9 @@ function defects() {
         $('#d-l-description').val(defects[selectedId].description);
         $('#d-l-summary').val(defects[selectedId].summary);
         $('#d-l-comments').val(defects[selectedId].comments);
+        $('#d-l-history').val(defects[selectedId].history);
         $("#d-edit").attr('disabled', false);
         console.log(defects[selectedId]);
-
     });
 
     $("body").on("dblclick", 'tr[id^="defect_"]', function () {
@@ -53,6 +53,8 @@ function defects() {
         showDefectInfo(selectedId);
         $('.defect-dialog .ui-button-text:contains(Submit)').text('Update');
     });
+
+
 
     function refreshDefectFields(){
         $('#d-status').selectmenu('refresh', true);
@@ -144,7 +146,9 @@ function defects() {
 
 
     function updateDefect(id) {
+        console.log($('#d-type').val());
         var data = {
+            id: id,
             sid: $('#d-status').val(),
             summary: $('#d_summary').val(),
             description: $('#d-description').val(),
@@ -155,7 +159,8 @@ function defects() {
             sevid: $('#d-severity').val(),
             comments: $('#d-comments').val(),
             fid: $('#d-feature').val(),
-            tid: $('#d-type').val()
+            tid: $('#d-type').val(),
+            history: defects[selectedId].history
         }
         $.ajax({
             type: "POST",
@@ -166,7 +171,9 @@ function defects() {
             }
         })
         data.id = id;
-        data.rid = sessionUser;
+        data.rname = $('#d-reporter').val();
+        data.sev = $('#d-severity').val();
+        data.type = $('#d-type').val();
         defects[id] = data;
         $('#d-list').DataTable().row( $('#defect_'+id)).remove().draw();
         $('#d-list').DataTable().row.add({
@@ -175,8 +182,8 @@ function defects() {
             "status":   status[data.sid],
             "sev": severity[data.sevid],
             "pid": data.pid,
-            "rname": user[sessionUser],
-            "dname":user[data.did],
+            "rname": defects[selectedId].rname,
+            "dname": user[data.did],
             "bdetected" :data.bdetected,
             "bfixed"    :data.bfixed,
             "type"     :type[data.tid],
@@ -185,20 +192,22 @@ function defects() {
         $('#d-l-comments').val(data.comments);
         $('#d-l-description').val(data.description);
         $('#d-l-summary').val(data.summary);
+        $('#d-l-summary').val(defects[selectedId].history);
         $('#defect_'+id).addClass('selected');
     }
 
 
     function showForm() {
+        var history = '';
+        handleDefectChanges()
         $('#newDefect').dialog({
             modal: true,
             dialogClass: 'defect-dialog',
             buttons: {
                 Insert:{
                     click: function(){
-                        console.log('called insert comment');
                         var comment = $('#d-comments').val();
-                        $('#d-comments').val(getDate() + comment);
+                        $('#d-comments').val(prepareCommentData() + comment);
                     },
                     text: "Insert comment"
                 },
@@ -214,12 +223,14 @@ function defects() {
                        $('#d-notification').remove();
                        if ($('#d_id').val() == '') {
                             postDefect();
-                           $(".ui-dialog-buttonpane").append("<div id='d-notification'>Defect successfuly Submitted.</div>");
+                           $(".ui-dialog-buttonpane").append("<div id='d-notification'>Defect successfully Submitted.</div>");
                            showNewDefectInfo()
                            $('#btn_submit').attr("disabled", true).addClass("ui-state-disabled");
                        } else {
+                        if(!defects[selectedId].history){defects[selectedId].history=''};
+                        defects[selectedId].history += history;
                         updateDefect($('#d_id').val());
-                        $(".ui-dialog-buttonpane").append("<div id='d-notification'>Defect successfuly Updated.</div>");
+                        $(".ui-dialog-buttonpane").append("<div id='d-notification'>Defect successfully Updated.</div>");
                         $('#btn_submit').attr("disabled", true).addClass("ui-state-disabled");
                        }
                     },
@@ -231,16 +242,58 @@ function defects() {
             heigth: "40%"
         })
 
+
         maxLength();
 
         $('#btn_submit').attr("disabled", true).addClass("ui-state-disabled");
         $('#newDefect').children().each(function (i, v) {
+            $(v).on('input', function(){
+                 $('#btn_submit').attr("disabled", false).removeClass("ui-state-disabled");
+                $('#d-notification').remove();
+            });
+        });
+        $('#newDefect').children().each(function (i, v) {
             $(v).on('change', function(){
-                console.log(v + ' changed.')
                 $('#btn_submit').attr("disabled", false).removeClass("ui-state-disabled");
                 $('#d-notification').remove();
             });
         });
+
+        function handleDefectChanges() {
+            $('[id^="d-"]').on("selectmenuchange", function (event, ui) {
+                var changedField, changedFrom, changedTo;
+                switch (ui.item.element[0].parentElement.getAttribute('id')) {
+                    case 'd-status':
+                        changedField = 'Status';
+                        changedFrom = status[defects[selectedId].sid];
+                        break;
+                    case 'd-severity':
+                        changedField = 'Severity';
+                        changedFrom = severity[defects[selectedId].sevid];
+                        break;
+                    case 'd-priority':
+                        changedField = 'Priority';
+                        changedFrom = defects[selectedId].pid;
+                        break;
+                    case 'd-developer':
+                        changedField = 'Developer';
+                        changedFrom = user[defects[selectedId].did];
+                        break;
+                    case 'd-type':
+                        changedField = 'Type';
+                        changedFrom = type[defects[selectedId].tid];
+                        break;
+                    case 'd-feature':
+                        changedField = 'Feature';
+                        changedFrom = feature[defects[selectedId].fid];
+                        break;
+                }
+                changedTo = ui.item.label;
+                history += '----------- \n' + prepareCommentData() + ' Changed "' + changedField + '" from:' + changedFrom + ' to:' + changedTo + '\n';
+                $('#btn_submit').attr("disabled", false).removeClass("ui-state-disabled");
+                $('#d-notification').remove();
+            });
+        }
         $("#d-status").selectmenu();
         $("#d-severity").selectmenu();
         $("#d-priority").selectmenu();
@@ -300,7 +353,6 @@ function defects() {
                     entry.sev = severity[entry.sevid];
                     entry.type = type[entry.tid];
                     entry.feature = feature[entry.fid];
-
                 })
 
                 function fillArray(pv, cd, ci, arr, obj){
@@ -373,13 +425,13 @@ function defects() {
         }
     }
 
-    function getDate() {
+    function prepareCommentData() {
         var d = new Date();
         var min = '' + d.getMinutes();
         var hour = '' + d.getHours()
         if (min.length < 2) min = '0' + min;
         if (hour.length < 2) hour = '0' + hour;
-        return user[sessionUser] + ' ' + d.getFullYear() + '-' + (parseInt(d.getMonth()) + 1) + '-' + d.getUTCDate() + ' ' + hour + ':' + min + ':\n\n\n';
+        return user[sessionUser] + ' ' + d.getFullYear() + '-' + (parseInt(d.getMonth()) + 1) + '-' + d.getUTCDate() + ' ' + hour + ':' + min + ':\n';
     }
 }
 

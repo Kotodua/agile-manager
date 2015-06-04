@@ -19,6 +19,7 @@ function Defects(){
 Defects.prototype = {
     updateDefect: function(req, res){
         var arrayOrPromises = [dbq.doSet("UPDATE defect set ? WHERE id = ?", [req.body, req.params.id])];
+        console.log(req.body.history);
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
             res.send('ok');
         });

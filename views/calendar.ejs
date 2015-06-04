@@ -34,7 +34,9 @@
                         <option value="HalfDay Leave na">Half-Day Leave(NA)</option>
                         <option value="Leave na">Leave(NA)</option>
                         <option value="Vacation na">Vacation(NA)</option>
-                    <% if(req.session.admin == 'Y'){ %>
+                        <option value="L3 day">L3 Day</option>
+                        <option value="L3 Leave">L3 Leave</option>
+                    <% if(req.session.admin == 'SA'){ %>
                         <option value="Holiday">Holiday</option>
                         <option value="HalfDay Leave">Half-Day Leave</option>
                         <option value="Leave">Leave</option>
