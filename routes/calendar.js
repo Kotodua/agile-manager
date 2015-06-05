@@ -71,6 +71,16 @@ function Calendar(){
             res.end();
         });
     }
+
+    this.getL3Information = function(req, res, id){
+        var l3Days = "SELECT COUNT(*) FROM calendar WHERE uid = "+id+" AND  type = 'L3 Day'";
+        var l3Leaves = "SELECT COUNT(*) FROM calendar WHERE uid = "+id+" AND  type = 'L3 Leave'";
+        var arrayOrPromises = [dbq.doSet(l3Days), dbq.doSet(l3Leaves)];
+        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
+            res.send(arrayOfResults);
+            res.end();
+        });
+    }
 }
 
 

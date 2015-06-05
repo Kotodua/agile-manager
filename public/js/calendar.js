@@ -4,8 +4,6 @@
 function calendar(){
     mainURL = config.url+"/api/calendar";
 
-
-
     var dd = DateFormat.format.date(new Date(), "yyyy-MM-dd");
     var dd_s = dd.split('-');
     $('#s_status').val(dd_s[0]+'-'+dd_s[1]+'-'+'01');
@@ -48,43 +46,60 @@ function calendar(){
     })
 }
 
-function updateDateForPerson(){
-    var id = $('#s_user option:selected').prop('id').split('_');
-    var date = new Date($('#date').val());
-    var dd = DateFormat.format.date(date, "dd-MM");
+function updateDateForPerson(t, leaveType){
+
+    var id, leaveDateId;
+
+    if($('#s_user option:selected').prop('id').split('_') == 'default"'){
+        var mainId = $('#'+t.id).prop('id').split('_');
+        id = mainId[1];
+        var date = mainId[2].split('-');
+        leaveDateId =  new Date(date[2], date[1]-1, date[0]);
+        var leaveDate = DateFormat.format.date(leaveDateId, "dd-MM-yyyy");
+        var leaveDateDB = DateFormat.format.date(leaveDateId, "yyyy-MM-dd");
+    } else {
+        id = $('#s_user option:selected').prop('id').split('_');
+        id = id[1];
+        leaveDateId = new Date($('#date').val());
+        var leaveDate = DateFormat.format.date(leaveDateId, "dd-MM-yyyy");
+        var leaveDateDB = DateFormat.format.date(leaveDateId, "yyyy-MM-dd");
+    }
+
+    if(!leaveType){var leaveType = $('#leave_type option:selected').text()}
+
     $.ajax({
         type: "POST",
-        data: {uid: id[1], leaveType: $('#leave_type option:selected').text(), date: $('#date').val()},
+        data: {uid: id, leaveType: leaveType, date: leaveDateDB},
         dataType: "json",
         url: mainURL+'/add',
         success: function (data) {
         }
     })
-    console.log($('#leave_type option:selected').text());
-    switch($('#leave_type option:selected').text()){
+
+    switch(leaveType){
         case 'Half-Day Leave(NA)':
-            $('#day_'+id[1]+'_'+dd).addClass('day-half-na');
+            $('#day_'+id+'_'+leaveDate).addClass('day-half-na');
             break;
         case 'Leave(NA)':
-            $('#day_'+id[1]+'_'+dd).addClass('day-leave-na');
+            $('#day_'+id+'_'+leaveDate).addClass('day-leave-na');
             break;
         case 'Vacation(NA)':
-            $('#day_'+id[1]+'_'+dd).addClass('day-vacation-na');
+            $('#day_'+id+'_'+leaveDate).addClass('day-vacation-na');
             break;
         case 'Half-Day Leave':
-            $('#day_'+id[1]+'_'+dd).addClass('day-half');
+            $('#day_'+id+'_'+leaveDate).addClass('day-half');
             break;
         case 'Leave':
-            $('#day_'+id[1]+'_'+dd).addClass('day-leave');
+            $('#day_'+id+'_'+leaveDate).addClass('day-leave');
             break;
         case 'Vacation':
-            $('#day_'+id[1]+'_'+dd).addClass('day-vacation');
+            $('#day_'+id+'_'+leaveDate).addClass('day-vacation');
             break;
         case 'L3 Day':
-            $('#day_'+id[1]+'_'+dd).addClass('day-l3');
+            $('#day_'+id+'_'+leaveDate).addClass('day-l3');
             break;
         case 'L3 Leave':
-            $('#day_'+id[1]+'_'+dd).addClass('day-l3-leave');
+            $('#day_'+id+'_'+leaveDate).addClass('day-l3-leave');
             break;
     }
 
@@ -125,6 +140,7 @@ function drawCalendar(){
             /**Drawing cells*/
             for (var i = 0; i < 32; i++) {
                 var dd = DateFormat.format.date(date, "dd-MM");
+                var ddId = DateFormat.format.date(date, "dd-MM-yyyy");
                 var e = DateFormat.format.date(date, "E");
                 if (DateFormat.format.date(date, 'dd-MM')  == DateFormat.format.date(new Date(), 'dd-MM')) {
                     $('#dd').append('<td class="today">' + dd + '</td>');
@@ -148,10 +164,10 @@ function drawCalendar(){
                     if (i == 0) {
                         $('#table_calendar').append('<tr team='+teamId+' class="row-normal" id="uid_' + userId + '"><td class="user_name">' + userName +' '+userSName+ '</td></tr>');
                     }
-                    $('#uid_' + userId).append('<td class="td-border" id="day_'+userId+'_'+dd+'"></td>');
+                    $('#uid_' + userId).append('<td class="td-border" id="day_'+userId+'_'+ddId+'"></td>');
                     if (e == 'Sun' || e == 'Sat'){
-                        $('#day_'+userId+'_'+dd).addClass('day-weekend');
-                        $('#day_'+userId+'_'+dd).attr('h', 0);
+                        $('#day_'+userId+'_'+ddId).addClass('day-weekend');
+                        $('#day_'+userId+'_'+ddId).attr('h', 0);
                     }
                 }
                 date.setDate(date.getDate() + 1);
@@ -159,7 +175,7 @@ function drawCalendar(){
 
             /**Adding data and colors*/
             for (var i = 0; i < statuses[0].length; i++){
-                var leaveDate = DateFormat.format.date(statuses[0][i].date, "dd-MM");
+                var leaveDate = DateFormat.format.date(statuses[0][i].date, "dd-MM-yyyy");
                 var leaveUserId = statuses[0][i].uid;
                 var leaveType = statuses[0][i].type;
                 $('#day_'+leaveUserId+'_'+leaveDate).append('<div title="'+leaveType+'">`</div>');
@@ -253,7 +269,6 @@ function drawCalendar(){
             $('td[id^="day_"]').contextMenu('myMenu1', {
                 bindings: {
                     'delete': function(t) {
-                        //alert('Trigger was '+t.id+'\nAction was Delete');
                         var id = $('#'+t.id).prop('id').split('_');
                         var date = id[2].split('-');
                         alert(id+' '+date[0]+' '+date[1]);
@@ -266,49 +281,33 @@ function drawCalendar(){
                                 $('#'+t.id).empty();
                             }
                         })
+                    },
+                    'day-hd-leave-na': function(t) {
+                        updateDateForPerson(t, "Half-Day Leave(NA)");
+                    },
+                    'day-hd-leave': function(t) {
+                        updateDateForPerson(t, "Half-Day Leave");
+                    },
+                    'day-leave-na': function(t) {
+                        updateDateForPerson(t, "Leave(NA)");
+                    },
+                    'day-leave': function(t) {
+                        updateDateForPerson(t, "Leave");
+                    },
+                    'day-l3': function(t) {
+                        updateDateForPerson(t, "L3 Day");
+                    },
+                    'day-l3-leave': function(t) {
+                        updateDateForPerson(t, "L3 Leave");
+                    },
+                    'day-vacation-na': function(t) {
+                        updateDateForPerson(t, "Vacation(NA)");
+                    },
+                    'day-vacation': function(t) {
+                        updateDateForPerson(t, "Vacation");
                     }
                 }
             });
         }
     })
 }
-
-
-
-
-
-
-
-
-/*$('body').on("click",'td[id*="day_"]', function(){
- var clickedCellLeaveType = $(this).prop("class");
- var clickedCellDate = $(this).prop("id");
- switch(clickedCellLeaveType) {
- case 'day-half-na':
-
- break;
- case 'day-leave-na':
-
- break;
- case 'day-vacation-na':
-
- break;
- default:
- break;
- }
-
-
- console.log(a_property);
- });*/
-
-/*
-function updateLeaveFromNA(uid, date, leaveType){
-    $.ajax({
-        type: "POST",
-        data: {uid: uid, leaveType: leaveType, date: date},
-        dataType: "json",
-        url: mainURL+'/approve',
-        success: function (data) {
-        }
-    })
-}*/

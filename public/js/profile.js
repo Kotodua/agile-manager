@@ -32,6 +32,16 @@ function profile(){
         }
     })
 
+
+    $.ajax({
+        type: "GET",
+        dataType: "html",
+        url: config.url+'/api/calendar/getL3Information',
+        success: function (data) {
+            $('#user_info').append('<div>'+data+'</div>');
+        }
+    })
+
     $.ajax({
         type: "GET",
         dataType: "html",

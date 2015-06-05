@@ -88,6 +88,7 @@ app.post('/api/teams/add', function(req, res){team.createTeam(req, res, req.body
 app.post('/api/calendar/add', function(req, res){calendar.addDateInfo(req, res, req.body)});
 app.get('/api/calendar/get', function(req, res){calendar.getMonthInfo(req, res)});
 app.delete('/api/calendar/:id/:month/:day', function(req, res){calendar.deleteDate(req, res, req.params.id, req.params.month, req.params.day)});
+app.get('/api/calendar/getL3Information', function(req, res){calendar.getL3Information(req, res, req.session.user)});
 
 //------------------------------ TEST LAB
 app.get('/api/testlab/getCaseTree', function(req, res){tl.getCaseTree(req, res)});
