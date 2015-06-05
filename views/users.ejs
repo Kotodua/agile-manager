@@ -28,7 +28,7 @@
                 <td class="td-border"><%=users[i].pname%></td>
                 <td class="td-border"><%=users[i].role%></td>
                 <td class="td-border">
-                    <% if(req.session.admin == 'Y'){ %>
+                    <% if(req.session.admin == 'Y' || req.session.admin == 'SA'){ %>
                     <button id="edit_<%=users[i].id%>" class="a-inside edit">Edit</button>
                     <button id="delete_<%=users[i].id%>" class="a-inside delete">Delete</button>
                     <%}%>

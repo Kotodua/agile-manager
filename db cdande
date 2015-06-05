@@ -1,0 +1,5 @@
+b #125
+// create new col in the defects tab and call it history - type text
+ALTER TABLE `defect` ADD `history` TEXT NOT NULL ;
+
+ALTER TABLE `user` CHANGE `admin` `admin` VARCHAR(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
