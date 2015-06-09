@@ -38,7 +38,8 @@ function profile(){
         dataType: "html",
         url: config.url+'/api/calendar/getL3Information',
         success: function (data) {
-            $('#user_info').append('<div>'+data+'</div>');
+            var results = JSON.parse(data);
+            $('#user_info').append('<div>Available L3 Leaves: '+(results[0][0]["COUNT(*)"]-results[1][0]["COUNT(*)"])+'</div>');
         }
     })
 

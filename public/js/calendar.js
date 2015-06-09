@@ -298,7 +298,20 @@ function drawCalendar(){
                         updateDateForPerson(t, "L3 Day");
                     },
                     'day-l3-leave': function(t) {
-                        updateDateForPerson(t, "L3 Leave");
+                        $.ajax({
+                            type: "GET",
+                            dataType: "html",
+                            url: config.url+'/api/calendar/getL3Information',
+                            success: function (data) {
+                                var results = JSON.parse(data);
+                                if ((results[0][0]["COUNT(*)"]-results[1][0]["COUNT(*)"])){
+                                    updateDateForPerson(t, "L3 Leave");
+                                } else {
+                                    alert('You do not have L3 Leaves. Please contact your administrator.')
+                                }
+                            }
+                        })
+
                     },
                     'day-vacation-na': function(t) {
                         updateDateForPerson(t, "Vacation(NA)");
