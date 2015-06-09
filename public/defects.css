@@ -57,6 +57,8 @@ th {
     color: #fff;
     text-align: center;
     vertical-align:middle;
+    padding-right: 4px;
+    border-right: 4px;
 }
 
 #d-list tr td {
@@ -80,9 +82,9 @@ input#d-l-summary { margin-bottom:3px; width:79%; padding: .2em; }
 
 
 body { font-size: 80%; }
-label, input { display:block; }
+/*label, input { display:block; }*/
 
-input.text { margin-bottom:3px; width:50%;}
+input.text { margin-bottom:3px; width:70%;}
 select { margin-bottom:3px; width:100%; padding: .2em; }
 textarea { margin-bottom:3px; width:100%; padding: .2em; }
 fieldset { padding:0; border:0; margin-top:10px; }

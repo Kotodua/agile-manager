@@ -375,6 +375,7 @@ function defects() {
                 table = $('#d-list').DataTable({
                     "scrollY":        "400px",
                     "scrollCollapse": true,
+                    "sDom": 'zrtSpi',
                     data: def,
                     columns: [
                         { data: 'id'},
@@ -394,8 +395,9 @@ function defects() {
                     $(nRow).attr("id",'defect_' + aData.id);
                     return nRow;
                     }
-
                 });
+                var colvis = new $.fn.dataTable.ColVis( table );
+                $( colvis.button() ).insertAfter('div.dataTables_filter');
             }
         })
     }
