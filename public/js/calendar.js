@@ -25,9 +25,11 @@ function calendar(){
 
     $("body").on("mouseout",'tr[id^="uid_"]', function(){
         $(this).prop("class", a_property);
-
     });
 
+    $("body").on("mouseout",'tr[id^="uid_"]', function(){
+        $(this).prop("class", a_property);
+    });
 
     $('#s_user').on("change", function(){
         $('[id*="uid_"]').attr('class', 'row-normal');
