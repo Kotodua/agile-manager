@@ -215,7 +215,7 @@ function drawCalendar(){
                         break;
                     case 'L3 Leave':
                         $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-l3-leave');
-                        $('#day_'+leaveUserId+'_'+leaveDate).attr('h', 0);
+                        $('#day_'+leaveUserId+'_'+leaveDate).attr('h', 8);
                         break;
                     case '':
                         $('#day_'+leaveUserId+'_'+leaveDate).addClass('day-work');
@@ -235,28 +235,28 @@ function drawCalendar(){
                     if (i < 10){
                         i = '0'+i;
                     }
-                    var month = DateFormat.format.date(date, "MM");
+                    var monthAndYear = DateFormat.format.date(date, "MM-yyyy");
                     var userId = statuses[1][j].id;
                     if (i == midDay) {
-                        if ($('#day_'+userId+'_'+i+'-'+month).attr('h')){
-                            timeCount += parseInt($('#day_'+userId+'_'+i+'-'+month).attr('h'));
+                        if ($('#day_'+userId+'_'+i+'-'+monthAndYear).attr('h')){
+                            timeCount += parseInt($('#day_'+userId+'_'+i+'-'+monthAndYear).attr('h'));
                         } else {
                             timeCount += 8;
                         }
-                        $('#day_' + userId + '_' + i + '-' + month).append('<div title="time">' + timeCount + '</div>');
+                        $('#day_' + userId + '_' + i + '-' + monthAndYear).append('<div title="time">' + timeCount + '</div>');
                         timeCount = 0;
                     } else if (i == lastDay) {
-                        if ($('#day_'+userId+'_'+i+'-'+month).attr('h')){
-                            timeCount += parseInt($('#day_'+userId+'_'+i+'-'+month).attr('h'));
+                        if ($('#day_'+userId+'_'+i+'-'+monthAndYear).attr('h')){
+                            timeCount += parseInt($('#day_'+userId+'_'+i+'-'+monthAndYear).attr('h'));
                         } else {
                             timeCount += 8;
                         }
-                        $('#day_'+userId+'_'+i+'-'+month).append('<div title="time">'+timeCount+'</div>');
+                        $('#day_'+userId+'_'+i+'-'+monthAndYear).append('<div title="time">'+timeCount+'</div>');
                         timeCount = 0;
                         i = 32;
                     } else {
-                        if ($('#day_'+userId+'_'+i+'-'+month).attr('h')){
-                            timeCount += parseInt($('#day_'+userId+'_'+i+'-'+month).attr('h'));
+                        if ($('#day_'+userId+'_'+i+'-'+monthAndYear).attr('h')){
+                            timeCount += parseInt($('#day_'+userId+'_'+i+'-'+monthAndYear).attr('h'));
                         } else {
                             timeCount += 8;
                         }
