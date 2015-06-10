@@ -2,7 +2,7 @@ function profile(){
     mainURL = config.url+"/api/users";
     var today = new Date();
     var todayDate = today.getDate() +'-'+today.getMonth()+'-'+today.getFullYear();
-
+    var tomorrowDate = (today.getDate()+1) +'-'+today.getMonth()+'-'+today.getFullYear();
 
     $('.toggle-content').hide();
 
@@ -23,14 +23,17 @@ function profile(){
             }
         })
 
+    $('#user_info').append('<h3>Tasks Breaks</h3></br><div id="dashboard"></div>');
+
     $.ajax({
         type: "GET",
         dataType: "html",
         url: mainURL+'/get2',
         success: function (data) {
-            $('#user_info').append('<div>'+data+'</div>');
+            $('#user_info').append('<h3>Current User</h3></br><div>'+data+'</div>');
         }
     })
+
 
 
     $.ajax({
@@ -39,7 +42,7 @@ function profile(){
         url: config.url+'/api/calendar/getL3Information',
         success: function (data) {
             var results = JSON.parse(data);
-            $('#user_info').append('<div>Available L3 Leaves: '+(results[0][0]["COUNT(*)"]-results[1][0]["COUNT(*)"])+'</div>');
+            $('#user_info').append('<h3>L3 Data</h3></br><div>Available L3 Leaves: '+(results[0][0]["COUNT(*)"]-results[1][0]["COUNT(*)"])+'</div>');
         }
     })
 
@@ -49,9 +52,11 @@ function profile(){
         url: config.url+"/api/task/get",
         success: function (tasks) {
             var data = JSON.parse(tasks);
+            $('#tasks_future').append('<table id="tl_table_future" class="tasks"></table>');
+            $('#tl_table_future').append('<tr><td>Title</td><td>Date</td><td>Duration</td><td>Status</td><td>Action</td></tr>')
             $('#tasks_today').append('<table id="tl_table_today" class="tasks"></table>');
             $('#tl_table_today').append('<tr><td>Title</td><td>Date</td><td>Duration</td><td>Status</td><td>Action</td></tr>')
-            $('#tasks_other').append('<table id="tl_table_other" class="tasks"></table>');
+            $('#tasks_old').append('<table id="tl_table_other" class="tasks"></table>');
             $('#tl_table_other').append('<tr><td>Title</td><td>Date</td><td>Duration</td><td>Status</td><td>Action</td></tr>')
 
             for(var i=0; i < data[0].length; i++){
@@ -59,12 +64,15 @@ function profile(){
                 var currentDate = myDate.getDate() +'-'+myDate.getMonth()+'-'+myDate.getFullYear();
                 if(todayDate == currentDate) {
                     appendTask(data[0][i], '#tl_table_today');
+                } else if (tomorrowDate == currentDate) {
+                    appendTask(data[0][i], '#tl_table_future');
                 } else {
                     appendTask(data[0][i], '#tl_table_other');
                 }
             }
         }
     })
+
 
     $('body').on("click", "#delete"  , function() {
         var parentId = this.parentNode.parentNode.id;
@@ -98,6 +106,7 @@ function profile(){
         myCount.stop();
         $('#main_title').html('Agile Manager');
     })
+
 
     $('body').on("click", "#start"  , function(){
         var parentId = this.parentNode.parentNode.id;
@@ -146,11 +155,57 @@ function profile(){
         myCount = myCounter;
 
         myCounter.start();
-
-
     })
 
 
+
+    $.ajax({
+        type: "GET",
+        dataType: "html",
+        url: config.url+"/api/task/getBreaks",
+        success: function (data) {
+            var breaks = JSON.parse(data);
+            console.log(breaks)
+
+            var freqData=[];
+
+            printResult = function(date, lRes, mRes, hRes){
+                var obj = {}
+                obj.State = date;
+                var freq = {};
+                freq.low = lRes;
+                freq.mid = mRes;
+                freq.high = hRes;
+                obj.freq = freq;
+                freqData.push(obj);
+            }
+
+
+           for(var i=1; i<31; i++){
+                getByValue(breaks, printResult, i);
+           }
+
+            dashboard('#dashboard',freqData);
+
+            function getByValue(arr, callback, day) {
+                var value = new Date();
+                var lRes = 0, mRes = 0, hRes = 0, currentDate = new Date();
+                arr[0].forEach(function(o){
+                    var date = new Date(o.date);
+                    if (date.getDate() == day && date.getFullYear() == value.getFullYear() && date.getMonth() == value.getMonth()){
+                        console.log(date.getHours());
+                        if (date.getHours() >= 6 && date.getHours() <= 11){lRes++}
+                        else if (date.getHours() > 11 && date.getHours() < 17){mRes++}
+                        else if (date.getHours() >= 17){hRes++}
+
+                        currentDate = date.getDate()+'-'+(date.getMonth()+1);
+                    }
+                });
+                callback(currentDate, lRes, mRes, hRes);
+                //return result ? result[0] : null; // or undefined
+            }
+        }
+    })
 
 
     $('#new_task').append('<button id="task_create">Create</button>');
@@ -185,16 +240,20 @@ function profile(){
                 var currentDate = myDate.getDate() +'-'+myDate.getMonth()+'-'+myDate.getFullYear();
                 if(todayDate == currentDate) {
                     appendTask(data[1][0], '#tl_table_today');
+                } else if (tomorrowDate == currentDate) {
+                    appendTask(data[1][0], '#tl_table_future');
                 } else {
                     appendTask(data[1][0], '#tl_table_other');
                 }
+
+
             }
         })
     })
 
     appendTask = function(task, place){
         var myDate = new Date(task.date);
-        var currentDate = myDate.getDate() +'-'+myDate.getMonth()+'-'+myDate.getFullYear();
+        var currentDate = myDate.getDate() +'-'+(myDate.getMonth()+1)+'-'+myDate.getFullYear();
         $(place).append('<tr id="' + task.id + '"><td>' + task.title + '</td>' +
             '<td>' + currentDate + '</td>' +
             '<td id="duration_' + task.id + '">' + task.duration + '</td>' +

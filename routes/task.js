@@ -36,9 +36,18 @@ function Task(){
         });
     }
 
+    this.getBreaks = function(req, res){
+        console.log('getting breaks');
+        var arrayOrPromises = [dbq.doSet("SELECT * FROM pomodoro_breaks WHERE uid=? ORDER BY id DESC",req.session.user)];
+        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
+            res.type("text/json");
+            res.send(arrayOfResults);
+        });
+    }
+
     this.deleteTask = function(req, res){
         var id = req.params.id;
-        var arrayOrPromises = [dbq.doSet("DELETE FROM pomodoro_tasks WHERE id=?", [parseInt(id)])];
+        var arrayOrPromises = [dbq.doSet("DELETE FROM pomodoro_tasks WHERE id=?", [parseInt(id)]), dbq.doSet("DELETE * FROM pomodoro_breaks WHERE tid=?", [parseInt(id)])];
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
             res.type("text/json");
             res.send('success');

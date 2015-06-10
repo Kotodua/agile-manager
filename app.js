@@ -116,6 +116,7 @@ app.post('/api/defects/postDefect/:id', function(req, res){d.updateDefect(req, r
 //------------------------------ TASKS
 app.post('/api/task/create', function(req, res){pomodoro.createTask(req, res, req.body)});
 app.get('/api/task/get', function(req, res){pomodoro.getTasks(req, res)});
+app.get('/api/task/getBreaks', function(req, res){pomodoro.getBreaks(req, res)});
 app.post('/api/task/change_status/:id', function(req, res){pomodoro.changeTaskStatus(req, res)});
 app.delete('/api/task/delete/:id', function(req, res){pomodoro.deleteTask(req, res)});
 

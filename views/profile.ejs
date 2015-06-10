@@ -2,12 +2,18 @@
 
 <head>
     <script type="text/javascript"  src="/js/profile.js"></script>
+    <link rel="stylesheet" href="/vendor/jquery-ui-1.11.4/jquery-ui.css">
+    <script src="/vendor/jquery-ui-1.11.4/jquery-ui.js"></script>
+    <script src="/vendor/dashboard/dashboard.js"></script>
+    <link rel="stylesheet" href="/vendor/dashboard/dashboard.css">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
 </head>
 
     <div class="toggle-unit">
         <h2 class="toggle-control">User Info</h2>
         <hr>
         <div id="user_info" class="toggle-content">
+
         </div><!-- /.toggle-content -->
     </div><!-- /.toggle.unit -->
     <div class="toggle-unit">
@@ -27,19 +33,21 @@
     <div class="toggle-unit">
         <h2 class="toggle-control">Tasks</h2>
         <hr>
-
         <div id="tasks" class="toggle-content">
-
-            <div id="tasks_timer" class="timer"></div><br>
-            <h3>Today tasks</h3>
-            <div id="tasks_today" class="tasksTables"></div><br>
             <div id="new_task"></div>
-            <h3>Other tasks</h3>
-            <div id="tasks_other" class="tasksTables"></div><br><br>
-
+            <div id="tasks_timer" class="timer"></div><br>
+            <h3>Tomorrow tasks</h3>
+            <div id="tasks_future" class="tasksTables"></div><br>
+            <h2>Today tasks</h2>
+            <div id="tasks_today" class="tasksTables"></div><br>
+            <h3>Old tasks</h3>
+            <div id="tasks_old" class="tasksTables"></div><br><br>
         </div>
+
         <!-- /.toggle-content -->
     </div><!-- /.toggle.unit -->
+
+
 
 </div>
 </body>
