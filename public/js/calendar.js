@@ -1,13 +1,28 @@
 /**
  * Created by k.allakhvierdov on 11/30/2014.
  */
+
+var socket;
+
 function calendar(){
     mainURL = config.url+"/api/calendar";
+
+    socket = io.connect(config.url);
 
     var dd = DateFormat.format.date(new Date(), "yyyy-MM-dd");
     var dd_s = dd.split('-');
     $('#s_status').val(dd_s[0]+'-'+dd_s[1]+'-'+'01');
     drawCalendar();
+
+    socket.on('get_message', function (data) {
+        changeCell(data.id, data.leaveDate, data.leaveType);
+    });
+
+    socket.on('delCellInfo', function (data) {
+        $('#'+data.id).prop('class', 'td-border');
+        $('#'+data.id).empty();
+    });
+
 
     $('#b_update').on("click", function () {
         updateDateForPerson()
@@ -69,6 +84,57 @@ function updateDateForPerson(t, leaveType){
 
     if(!leaveType){var leaveType = $('#leave_type option:selected').text()}
 
+    switch(leaveType){
+        case 'Half-Day Leave(NA)':
+            postDateUpdate(id, leaveType, leaveDateDB);
+            socket.emit('news', { id: id, leaveType: 'day-half-na', leaveDate: leaveDate});
+            changeCell(id, leaveDate, 'day-half-na');
+            break;
+        case 'Leave(NA)':
+            socket.emit('news', { id: id, leaveType: 'day-leave-na', leaveDate: leaveDate});
+            changeCell(id, leaveDate, 'day-leave-na');
+            postDateUpdate(id, leaveType, leaveDateDB);
+            break;
+        case 'Vacation(NA)':
+            socket.emit('news', { id: id, leaveType: 'day-vacation-na', leaveDate: leaveDate});
+            changeCell(id, leaveDate, 'day-vacation-na');
+            postDateUpdate(id, leaveType, leaveDateDB);
+            break;
+        case 'Half-Day Leave':
+            socket.emit('news', { id: id, leaveType: 'day-half', leaveDate: leaveDate});
+            changeCell(id, leaveDate, 'day-half');
+            postDateUpdate(id, leaveType, leaveDateDB);
+            break;
+        case 'Leave':
+            socket.emit('news', { id: id, leaveType: 'day-leave', leaveDate: leaveDate});
+            changeCell(id, leaveDate, 'day-leave');
+            postDateUpdate(id, leaveType, leaveDateDB);
+            break;
+        case 'Vacation':
+            socket.emit('news', { id: id, leaveType: 'day-vacation', leaveDate: leaveDate});
+            changeCell(id, leaveDate, 'day-vacation');
+            postDateUpdate(id, leaveType, leaveDateDB);
+            break;
+        case 'L3 Day':
+            socket.emit('news', { id: id, leaveType: 'day-l3', leaveDate: leaveDate});
+            changeCell(id, leaveDate, 'day-l3');
+            postDateUpdate(id, leaveType, leaveDateDB);
+            break;
+        case 'L3 Leave':
+            if(checkL3LeaveApply()){
+                socket.emit('news', { id: id, leaveType: 'day-l3-leave', leaveDate: leaveDate});
+                changeCell(id, leaveDate, 'day-l3-leave');
+                postDateUpdate(id, leaveType, leaveDateDB);
+            }
+            break;
+    }
+}
+
+function changeCell(id, leaveDate, leaveType){
+    $('#day_'+id+'_'+leaveDate).addClass(leaveType);
+}
+
+function postDateUpdate(id, leaveType, leaveDateDB){
     $.ajax({
         type: "POST",
         data: {uid: id, leaveType: leaveType, date: leaveDateDB},
@@ -77,35 +143,9 @@ function updateDateForPerson(t, leaveType){
         success: function (data) {
         }
     })
-
-    switch(leaveType){
-        case 'Half-Day Leave(NA)':
-            $('#day_'+id+'_'+leaveDate).addClass('day-half-na');
-            break;
-        case 'Leave(NA)':
-            $('#day_'+id+'_'+leaveDate).addClass('day-leave-na');
-            break;
-        case 'Vacation(NA)':
-            $('#day_'+id+'_'+leaveDate).addClass('day-vacation-na');
-            break;
-        case 'Half-Day Leave':
-            $('#day_'+id+'_'+leaveDate).addClass('day-half');
-            break;
-        case 'Leave':
-            $('#day_'+id+'_'+leaveDate).addClass('day-leave');
-            break;
-        case 'Vacation':
-            $('#day_'+id+'_'+leaveDate).addClass('day-vacation');
-            break;
-        case 'L3 Day':
-            $('#day_'+id+'_'+leaveDate).addClass('day-l3');
-            break;
-        case 'L3 Leave':
-            $('#day_'+id+'_'+leaveDate).addClass('day-l3-leave');
-            break;
-    }
-
 }
+
+
 
 
 function drawCalendar(){
@@ -281,6 +321,7 @@ function drawCalendar(){
                             success: function (res) {
                                 $('#'+t.id).prop('class', 'td-border');
                                 $('#'+t.id).empty();
+                                socket.emit('del', { id: t.id});
                             }
                         })
                     },
@@ -300,20 +341,9 @@ function drawCalendar(){
                         updateDateForPerson(t, "L3 Day");
                     },
                     'day-l3-leave': function(t) {
-                        $.ajax({
-                            type: "GET",
-                            dataType: "html",
-                            url: config.url+'/api/calendar/getL3Information',
-                            success: function (data) {
-                                var results = JSON.parse(data);
-                                if ((results[0][0]["COUNT(*)"]-results[1][0]["COUNT(*)"])){
-                                    updateDateForPerson(t, "L3 Leave");
-                                } else {
-                                    alert('You do not have L3 Leaves. Please contact your administrator.')
-                                }
-                            }
-                        })
-
+                        if(checkL3LeaveApply()){
+                            updateDateForPerson(t, "L3 Leave");
+                        }
                     },
                     'day-vacation-na': function(t) {
                         updateDateForPerson(t, "Vacation(NA)");
@@ -323,6 +353,23 @@ function drawCalendar(){
                     }
                 }
             });
+
+            checkL3LeaveApply = function(){
+                $.ajax({
+                    type: "GET",
+                    dataType: "html",
+                    url: config.url+'/api/calendar/getL3Information',
+                    success: function (data) {
+                        var results = JSON.parse(data);
+                        if ((results[0][0]["COUNT(*)"]-results[1][0]["COUNT(*)"])){
+                            return true;
+                        } else {
+                            alert('You do not have L3 Leaves. Please contact your administrator.')
+                            return false;
+                        }
+                    }
+                })
+            }
         }
     })
 }

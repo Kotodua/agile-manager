@@ -1,0 +1,48 @@
+<%- include layouts/header.ejs %>
+
+<head>
+    <script type="text/javascript"  src="/js/admin.js"></script>
+    <link rel="stylesheet" href="/vendor/jquery-ui-1.11.4/jquery-ui.css">
+    <script src="/vendor/jquery-ui-1.11.4/jquery-ui.js"></script>
+    <script src="/vendor/dashboard/dashboard.js"></script>
+    <link rel="stylesheet" href="/vendor/dashboard/dashboard.css">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<div class="toggle-unit">
+    <h2 class="toggle-control">Defects</h2>
+    <hr>
+    <div id="user_info" class="toggle-content">
+
+    </div><!-- /.toggle-content -->
+</div><!-- /.toggle.unit -->
+<div class="toggle-unit">
+    <h2 class="toggle-control">Stories</h2>
+    <hr>
+    <div class="toggle-content">
+        Stories list
+    </div><!-- /.toggle-content -->
+</div><!-- /.toggle.unit -->
+<div class="toggle-unit">
+    <h2 class="toggle-control">Tests</h2>
+    <hr>
+    <div class="toggle-content">
+        Tests list
+    </div><!-- /.toggle-content -->
+</div><!-- /.toggle.unit -->
+<div class="toggle-unit">
+    <h2 class="toggle-control">Tasks</h2>
+    <div class="toggle-content">
+    </div>  <!-- /.toggle-content -->
+</div><!-- /.toggle.unit -->
+
+
+
+</div>
+</body>
+<script>
+    window.onload = function() {
+        admin();
+    }
+</script>
+</html>

@@ -2,6 +2,7 @@
 <head>
     <script type="text/javascript"  src="/js/calendar.js"></script>
     <script src="/vendor/jquery.contextmenu.r2.js" type="text/javascript"></script>
+    <script src="/vendor/socket.io-client/socket.io.js"></script>
     <link rel="stylesheet" type="text/css" href="/jquery.contextMenu.css">
 </head>
 
@@ -83,17 +84,18 @@
         <li id="day-hd-leave-na">Half-Day Leave(NA)</li>
         <li id="day-leave-na">Leave(NA)</li>
         <li id="day-vacation-na">Vacation(NA)</li>
-        <li id="day-l3">L3 Day</li>
         <li id="day-l3-leave">L3 Leave</li>
         <% if(req.session.admin == 'SA'){ %>
         <li id="day-leave">Leave</li>
         <li id="day-hd-leave">Half-Day Leave</li>
         <li id="day-vacation">Vacation</li>
+        <li id="day-l3">L3 Day</li>
         <li id="delete"><img src="img/cross.png" />Delete</li>
         <%} else if(req.session.admin == 'Y'){ %>
         <li id="day-leave">Leave</li>
         <li id="day-hd-leave">Half-Day Leave</li>
         <li id="day-vacation">Vacation</li>
+        <li id="day-l3">L3 Day</li>
         <%}%>
     </ul>
 </div>

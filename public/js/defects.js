@@ -5,10 +5,12 @@
 function defects() {
     mainURL = config.url + "/api/defects";
     var defects, user, status, severity, type, feature, sessionUser, selectedId, table;
+    var socket = io.connect('http://localhost:4300');
     drawDefects();
 
 
-    $('#d-new').on("click", function () {
+
+   $('#d-new').on("click", function () {
         showForm();
         showNewDefectInfo()
     });
@@ -241,8 +243,6 @@ function defects() {
             width: "27%",
             heigth: "40%"
         })
-
-
         maxLength();
 
         $('#btn_submit').attr("disabled", true).addClass("ui-state-disabled");

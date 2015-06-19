@@ -32,8 +32,18 @@ TestLab.prototype = {
         console.log('getting info');
         var arrayOrPromises = [dbq.doSet('SELECT * FROM casetotest WHERE tid = ?', id)];
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
-            res.type("text/json");
-            res.send(arrayOfResults[0]);
+            var q = [];
+            arrayOfResults[0].forEach(function(el){
+                //console.log(JSON.parse(dbq.doSet('SELECT * FROM case_points WHERE id = ?', el.cid)));
+                q.push(dbq.doSet('SELECT * FROM case_points WHERE id = ?', el.cid));
+            })
+                Promise.all(q).then(function (arrayOfResults) {
+                    res.send(arrayOfResults)
+                })
+
+            //res.type("text/json");
+            //console.log(result)
+            //res.send(result);
         });
     },
 

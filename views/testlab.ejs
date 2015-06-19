@@ -1,16 +1,17 @@
 <%- include layouts/header.ejs %>
 
 <head>
+    <script src="/vendor/autosize.js"></script>
     <script type="text/javascript"  src="/js/testlab.js"></script>
 </head>
 
 
 <div class="page-data">
 
-    <table width="100%">
+    <table>
         <tr><!-- Row 1 -->
             <td width="20%" class="td-border">
-                <table class="table_tree"  width="100%" >
+                <table class="table_tree">
                     <tr><!-- Row 1 -->
                         <td class="td-border">
                             <input id="folder-new" type="button" value="+F">
@@ -56,7 +57,7 @@
                                 </tr>
                                 <tr><!-- Row 4 -->
                                     <td>Notes:</td><!-- Col 1 -->
-                                    <td><textarea id="test-notes" style="width: 200px"></textarea></td><!-- Col 2 -->
+                                    <td><textarea class="ta-visible" id="test-notes" style="width: 200px"></textarea></td><!-- Col 2 -->
                                 </tr>
 
                             </table>

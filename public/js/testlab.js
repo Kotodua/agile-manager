@@ -59,8 +59,7 @@ function testlab(){
     });
 
     $('body').on('click', 'textarea', function(){
-            this.rows = $(this).val().lineCount();
-
+            this.rows = $(this).val().lineCount()+1;
     })
 
     treeCase.setDragHandler(function(idMoveFrom, idMoveTo){
@@ -214,23 +213,27 @@ function testlab(){
             url: mainURL + '/'+id,
             success: function (data) {
                 var allData = JSON.parse(data);
-                $('#tc').append('<tr id=case_'+allData[0].id+'_'+increment+'></tr>');
-                $('#case_'+allData[0].id+'_'+increment).append('<th><textarea class="added" style="width: 80px" rows="1" id="case_data_'+increment+'">'+allData[0].name+'</textarea></th>');
+                drawCase(allData[0].id, allData[0].name, allData[0].steps, allData[0].expected, id)
+                autosize(document.querySelectorAll('textarea'));
+                /*$('#tc').append('<tr id=case_'+allData[0].id+'_'+increment+'></tr>');
+                $('#case_'+allData[0].id+'_'+increment).append('<th><textarea class="added" style="width: 100%" rows="1" id="case_data_'+increment+'">'+allData[0].name+'</textarea></th>');
                 $('#case_'+allData[0].id+'_'+increment).append('<th><textarea class="added" rows="1" id="case_data_'+increment+'">'+allData[0].steps+'</textarea></th>');
-                $('#case_'+allData[0].id+'_'+increment).append('<th><textarea class="added" rows="1" id="case_data_'+increment+'">'+allData[0].expected+'</textarea></th>');
-                $('#case_data_'+increment).height( $("#case_data_"+increment)[0].scrollHeight+1 );
-
-
-                /*window.setTimeout( function() {
-                    $('#case_data_'+increment).height( $('#case_data_'+increment)[0].scrollHeight+1 );
-                }, 1);
-*/
-                $('#test-name').val(allData[0].name);
+                $('#case_'+allData[0].id+'_'+increment).append('<th><textarea class="added" rows="1" id="case_data_'+increment+'">'+allData[0].expected+'</textarea></th>');*/
+                //$('#case_data_'+increment).height( $("#case_data_"+increment)[0].scrollHeight+1 );
+/*                $('#test-name').val(allData[0].name);
                 $('#test-owner').val(allData[0].owner);
                 $('#test-notes').val(allData[0].description);
-                $('#test-status option:contains('+allData[0].status+')');
+                $('#test-status option:contains('+allData[0].status+')');*/
             }
         })
+    }
+
+    function drawCase(id, name, steps, expected, increment){
+        $('#tc').append('<tr id=case_'+id+'_'+increment+'></tr>');
+        $('#case_'+id+'_'+increment).append('<th><textarea class="added" style="width: 100%" rows="1" id="case_data_'+increment+'">'+name+'</textarea></th>');
+        $('#case_'+id+'_'+increment).append('<th><textarea class="added" rows="1" id="case_data_'+increment+'">'+steps+'</textarea></th>');
+        $('#case_'+id+'_'+increment).append('<th><textarea class="added" rows="1" id="case_data_'+increment+'">'+expected+'</textarea></th>');
+        $('#case_data_'+increment).height( $("#case_data_"+increment)[0].scrollHeight+1 );
     }
 
     function getTestCases(id){
@@ -240,9 +243,13 @@ function testlab(){
             url: mainURL + '/getTestCases/'+id,
             success: function (data) {
                 var allData = JSON.parse(data);
+
                 for (var i=0; i<allData.length; i++){
-                    getCase(allData[i].cid, i);
+                    //getCase(allData[i].cid, i);
+                    drawCase(allData[i][0].id, allData[i][0].name, allData[i][0].steps, allData[i][0].expected, i)
                 }
+                autosize(document.querySelectorAll('textarea'));
+               // console.log(allData[1][0]);
             }
         })
     }

@@ -3,3 +3,9 @@ b #125
 ALTER TABLE `defect` ADD `history` TEXT NOT NULL ;
 
 ALTER TABLE `user` CHANGE `admin` `admin` VARCHAR(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+
+
+
+b #135
+// adding position col to the casetotest table
+ALTER TABLE `casetotest` ADD `position` INT NOT NULL ;

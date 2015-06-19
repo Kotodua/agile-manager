@@ -18,6 +18,9 @@ var app = express();
 var pomodoro = new Task();
 var currentTime = new Time();
 
+var server = require('http').Server(app);
+
+
 var calendar = new Calendar();
 var user = new Users();
 var team = new Teams();
@@ -44,14 +47,24 @@ app.use(session({
 setInterval(user.pingDB, 3000000);
 //setInterval(calendar.addDay, 86400000/24/60/5);
 
-app.listen(config.get('port'));
+var serv = app.listen(config.get('port'));
 console.log("Server listening on port: "+config.get('port'));
 
-//router.get('/users', function (req, res, next) {
-//    next();
-//})
-
 console.log(currentTime.getDateTime());
+
+var io = require('socket.io')(serv);
+//------------------------------ SOCKET IO
+io.on('connection', function (socket) {
+    socket.on('news', function (data) {
+        socket.broadcast.emit('get_message', data);
+        //io.sockets.emit('get_message', data) //Send message to all sockets.
+    });
+
+    socket.on('del', function (data) {
+        //io.sockets.emit('delCellInfo', data);
+        socket.broadcast.emit('delCellInfo', data);
+    });
+});
 
 
 
@@ -120,6 +133,8 @@ app.get('/api/task/getBreaks', function(req, res){pomodoro.getBreaks(req, res)})
 app.post('/api/task/change_status/:id', function(req, res){pomodoro.changeTaskStatus(req, res)});
 app.delete('/api/task/delete/:id', function(req, res){pomodoro.deleteTask(req, res)});
 
+//------------------------------ ADMIN
+//////
 
 app.use(function(req, res, next){
     if (req.session.user){
@@ -147,9 +162,11 @@ app.use(function(req, res, next){
             calendar.getUsers(req, res)
         } else if (req.url == '/profile'){
             console.log(currentTime.getDateTime()+' <--- Request GET /profile ' + req.session.user);
-            res.render('profile');
-        }
-        else{
+            res.render('profile', {header: req});
+        } else if (req.url == '/admin') {
+            console.log(currentTime.getDateTime() + ' <--- Request GET /admin ' + req.session.user);
+            res.render('admin');
+        } else {
             next();
         }
     }else {

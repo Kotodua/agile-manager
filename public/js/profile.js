@@ -30,7 +30,16 @@ function profile(){
         dataType: "html",
         url: mainURL+'/get2',
         success: function (data) {
-            $('#user_info').append('<h3>Current User</h3></br><div>'+data+'</div>');
+            var user = JSON.parse(data);
+            var userInfo = user.users[0]
+            $('#user_info').append('<h3>Current User</h3></br>');
+            $('#user_info').append('<div>id:      '+userInfo.id+'</div></br>');
+            $('#user_info').append('<div>name:    '+userInfo.name+'</div></br>');
+            $('#user_info').append('<div>sname:   '+userInfo.sname+'</div></br>');
+            $('#user_info').append('<div>pname:   '+userInfo.pname+'</div></br>');
+            $('#user_info').append('<div>role:    '+userInfo.role+'</div></br>');
+            $('#user_info').append('<div>admin:   '+userInfo.admin+'</div></br>');
+            $('#user_info').append('<div>team id: '+userInfo.tid+'</div></br>');
         }
     })
 
@@ -169,15 +178,19 @@ function profile(){
 
             var freqData=[];
 
-            printResult = function(date, lRes, mRes, hRes){
+            printResult = function(date, lRes, mRes, hRes, nRes){
                 var obj = {}
                 obj.State = date;
                 var freq = {};
-                freq.low = lRes;
-                freq.mid = mRes;
-                freq.high = hRes;
+                freq['Morning(5..12)'] = lRes;
+                freq['Day(12..17)'] = mRes;
+                freq['Evening(17..0)'] = hRes;
+                freq['Night(0..5)'] = nRes;
                 obj.freq = freq;
-                freqData.push(obj);
+                if(lRes > 0 || mRes > 0 || hRes > 0 || nRes > 0){
+                    freqData.push(obj);
+                }
+
             }
 
 
@@ -189,19 +202,19 @@ function profile(){
 
             function getByValue(arr, callback, day) {
                 var value = new Date();
-                var lRes = 0, mRes = 0, hRes = 0, currentDate = new Date();
+                var lRes = 0, mRes = 0, hRes = 0, nRes= 0, currentDate = new Date();
                 arr[0].forEach(function(o){
                     var date = new Date(o.date);
                     if (date.getDate() == day && date.getFullYear() == value.getFullYear() && date.getMonth() == value.getMonth()){
                         console.log(date.getHours());
-                        if (date.getHours() >= 6 && date.getHours() <= 11){lRes++}
+                        if (date.getHours() >= 5 && date.getHours() <= 11){lRes++}
                         else if (date.getHours() > 11 && date.getHours() < 17){mRes++}
-                        else if (date.getHours() >= 17){hRes++}
-
+                        else if (date.getHours() >= 17 && date.getHours() <= 23){hRes++}
+                        else if (date.getHours() >= 0 && date.getHours() < 5){nRes++}
                         currentDate = date.getDate()+'-'+(date.getMonth()+1);
                     }
                 });
-                callback(currentDate, lRes, mRes, hRes);
+                callback(currentDate, lRes, mRes, hRes, nRes);
                 //return result ? result[0] : null; // or undefined
             }
         }
