@@ -116,12 +116,18 @@ input[type="password"]{
 .ta-visible{
     border:1px solid #ddd;
 }
+
+
 textarea{
     border:0px solid #ddd;
     resize: none;
     width:99%;
-    height:110%;
+    /*height:110%;*/
     box-sizing: border-box;
+}
+
+.summary{
+    width: 99%;
 }
 
 

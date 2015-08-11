@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-md-1">
+        <label for="name-{{test.id}}">Test Name</label>
+    </div>
+    <div class="col-md-10">
+        <input class="summary" id="name-{{test.id}}" type="text" ng-model="test.name"/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-1">
+        <label for="steps-{{test.id}}">Steps</label>
+    </div>
+    <div class="col-md-5">
+        <textarea rows="5" id="steps-{{test.id}}" ng-model="test.steps">{{test.steps}}</textarea>
+    </div>
+    <div class="col-md-1">
+        <label for="er-{{test.id}}">Expected</label>
+    </div>
+    <div class="col-md-5">
+        <textarea rows="5" id="description-{{test.id}}" ng-model="test.er">{{test.er}}</textarea>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-1">
+        <label for="creator-{{test.id}}">Creator</label>
+    </div>
+    <div class="col-md-2">
+        <input id="creator-{{test.id}}" ng-model="test.creator"/>
+    </div>
+    <div class="col-md-1">
+        <label for="qcid-{{test.id}}">QC ID</label>
+    </div>
+    <div class="col-md-2">
+        <input id="qcid-{{defect.id}}" ng-model="test.qcid"/>
+    </div>
+</div>

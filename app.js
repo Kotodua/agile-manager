@@ -10,6 +10,7 @@ var Defects = require('./routes/defects');
 var TestLab = require('./routes/testlab');
 var Calendar = require('./routes/calendar');
 var Task = require('./routes/task');
+var Vote = require('./routes/vote');
 var session = require('express-session');
 var log = require('./libs/log')(module);
 var Time = require('./libs/time');
@@ -20,7 +21,7 @@ var currentTime = new Time();
 
 var server = require('http').Server(app);
 
-
+var vote = new Vote();
 var calendar = new Calendar();
 var user = new Users();
 var team = new Teams();
@@ -133,41 +134,51 @@ app.get('/api/task/getBreaks', function(req, res){pomodoro.getBreaks(req, res)})
 app.post('/api/task/change_status/:id', function(req, res){pomodoro.changeTaskStatus(req, res)});
 app.delete('/api/task/delete/:id', function(req, res){pomodoro.deleteTask(req, res)});
 
+//------------------------------ QUESTIONNAIRE
+app.post('/api/votes/createQuestionnaire', function(req, res){vote.createQuestionnaire(req, res)});
+app.get('/api/votes/getQuestionnaires', function(req, res){vote.getQuestionnaires(req, res)})
+app.delete('/api/votes/:id', function(req, res){vote.deleteQuestionnaire(req, res, req.params.id)});
+app.post('/api/votes/:id', function(req, res){vote.updateQuestionnaireData(req, res, req.params.id)});
+app.get('/api/votes/getQuestionnaireInfo/:id', function(req, res){vote.getQuestionnaireInfo(req, res,req.params.id)});
 //------------------------------ ADMIN
 //////
 
 app.use(function(req, res, next){
     if (req.session.user){
-        if (req.url == '/users') {
-            console.log(currentTime.getDateTime() + ' <--- Request GET /users ' + req.session.user);
-            user.getUsers(req, res);
-        }
-        else if (req.url == '/teams'){
-                console.log(currentTime.getDateTime()+' <--- Request GET /teams ' + req.session.user);
+        switch(req.url){
+            case '/users':
+                user.getUsers(req, res);
+                break;
+            case '/teams':
                 team.getTeams(req, res, req.session.user);
-        } else if (req.url == '/testlab'){
-            console.log(currentTime.getDateTime()+' <--- Request GET /testlab ' + req.session.user);
-            res.render('testlab');
-        } else if (req.url == '/configurations'){
-            console.log(currentTime.getDateTime()+' <--- Request GET /configurations' + req.session.user);
-            res.render('configurations');
-        } else if (req.url == '/defects') {
-            console.log(currentTime.getDateTime() + ' <--- Request GET /configurations' + req.session.user);
-            res.render('defects');
-        } else if (req.url == '/settings'){
-            console.log(currentTime.getDateTime()+' <--- Request GET /settings ' + req.session.user);
-            user.getCurrentUser(req, res, req.session.user);
-        } else if (req.url == '/calendar'){
-            console.log(currentTime.getDateTime()+' <--- Request GET /calendar');
-            calendar.getUsers(req, res)
-        } else if (req.url == '/profile'){
-            console.log(currentTime.getDateTime()+' <--- Request GET /profile ' + req.session.user);
-            res.render('profile', {header: req});
-        } else if (req.url == '/admin') {
-            console.log(currentTime.getDateTime() + ' <--- Request GET /admin ' + req.session.user);
-            res.render('admin');
-        } else {
-            next();
+                break;
+            case '/testlab':
+                res.render('testlab');
+                break;
+            case '/configurations':
+                res.render('configurations');
+                break;
+            case '/defects':
+                res.render('defects');
+                break;
+            case '/settings':
+                user.getCurrentUser(req, res, req.session.user);
+                break;
+            case '/calendar':
+                calendar.getUsers(req, res);
+                break;
+            case '/profile':
+                res.render('profile', {header: req});
+                break;
+            case '/admin':
+                res.render('admin');
+                break;
+            case '/votes':
+                res.render('votes', {req: req});
+                break;
+            default :
+                next();
+                break;
         }
     }else {
         res.render('login');

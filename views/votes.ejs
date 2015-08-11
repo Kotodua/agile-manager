@@ -1,0 +1,84 @@
+<html ng-app="Main">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript"  src="/config/config.js"></script>
+    <script src="/vendor/jquery-2.1.1.js"></script>
+    <script src="/vendor/angular.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/vote.css">
+    <link rel="stylesheet" type="text/css" href="/main.css">
+    <script src="/js/vote.js"></script>
+</head>
+<head lang="en">
+    <meta charset="UTF-8">
+</head>
+<body ng-controller="mainCtrl">
+    <div id="wrapper">
+
+        <%- include layouts/topmenu.ejs %>
+
+
+        <div id="parent" ng-show="!isVisible()">
+            <h2>Votes List</h2>
+            <% if(req.session.admin == 'SA'){ %>
+            <div class="right">
+                <form id="newQuestionnaire">
+                    <h5>Create new Questionnaire</h5>
+                    <input id="title" type="text" placeholder="Questionnaire Title" ng-model="questionnaireTitle"/>
+                    <input id="create-btn" class="a-inside edit" type="button" value="Create" ng-disabled="newQuestionnaire.$invalid" ng-click="createQuestionnaire(questionnaireTitle)"/>
+                </form>
+            </div>
+            <%}%>
+
+                <div class="row">
+                    <div class="col-md-2">Title</div>
+                    <div class="col-md-1">Votes</div>
+                    <div class="col-md-1">Status</div>
+                    <div class="col-md-5">Actions</div>
+                </div>
+                <div class="row" ng-repeat="questionnaire in questionnaires">
+                    <div class="col-md-2 ">{{questionnaire.title}}</div>
+                    <div class="col-md-1">{{questionnaire.votes}}</div>
+                    <div class="col-md-1">{{questionnaire.status}}</div>
+                    <div class="col-md-5">
+                        <input id="open-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Open" />
+                        <input id="vote-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Vote" />
+                        <% if(req.session.admin == 'SA'){ %>
+                        <input id="delete-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Delete" ng-click="deleteQuestionnaire(questionnaire.id)"/>
+                        <input id="edit-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Edit" ng-click="showForm(questionnaire.id)"/>
+                        <input id="start-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Start" />
+                        <%}%>
+                    </div>
+                </div>
+        </div>
+
+        <div >
+            <form  ng-show="isVisible()">
+
+                <input id="title" type="text" value="{{currentQuestionnaire.title}}"/>
+                <h1>Defects</h1>
+                <div class="container" ng-repeat="defect in currentQuestionnaire.defects">
+                        <%- include votes/defect-table.ejs%>
+                </div>
+                <input id="add-defect-btn" class="a-inside edit" type="button" value="+" ng-click="addNewDefectToQuestionnaire()"/>
+
+                <h1>Tests</h1>
+                <div class="container" ng-repeat="test in currentQuestionnaire.tests">
+                    <%- include votes/test-table.ejs%>
+                </div>
+
+                <input id="add-test-btn" class="a-inside edit" type="button" value="+" ng-click="addNewTestForm()"/></br>
+                <input id="apply-btn" class="a-inside edit" type="button" value="Apply" ng-click="applyFormChanges(currentQuestionnaire.id)"/>
+                <input id="close-btn" class="a-inside edit" type="button" value="Close" ng-click="hideForm()"/>
+            </form>
+        </div>
+
+    </div>
+
+
+
+
+</body>
+</html>

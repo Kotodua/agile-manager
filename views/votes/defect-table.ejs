@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-md-1">
+        <label for="summary-{{defect.id}}">Summary</label>
+    </div>
+    <div class="col-md-10">
+        <input class="summary" id="summary-{{defect.id}}" type="text" ng-model="defect.summary"/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-1">
+        <label for="description-{{defect.id}}">Description</label>
+    </div>
+    <div class="col-md-10">
+        <textarea rows="5" id="description-{{defect.id}}" ng-model="defect.description">{{defect.description}}</textarea>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-1">
+        <label for="reporter-{{defect.id}}">Reporter</label>
+    </div>
+    <div class="col-md-2">
+        <input id="reporter-{{defect.id}}" ng-model="defect.reporter"/>
+    </div>
+    <div class="col-md-1">
+        <label for="jiraid-{{defect.id}}">JIRA ID</label>
+    </div>
+    <div class="col-md-2">
+        <input id="jiraid-{{defect.id}}" ng-model="defect.jiraid"/>
+    </div>
+    <div class="col-md-1">
+        <label for="status-{{defect.id}}">Status</label>
+    </div>
+    <div class="col-md-2">
+        <input id="status-{{defect.id}}" ng-model="defect.status"/>
+    </div>
+</div>

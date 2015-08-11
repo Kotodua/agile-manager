@@ -1,0 +1,30 @@
+
+th {background-color: rgb(154, 166, 171); color: #ffffff; font-weight: bold;}
+tr {height: 60px; border: 1px; border-color: black;}
+tr.selected {font-weight: bold;}
+tr:nth-child(even){background-color: rgb(233, 250, 255);}
+tr:nth-child(odd){background-color: rgb(209, 226, 231);}
+td.selected {background-color: rgb(220, 255, 229);}
+
+
+.col-md-1-5 {
+    background-color: rgb(233, 250, 255);
+}
+
+#parent {
+    overflow: hidden;
+    background: rgb(209, 226, 231);
+}
+.right {
+
+    float: right;
+}
+.left {
+    float: left;
+    overflow: hidden;
+}
+
+form .ng-pristine{
+    border: 1px dotted #808080;
+}
+

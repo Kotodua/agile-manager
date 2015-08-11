@@ -9,3 +9,25 @@ ALTER TABLE `user` CHANGE `admin` `admin` VARCHAR(2) CHARACTER SET utf8 COLLATE 
 b #135
 // adding position col to the casetotest table
 ALTER TABLE `casetotest` ADD `position` INT NOT NULL ;
+
+
+b #145
+// New Questionnaire table creation
+
+//New questionnaire_defect table creation
+ALTER TABLE `questionnaire_defect` ADD `qid` INT NOT NULL ;
+ALTER TABLE `questionnaire_defect` ADD `summary` VARCHAR(300) NOT NULL ;
+ALTER TABLE `questionnaire_defect` ADD `description` VARCHAR(1000) NOT NULL;
+ALTER TABLE `questionnaire_defect` ADD `jid` VARCHAR(10) NOT NULL ;
+ALTER TABLE `questionnaire_defect` ADD `rid` INT NOT NULL ;
+ALTER TABLE `questionnaire_defect` ADD `status` VARCHAR(15) NOT NULL ;
+ALTER TABLE `questionnaire_defect` ADD `votes` VARCHAR(200) NOT NULL ;
+
+//New questionnaire_test table creation
+ALTER TABLE `questionnaire_test` ADD `qid` INT NOT NULL ;
+ALTER TABLE `questionnaire_test` ADD `name` VARCHAR(300) NOT NULL ;
+ALTER TABLE `questionnaire_test` ADD `steps` VARCHAR(1500) NOT NULL ;
+ALTER TABLE `questionnaire_test` ADD `er` VARCHAR(1500) NOT NULL ;
+ALTER TABLE `questionnaire_test` ADD `qcid` VARCHAR(10) NOT NULL ;
+ALTER TABLE `questionnaire_test` ADD `cid` INT NOT NULL ;
+ALTER TABLE `questionnaire_test` ADD `votes` VARCHAR(200) NOT NULL ;
