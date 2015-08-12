@@ -20,7 +20,7 @@
         <%- include layouts/topmenu.ejs %>
 
 
-        <div id="parent" ng-show="!isVisible()">
+        <div id="parent" ng-show="!isVisible('vote') && !isVisible('edit')">
             <h2>Votes List</h2>
             <% if(req.session.admin == 'SA'){ %>
             <div class="right">
@@ -44,10 +44,10 @@
                     <div class="col-md-1">{{questionnaire.status}}</div>
                     <div class="col-md-5">
                         <input id="open-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Open" />
-                        <input id="vote-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Vote" />
+                        <input id="vote-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Vote"  ng-click="showForm(questionnaire.id, 'vote')"/>
                         <% if(req.session.admin == 'SA'){ %>
                         <input id="delete-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Delete" ng-click="deleteQuestionnaire(questionnaire.id)"/>
-                        <input id="edit-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Edit" ng-click="showForm(questionnaire.id)"/>
+                        <input id="edit-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Edit" ng-click="showForm(questionnaire.id, 'edit')"/>
                         <input id="start-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Start" />
                         <%}%>
                     </div>
@@ -55,12 +55,11 @@
         </div>
 
         <div >
-            <form  ng-show="isVisible()">
-
+            <form  ng-show="isVisible('edit')">
                 <input id="title" type="text" value="{{currentQuestionnaire.title}}"/>
                 <h1>Defects</h1>
                 <div class="container" ng-repeat="defect in currentQuestionnaire.defects">
-                        <%- include votes/defect-table.ejs%>
+                    <%- include votes/defect-table.ejs%>
                 </div>
                 <input id="add-defect-btn" class="a-inside edit" type="button" value="+" ng-click="addNewDefectToQuestionnaire()"/>
 
@@ -68,9 +67,53 @@
                 <div class="container" ng-repeat="test in currentQuestionnaire.tests">
                     <%- include votes/test-table.ejs%>
                 </div>
-
                 <input id="add-test-btn" class="a-inside edit" type="button" value="+" ng-click="addNewTestForm()"/></br>
                 <input id="apply-btn" class="a-inside edit" type="button" value="Apply" ng-click="applyFormChanges(currentQuestionnaire.id)"/>
+                <input id="close-btn" class="a-inside edit" type="button" value="Close" ng-click="hideForm()"/>
+            </form>
+            <form  ng-show="isVisible('vote')">
+                <input id="title" type="text" value="{{currentQuestionnaire.title}}"/>
+                <h1>Defects</h1>
+                <h2>Vote for Defects</h2>
+                <table>
+                    <th>Vote</th>
+                    <th>id</th>
+                    <th>Summary</th>
+                    <th>Description</th>
+                    <th>Reporter</th>
+                    <th>JIRA ID</th>
+                    <th>Status</th>
+                    <tr ng-repeat="defect in currentQuestionnaire.defects" ng-class="defect.class">
+                            <td  style="width:3%" ng-class="defect.class"><input type="checkbox" ng-model="defect.checked" ng-disabled="!defect.checked && selMaxDefects" ng-change="checkedDefect(defect.id)"/></td>
+                            <td style="width:5%">{{defect.id}}</td>
+                            <td style="width:30%">{{defect.summary}}</td>
+                            <td style="width:30%">{{defect.description}}</td>
+                            <td style="width:5%">{{defect.rid}}</td>
+                            <td style="width:7%">{{defect.jid}}</td>
+                            <td style="width:8%">{{defect.status}}</td>
+                        </tr>
+                </table>
+
+                <h1>Tests</h1>
+                <table>
+                    <th>Vote</th>
+                    <th>id</th>
+                    <th>Name</th>
+                    <th>Steps</th>
+                    <th>Expected Result</th>
+                    <th>QC ID</th>
+                    <th>Creator</th>
+                        <tr ng-repeat="test in currentQuestionnaire.tests">
+                            <td  style="width:3%" ng-class="test.class"><input type="checkbox" ng-model="test.checked" ng-disabled="!test.checked && selMaxTests" ng-change="checkedTest(test.id)"/></td>
+                            <td style="width:5%">{{test.id}}</td>
+                            <td style="width:10%">{{test.name}}</td>
+                            <td style="width:30%">{{test.steps}}</td>
+                            <td style="width:30%">{{test.er}}</td>
+                            <td style="width:5%">{{test.qcid}}</td>
+                            <td>{{test.cid}}</td>
+                        </tr>
+                </table>
+                <input id="apply-btn" class="a-inside edit" type="button" value="Vote" ng-click="applyFormChanges(currentQuestionnaire.id)"/>
                 <input id="close-btn" class="a-inside edit" type="button" value="Close" ng-click="hideForm()"/>
             </form>
         </div>

@@ -22,6 +22,7 @@ ALTER TABLE `questionnaire_defect` ADD `jid` VARCHAR(10) NOT NULL ;
 ALTER TABLE `questionnaire_defect` ADD `rid` INT NOT NULL ;
 ALTER TABLE `questionnaire_defect` ADD `status` VARCHAR(15) NOT NULL ;
 ALTER TABLE `questionnaire_defect` ADD `votes` VARCHAR(200) NOT NULL ;
+ALTER TABLE `questionnaire_defect` ADD `$$hashKey` VARCHAR(50) NOT NULL ;
 
 //New questionnaire_test table creation
 ALTER TABLE `questionnaire_test` ADD `qid` INT NOT NULL ;
@@ -31,3 +32,4 @@ ALTER TABLE `questionnaire_test` ADD `er` VARCHAR(1500) NOT NULL ;
 ALTER TABLE `questionnaire_test` ADD `qcid` VARCHAR(10) NOT NULL ;
 ALTER TABLE `questionnaire_test` ADD `cid` INT NOT NULL ;
 ALTER TABLE `questionnaire_test` ADD `votes` VARCHAR(200) NOT NULL ;
+ALTER TABLE `questionnaire_test` ADD `$$hashKey` VARCHAR(50) NOT NULL ;

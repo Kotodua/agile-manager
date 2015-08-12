@@ -7,15 +7,18 @@ angular.module('Main', [])
             dataType: "json",
             url: mainURL + '/getQuestionnaires',
             success: function (res) {
-                console.log(res);
                 $scope.questionnaires = res;
                 $scope.$apply();
             }
         })
 
-        $scope.visible = false;
+        $scope.visibility = {
+            edit: false,
+            vote: false,
+            mainList: true
+        }
         $scope.currentQuestionnaire = {};
-        $scope.questionnaireTitle = '';
+
 
 
         //--------------------------------------------ALL QUESTIONNAIRES
@@ -40,7 +43,6 @@ angular.module('Main', [])
                 dataType: "json",
                 url: mainURL + '/'+id,
                 success: function (res) {
-                    console.log(res);
                     removeFromArray($scope.questionnaires, id);
                     $scope.$apply();
                 }
@@ -49,6 +51,7 @@ angular.module('Main', [])
 
         //--------------------------------------------EDIT QUESTIONNAIRE
 
+        $scope.voteQuestionnaire = {}
         var removeFromArray = function(arr, id){
             $.each(arr, function(i){
                 if(arr[i].id == id) {
@@ -57,68 +60,72 @@ angular.module('Main', [])
                 }
             });
         }
-/*
-        var addInformationToQuestionnaire = function (arrTo, from, id){
-            console.log('from: '+from);
-            $.each(from, function(i){
-                if(arr[i].id == id) {
-                    arr.splice(i,1);
-                    return false;
-                }
-            });
-        }*/
 
-
-        $scope.showForm = function(id){
-            $.ajax({
-                type: "GET",
-                data: {id: id},
-                dataType: "json",
-                url: mainURL + '/getQuestionnaireInfo/'+id,
-                success: function (res) {
-                    console.log(res);
-                    $scope.questionnaires.defect = res[0];
-                    $scope.questionnaires.test = res[1];
-                    $scope.currentQuestionnaire.defects = res[0];
-                    $scope.currentQuestionnaire.tests = res[1];
-                    //addInformationToQuestionnaire($scope.questionnaires, res, id);
-                    $scope.$apply();
-                }
-            })
-            $scope.visible = true;
+        $scope.showForm = function(id, form){
             var searchResults = $.grep($scope.questionnaires, function(e){ return e.id == id; });
-            $scope.currentQuestionnaire = searchResults[0];
-            if(!$scope.currentQuestionnaire.defects){
-                $scope.currentQuestionnaire.defects = []
+            if(!searchResults[0].defects) {
+                $.ajax({
+                    type: "GET",
+                    data: {id: id},
+                    dataType: "json",
+                    url: mainURL + '/getQuestionnaireInfo/' + id,
+                    success: function (res) {
+                        getObjectIndexByValue($scope.questionnaires, 'id', id, function(c){
+                            $scope.currentQuestionnaire = $scope.questionnaires[c];
+                        })
+                        $scope.currentQuestionnaire.defects = res[0];
+                        $scope.currentQuestionnaire.tests = res[1];
+                        $scope.currentQuestionnaire.defects.forEach(function (e) {
+                            e.checked = false;
+                            e.class = 'not-selected';
+                        })
+                        $scope.currentQuestionnaire.tests.forEach(function (e) {
+                            e.checked = false;
+                            e.class = 'not-selected';
+                        })
+                        $scope.$apply();
+                    }
+                })
+            } else {
+                $scope.currentQuestionnaire = searchResults[0];
             }
-            if(!$scope.currentQuestionnaire.tests){
-                $scope.currentQuestionnaire.tests = []
-            }
-            console.log($scope.currentQuestionnaire);
+
+            $scope.visibility[form] = true;
+
         }
 
+
+
+
         $scope.hideForm = function(){
-            $scope.visible = false;
+            for (var form in $scope.visibility) {
+                if ($scope.visibility.hasOwnProperty(form)) {
+                    $scope.visibility[form] = false;
+                }
+            }
+
+            var questionnaireToUpdate = search($scope.questionnaires, 'id', $scope.currentQuestionnaire.defects[0].qid);
+
+            getObjectIndexByValue($scope.questionnaires, 'id', questionnaireToUpdate.id, function(c){
+                $scope.questionnaires[c] = $scope.currentQuestionnaire;
+            })
+
             $scope.currentQuestionnaire = {}
         }
 
-        $scope.isVisible = function(){
-            return $scope.visible;
+        $scope.isVisible = function(form){
+            return $scope.visibility[form];
         }
 
         $scope.addNewDefectToQuestionnaire = function(){
-            console.log('pushing...');
             $scope.currentQuestionnaire.defects.push({id: ''});
         }
 
         $scope.addNewTestForm = function(){
-            console.log('pushing...');
             $scope.currentQuestionnaire.tests.push({id: ''});
-            console.log($scope.currentQuestionnaire);
         }
 
         $scope.applyFormChanges = function(id) {
-            console.log($scope.currentQuestionnaire);
             $.ajax({
                 type: "POST",
                 data: $scope.currentQuestionnaire,
@@ -129,80 +136,20 @@ angular.module('Main', [])
                 }
             })
         }
-    });
 
-
-
-angular.module('Vote', [])
-.controller('voteCtrl', function($scope){
-        $scope.defects = [
-            {
-                id: 'SSENG1010',
-                summary: 'This is defect"s summary. Maybe it will be longer then originally. But any way.',
-                description: 'This is defect"s summary. Maybe it will be longer then originally. But any way. This is defect"s summary. Maybe it will be longer then originally. But any way. This is defect"s summary. Maybe it will be longer then originally. But any way.',
-                reporter: 'glkallak',
-                selected: false,
-                class: 'not-selected'},
-            {
-                id: 'SSENG1011',
-                summary: 'This is defect"s summary. Maybe it will be longer then originally. But any way.',
-                reporter: 'mludanov',
-                selected: false,
-                class: 'not-selected'},
-            {
-                id: 'SSENG1012',
-                summary: 'This is defect"s summary. Maybe it will be longer then originally. But any way.',
-                reporter: 'yzaremba',
-                selected: false,
-                class: 'not-selected'},
-            {
-                id: 'SSENG1015',
-                summary: 'This is defect"s summary. Maybe it will be longer then originally. But any way.',
-                reporter: 'gldladyg',
-                selected: false,
-                class: 'not-selected'},
-            {
-                id: 'SSENG1013',
-                summary: 'This is defect"s summary. Maybe it will be longer then originally. But any way.',
-                reporter: 'nsilchen',
-                selected: false,
-                class: 'not-selected'},
-            {
-                id: 'SSENG1014',
-                summary: 'This is defect"s summary. Maybe it will be longer then originally. But any way.',
-                reporter: 'okurochk',
-                selected: false,
-                class: 'not-selected'}
-        ];
-        $scope.tests = [
-            {
-                id: 'test1',
-                name: 'test name can be not so long',
-                creator: 'glkallak'},
-            {
-                id: 'test1',
-                name: 'test name can be not so long',
-                creator: 'nsilchen'},
-            {
-                id: 'test1',
-                name: 'test name can be not so long',
-                creator: 'yzaremba'},
-            {
-                id: 'test1',
-                name: 'test name can be not so long',
-                creator: 'gldladyg'}]
+        //--------------------------------------------VOTE QUESTIONNAIRE
         $scope.selMaxDefects = false;
         $scope.selMaxTests = false;
 
         $scope.checkedDefect = function(){
             var count = 0;
-            for(x in $scope.defects){
+            for(x in $scope.currentQuestionnaire.defects){
 
-                if($scope.defects[x].checked){
+                if($scope.currentQuestionnaire.defects[x].checked){
                     count++;
-                    $scope.defects[x].class = 'selected';
+                    $scope.currentQuestionnaire.defects[x].class = 'selected';
                 } else {
-                    $scope.defects[x].class = 'not-selected';
+                    $scope.currentQuestionnaire.defects[x].class = 'not-selected';
                 }
             }
             $scope.selMaxDefects = (count >= 3);
@@ -211,16 +158,34 @@ angular.module('Vote', [])
 
         $scope.checkedTest = function(){
             var count = 0;
-            for(x in $scope.tests){
+            for(x in $scope.currentQuestionnaire.tests){
 
-                if($scope.tests[x].checked){
+                if($scope.currentQuestionnaire.tests[x].checked){
                     count++;
-                    $scope.tests[x].class = 'selected';
+                    $scope.currentQuestionnaire.tests[x].class = 'selected';
                 } else {
-                    $scope.tests[x].class = 'not-selected';
+                    $scope.currentQuestionnaire.tests[x].class = 'not-selected';
                 }
             }
             $scope.selMaxTests = (count >= 3);
         };
-    })
+    });
 
+
+
+var search = function(array, key, value){
+    var searchResults = $.grep(array, function(e){ return e[key] == value; });
+    return searchResults[0];
+}
+
+
+var getObjectIndexByValue = function(arr, key, value, callback) {
+    var counter = 0;
+    arr.forEach(function (e) {
+        if (e[key] == value) {
+            callback(counter);
+            return counter;
+        }
+        counter++
+    })
+}

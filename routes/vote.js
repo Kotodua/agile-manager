@@ -59,23 +59,34 @@ Vote.prototype = {
         var input = JSON.parse(JSON.stringify(req.body));
         console.log('id is: '+req.body);
         var arrayOrPromises = [];
-        input.defects.forEach(function(e){
-           if(!e.id){
-              arrayOrPromises.push(dbq.doSet("INSERT INTO `questionnaire_defect` (`id`, `qid`, `summary`, `jid`, `rid`, `status`, `description`)" +
-                                            " VALUES (NULL, ?, ?, ?, ?, ?, ?);",[id, e.summary, e.jiraid, e.reporter, e.status, e.description]))
-               console.log(e.summary, e.description, e.reporter, e.jiraid, e.status);
-           }  else {
-              arrayOrPromises.push(dbq.doSet("INSERT INTO `questionnaire_defect` (`qid`, `summary`, `jid`, `rid`, `status`, `description`)" +
-                   " VALUES (?, ?, ?, ?, ?, ?) WHERE `id` = ?;",[id, e.summary, e.jiraid, e.reporter, e.status, e.description]))
-           }
-        })
-/*        var arrayOrPromises = [dbq.doSet('DELETE FROM questionnaire WHERE id = ?', id),
-            dbq.doSet('DELETE FROM questionnaire_defect WHERE qid = ?', id),
-            dbq.doSet('DELETE FROM questionnaire_test WHERE qid = ?', id)];*/
-        Promise.all(arrayOrPromises).then(function (arrayOfResults) {
-            console.log(currentTime.getDateTime()+' ---> Response: Questionnaire Updated');
-            res.send(arrayOfResults);
-        });
+        if(input.defects){
+            input.defects.forEach(function(e){
+                e.qid = id;
+                if(!e.id){
+                    e.id = 'NULL';
+                    arrayOrPromises.push(dbq.doSet("INSERT INTO questionnaire_defect SET ?", e))
+                }  else {
+                    arrayOrPromises.push(dbq.doSet("UPDATE questionnaire_defect SET ? WHERE id = ?",[e, e.id]))
+                }
+            })
+        }
+        if(input.tests){
+            input.tests.forEach(function(e){
+                e.qid = id;
+                if(!e.id){
+                    e.id = 'NULL';
+                    arrayOrPromises.push(dbq.doSet("INSERT INTO questionnaire_test SET ?", e))
+                }  else {
+                    arrayOrPromises.push(dbq.doSet("UPDATE questionnaire_test SET ? WHERE id = ?",[e, e.id]))
+                }
+            })
+
+            Promise.all(arrayOrPromises).then(function (arrayOfResults) {
+                console.log(currentTime.getDateTime()+' ---> Response: Questionnaire Updated');
+                res.send(arrayOfResults);
+            });
+        }
+
     },
 
     addVoteDefectItem: function(req,res){
