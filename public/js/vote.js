@@ -57,7 +57,7 @@ angular.module('Main', [])
                 }
             });
         }
-
+/*
         var addInformationToQuestionnaire = function (arrTo, from, id){
             console.log('from: '+from);
             $.each(from, function(i){
@@ -66,7 +66,7 @@ angular.module('Main', [])
                     return false;
                 }
             });
-        }
+        }*/
 
 
         $scope.showForm = function(id){
@@ -77,7 +77,11 @@ angular.module('Main', [])
                 url: mainURL + '/getQuestionnaireInfo/'+id,
                 success: function (res) {
                     console.log(res);
-                    addInformationToQuestionnaire($scope.questionnaires, res, id);
+                    $scope.questionnaires.defect = res[0];
+                    $scope.questionnaires.test = res[1];
+                    $scope.currentQuestionnaire.defects = res[0];
+                    $scope.currentQuestionnaire.tests = res[1];
+                    //addInformationToQuestionnaire($scope.questionnaires, res, id);
                     $scope.$apply();
                 }
             })
