@@ -140,6 +140,7 @@ app.get('/api/votes/getQuestionnaires', function(req, res){vote.getQuestionnaire
 app.delete('/api/votes/:id', function(req, res){vote.deleteQuestionnaire(req, res, req.params.id)});
 app.post('/api/votes/:id', function(req, res){vote.updateQuestionnaireData(req, res, req.params.id)});
 app.get('/api/votes/getQuestionnaireInfo/:id', function(req, res){vote.getQuestionnaireInfo(req, res,req.params.id)});
+app.put('/api/votes/applyVotes/:id', function(req, res){vote.applyVotes(req, res, req.params.id, req.session.user)});
 //------------------------------ ADMIN
 //////
 

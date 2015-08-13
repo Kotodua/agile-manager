@@ -84,7 +84,7 @@
                     <th>JIRA ID</th>
                     <th>Status</th>
                     <tr ng-repeat="defect in currentQuestionnaire.defects" ng-class="defect.class">
-                            <td  style="width:3%" ng-class="defect.class"><input type="checkbox" ng-model="defect.checked" ng-disabled="!defect.checked && selMaxDefects" ng-change="checkedDefect(defect.id)"/></td>
+                            <td  style="width:3%" ng-class="defect.class"><input type="checkbox" ng-model="defect.checked" ng-disabled="!defect.checked && currentQuestionnaire.selMaxDefects" ng-change="checkedDefect(defect.id)"/></td>
                             <td style="width:5%">{{defect.id}}</td>
                             <td style="width:30%">{{defect.summary}}</td>
                             <td style="width:30%">{{defect.description}}</td>
@@ -104,7 +104,7 @@
                     <th>QC ID</th>
                     <th>Creator</th>
                         <tr ng-repeat="test in currentQuestionnaire.tests">
-                            <td  style="width:3%" ng-class="test.class"><input type="checkbox" ng-model="test.checked" ng-disabled="!test.checked && selMaxTests" ng-change="checkedTest(test.id)"/></td>
+                            <td  style="width:3%" ng-class="test.class"><input type="checkbox" ng-model="test.checked" ng-disabled="!test.checked && currentQuestionnaire.selMaxTests" ng-change="checkedTest(test.id)"/></td>
                             <td style="width:5%">{{test.id}}</td>
                             <td style="width:10%">{{test.name}}</td>
                             <td style="width:30%">{{test.steps}}</td>
@@ -113,7 +113,7 @@
                             <td>{{test.cid}}</td>
                         </tr>
                 </table>
-                <input id="apply-btn" class="a-inside edit" type="button" value="Vote" ng-click="applyFormChanges(currentQuestionnaire.id)"/>
+                <input id="apply-vote-btn" class="a-inside edit" type="button" value="Vote" ng-click="applyVote(currentQuestionnaire)"/>
                 <input id="close-btn" class="a-inside edit" type="button" value="Close" ng-click="hideForm()"/>
             </form>
         </div>

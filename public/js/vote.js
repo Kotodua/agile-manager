@@ -75,6 +75,8 @@ angular.module('Main', [])
                         })
                         $scope.currentQuestionnaire.defects = res[0];
                         $scope.currentQuestionnaire.tests = res[1];
+                        $scope.currentQuestionnaire.selMaxDefects = false;
+                        $scope.currentQuestionnaire.selMaxTests = false;
                         $scope.currentQuestionnaire.defects.forEach(function (e) {
                             e.checked = false;
                             e.class = 'not-selected';
@@ -138,8 +140,7 @@ angular.module('Main', [])
         }
 
         //--------------------------------------------VOTE QUESTIONNAIRE
-        $scope.selMaxDefects = false;
-        $scope.selMaxTests = false;
+
 
         $scope.checkedDefect = function(){
             var count = 0;
@@ -152,7 +153,7 @@ angular.module('Main', [])
                     $scope.currentQuestionnaire.defects[x].class = 'not-selected';
                 }
             }
-            $scope.selMaxDefects = (count >= 3);
+            $scope.currentQuestionnaire.selMaxDefects = (count >= 3);
         };
 
 
@@ -167,15 +168,35 @@ angular.module('Main', [])
                     $scope.currentQuestionnaire.tests[x].class = 'not-selected';
                 }
             }
-            $scope.selMaxTests = (count >= 3);
+            $scope.currentQuestionnaire.selMaxTests = (count >= 3);
         };
+
+        $scope.applyVote = function(currentQuestionnaire){
+            var data = {defects: [], tests: []};
+            var resultsDefects = $.grep(currentQuestionnaire.defects, function(e){ return e.checked == true; });
+            resultsDefects.forEach(function(e){
+                data.defects.push(e.id);
+            });
+            var resultsTests = $.grep(currentQuestionnaire.tests, function(e){ return e.checked == true; });
+            resultsTests.forEach(function(e){
+                data.tests.push(e.id);
+            })
+            $.ajax({
+                type: "PUT",
+                data: data,
+                dataType: "json",
+                url: mainURL + '/applyVotes/'+currentQuestionnaire.id,
+                success: function (res) {
+                    console.log(res);
+                }
+            })
+        }
     });
 
 
 
 var search = function(array, key, value){
-    var searchResults = $.grep(array, function(e){ return e[key] == value; });
-    return searchResults[0];
+    return $.grep(array, function(e){ return e[key] == value; });
 }
 
 

@@ -89,8 +89,20 @@ Vote.prototype = {
 
     },
 
-    addVoteDefectItem: function(req,res){
-
+    applyVotes: function(req,res,id, user){
+        var input = JSON.parse(JSON.stringify(req.body));
+        var arrayOfPromises = [];
+        input.defects.forEach(function(e){
+            arrayOfPromises.push(dbq.doSet("UPDATE questionnaire_defect SET votes=CONCAT('"+user+"', votes) WHERE id = ?", id));
+            console.log(e)
+        })
+        Promise.all(arrayOfPromises).then(function (arrayOfResults) {
+            console.log(currentTime.getDateTime()+' ---> Response: Questionnaire Updated');
+            res.send(arrayOfResults);
+        });
+        input.tests.forEach(function(e){
+            console.log(e)
+        })
     },
 
     updateVoteDefectItem: function(req,res){
