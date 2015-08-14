@@ -68,7 +68,7 @@
                     <%- include votes/test-table.ejs%>
                 </div>
                 <input id="add-test-btn" class="a-inside edit" type="button" value="+" ng-click="addNewTestForm()"/></br>
-                <input id="apply-btn" class="a-inside edit" type="button" value="Apply" ng-click="applyFormChanges(currentQuestionnaire.id)"/>
+                <input id="apply-btn" class="a-inside edit" type="button" value="Apply" ng-disabled="currentQuestionnaire.selMaxDefects" ng-click="applyFormChanges(currentQuestionnaire.id)"/>
                 <input id="close-btn" class="a-inside edit" type="button" value="Close" ng-click="hideForm()"/>
             </form>
             <form  ng-show="isVisible('vote')">

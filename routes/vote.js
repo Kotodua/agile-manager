@@ -25,20 +25,23 @@ Vote.prototype = {
     },
 
     getQuestionnaires: function(req, res){
-        var arrayOrPromises = [dbq.doSet("SELECT * FROM questionnaire")];
+        var arrayOrPromises = [dbq.doSet("SELECT * FROM questionnaire"),
+                               dbq.doSet('SELECT * FROM questionnaire_test'),
+                               dbq.doSet('SELECT * FROM questionnaire_defect'),
+                               dbq.doSet('SELECT * FROM user')];
         var resData = [];
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
             arrayOfResults[0].forEach(function(q){
                 resData.push(q);
             })
-            res.send(arrayOfResults[0]);
+            res.send(arrayOfResults);
         });
     },
 
     getQuestionnaireInfo: function(req, res, id){
         console.log(id);
         var arrayOrPromises = [dbq.doSet('SELECT * FROM questionnaire_defect WHERE qid = ?', id),
-                               dbq.doSet('SELECT * FROM questionnaire_test WHERE qid = ?', id)];
+                               dbq.doSet('SELECT * FROM questionnaire_defect WHERE qid = ?', id)];
         Promise.all(arrayOrPromises).then(function (arrayOfResults) {
             res.send(arrayOfResults);
         });

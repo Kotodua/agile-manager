@@ -7,19 +7,48 @@ angular.module('Main', [])
             dataType: "json",
             url: mainURL + '/getQuestionnaires',
             success: function (res) {
-                $scope.questionnaires = res;
+                $scope.questionnaires = res[0];
+                countVotes(res[0], res[1], res[2]);
                 $scope.$apply();
             }
         })
+
+
+        var countVotes = function(questionnaires, tests, defects){
+            questionnaires.forEach(function(q){
+                if(!q.votes){q.votes = 0};
+                q.defects = [];
+                q.tests = [];
+                tests.forEach(function(t){
+                    if(q.id == t.qid){
+                        q.tests.push(t);
+                        if(t.votes){
+                            var res = t.votes.split(',');
+                            res.splice(0, 1);
+                            q.votes += res.length;
+                        }
+                    }
+                })
+                defects.forEach(function(d){
+                    if(q.id == d.qid){
+                        q.defects.push(d)
+                        if(d.votes){
+                            var res = d.votes.split(',');
+                            res.splice(0, 1);
+                            q.votes += res.length;
+                        }
+                    }
+                })
+                console.log('q.votes '+q.votes);
+                q.votes /= 6;
+            })
+        }
 
         $scope.visibility = {
             edit: false,
             vote: false,
             mainList: true
         }
-        $scope.currentQuestionnaire = {};
-
-
 
         //--------------------------------------------ALL QUESTIONNAIRES
         $scope.createQuestionnaire = function(title){
@@ -29,7 +58,7 @@ angular.module('Main', [])
                 dataType: "json",
                 url: mainURL + '/createQuestionnaire',
                 success: function (res) {
-                    $scope.questionnaires.push({id: res.insertId, title: title, status: 'New', defects: [], tests: []});
+                    $scope.questionnaires.push({id: res.insertId, title: title, status: 'New', defects: [], tests: [], votes: 0});
                     $scope.$apply();
                     console.log('ins. id: '+res.insertId);
                 }
@@ -49,9 +78,6 @@ angular.module('Main', [])
             })
         }
 
-        //--------------------------------------------EDIT QUESTIONNAIRE
-
-        $scope.voteQuestionnaire = {}
         var removeFromArray = function(arr, id){
             $.each(arr, function(i){
                 if(arr[i].id == id) {
@@ -61,43 +87,24 @@ angular.module('Main', [])
             });
         }
 
+        //--------------------------------------------EDIT QUESTIONNAIRE
         $scope.showForm = function(id, form){
-            var searchResults = $.grep($scope.questionnaires, function(e){ return e.id == id; });
-            if(!searchResults[0].defects) {
-                $.ajax({
-                    type: "GET",
-                    data: {id: id},
-                    dataType: "json",
-                    url: mainURL + '/getQuestionnaireInfo/' + id,
-                    success: function (res) {
-                        getObjectIndexByValue($scope.questionnaires, 'id', id, function(c){
-                            $scope.currentQuestionnaire = $scope.questionnaires[c];
-                        })
-                        $scope.currentQuestionnaire.defects = res[0];
-                        $scope.currentQuestionnaire.tests = res[1];
-                        $scope.currentQuestionnaire.selMaxDefects = false;
-                        $scope.currentQuestionnaire.selMaxTests = false;
-                        $scope.currentQuestionnaire.defects.forEach(function (e) {
-                            e.checked = false;
-                            e.class = 'not-selected';
-                        })
-                        $scope.currentQuestionnaire.tests.forEach(function (e) {
-                            e.checked = false;
-                            e.class = 'not-selected';
-                        })
-                        $scope.$apply();
-                    }
-                })
-            } else {
-                $scope.currentQuestionnaire = searchResults[0];
-            }
+            getObjectIndexByValue($scope.questionnaires, 'id', id, function(c){
+                $scope.currentQuestionnaire = $scope.questionnaires[c];
+            })
 
+            $scope.currentQuestionnaire.selMaxDefects = false;
+            $scope.currentQuestionnaire.selMaxTests = false;
+            $scope.currentQuestionnaire.defects.forEach(function (e) {
+                e.checked = false;
+                e.class = 'not-selected';
+            })
+            $scope.currentQuestionnaire.tests.forEach(function (e) {
+                e.checked = false;
+                e.class = 'not-selected';
+            })
             $scope.visibility[form] = true;
-
         }
-
-
-
 
         $scope.hideForm = function(){
             for (var form in $scope.visibility) {
@@ -128,9 +135,19 @@ angular.module('Main', [])
         }
 
         $scope.applyFormChanges = function(id) {
+            var objToSend = $scope.currentQuestionnaire;
+            objToSend.defects.forEach(function(d){
+                delete d.checked;
+                delete d.class;
+            })
+            objToSend.tests.forEach(function(t){
+                delete t.checked
+                delete t.class;
+            })
+
             $.ajax({
                 type: "POST",
-                data: $scope.currentQuestionnaire,
+                data: objToSend,
                 dataType: "json",
                 url: mainURL + '/'+id,
                 success: function (res) {
@@ -187,7 +204,9 @@ angular.module('Main', [])
                 dataType: "json",
                 url: mainURL + '/applyVotes/'+currentQuestionnaire.id,
                 success: function (res) {
-                    console.log(res);
+                    getObjectIndexByValue($scope.questionnaires, 'id', currentQuestionnaire.id, function(c){
+                        $scope.questionnaires[c].votes += 1;
+                    })
                 }
             })
         }
