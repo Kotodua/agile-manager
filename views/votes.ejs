@@ -43,7 +43,7 @@
                     <div class="col-md-1">{{questionnaire.votes}}</div>
                     <div class="col-md-1">{{questionnaire.status}}</div>
                     <div class="col-md-5">
-                        <input id="open-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Open" />
+                        <input id="results-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Results" ng-click="showForm(questionnaire.id, 'results')"/>
                         <input id="vote-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Vote"  ng-click="showForm(questionnaire.id, 'vote')"/>
                         <% if(req.session.admin == 'SA'){ %>
                         <input id="delete-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Delete" ng-click="deleteQuestionnaire(questionnaire.id)"/>
@@ -71,6 +71,33 @@
                 <input id="apply-btn" class="a-inside edit" type="button" value="Apply" ng-disabled="currentQuestionnaire.selMaxDefects" ng-click="applyFormChanges(currentQuestionnaire.id)"/>
                 <input id="close-btn" class="a-inside edit" type="button" value="Close" ng-click="hideForm()"/>
             </form>
+            <form  ng-show="isVisible('results')">
+                <input id="close-btn" class="a-inside edit" type="button" value="X Close" ng-click="hideForm()"/>
+                <h1>{{currentQuestionnaire.title}} Results</h1>
+                <h2>Defects</h2>
+                <table>
+                    <th>JIRA ID</th>
+                    <th>Reporter</th>
+                    <th>Votes</th>
+                    <tr ng-repeat="defect in currentQuestionnaire.defects">
+                        <td style="width:7%">{{defect.jid}}</td>
+                        <td style="width:5%">{{defect.rid}}</td>
+                        <td style="width:5%">{{defect.votesCount}}</td>
+                    </tr>
+                </table>
+                <h2>Tests</h2>
+                <table>
+                    <th>QC ID</th>
+                    <th>Creator</th>
+                    <th>Votes</th>
+                    <tr ng-repeat="test in currentQuestionnaire.tests">
+                        <td style="width:7%">{{test.qcid}}</td>
+                        <td style="width:5%">{{test.cid}}</td>
+                        <td style="width:5%">{{test.votesCount}}</td>
+                    </tr>
+                </table>
+
+            </form>
             <form  ng-show="isVisible('vote')">
                 <input id="title" type="text" value="{{currentQuestionnaire.title}}"/>
                 <h1>Defects</h1>
@@ -87,7 +114,7 @@
                             <td  style="width:3%" ng-class="defect.class"><input type="checkbox" ng-model="defect.checked" ng-disabled="!defect.checked && currentQuestionnaire.selMaxDefects" ng-change="checkedDefect(defect.id)"/></td>
                             <td style="width:5%">{{defect.id}}</td>
                             <td style="width:30%">{{defect.summary}}</td>
-                            <td style="width:30%">{{defect.description}}</td>
+                            <td style="width:30%"><textarea rows="6">{{defect.description}}</textarea></td>
                             <td style="width:5%">{{defect.rid}}</td>
                             <td style="width:7%">{{defect.jid}}</td>
                             <td style="width:8%">{{defect.status}}</td>

@@ -28,3 +28,8 @@ form .ng-pristine{
     border: 1px dotted #808080;
 }
 
+textarea{
+    font-size: smaller;
+    background-color: transparent;
+}
+

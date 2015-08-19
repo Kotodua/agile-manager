@@ -13,7 +13,6 @@ angular.module('Main', [])
             }
         })
 
-
         var countVotes = function(questionnaires, tests, defects){
             questionnaires.forEach(function(q){
                 if(!q.votes){q.votes = 0};
@@ -24,8 +23,10 @@ angular.module('Main', [])
                         q.tests.push(t);
                         if(t.votes){
                             var res = t.votes.split(',');
+                            if (indexOf())
                             res.splice(0, 1);
                             q.votes += res.length;
+                            t.votesCount = res.length;
                         }
                     }
                 })
@@ -36,6 +37,7 @@ angular.module('Main', [])
                             var res = d.votes.split(',');
                             res.splice(0, 1);
                             q.votes += res.length;
+                            d.votesCount = res.length;
                         }
                     }
                 })
@@ -44,9 +46,11 @@ angular.module('Main', [])
             })
         }
 
+
         $scope.visibility = {
             edit: false,
             vote: false,
+            results: false,
             mainList: true
         }
 
@@ -63,6 +67,10 @@ angular.module('Main', [])
                     console.log('ins. id: '+res.insertId);
                 }
             })
+        }
+
+        $scope.isVotable = function(qid, uid){
+
         }
 
         $scope.deleteQuestionnaire = function(id){

@@ -112,25 +112,6 @@ Vote.prototype = {
 
     },
 
-    updateVoteDefectItem: function(req,res){
-
-    },
-
-    deleteVoteDefectItem: function(req,res){
-
-    },
-
-    addVoteTestItem: function(req,res){
-
-    },
-
-    updateVoteTestItem: function(req,res){
-
-    },
-
-    deleteVoteTestItem: function(req,res){
-
-    },
 
     // Publish Questionnaire. Users are able to vote. vote appeared in the Questionnaire's list for all users with status InProgress
     publishQuestionnaire: function(req, res){
