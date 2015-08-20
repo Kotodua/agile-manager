@@ -61,6 +61,10 @@ a {
 .b-form{padding:4px 10px;border:1px solid #fff;text-decoration:none;}
 .b-form.over{background-color:#00CC00;color:#fff;}
 
+.a-inside[disabled=disabled]{
+    background-color: #b9cacf;color: #0c0005;
+}
+
 .cancel{
     background-color:#D23641;color:#fff;
     border:1px solid #d32132;color:#fff;

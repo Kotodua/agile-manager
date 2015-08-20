@@ -10,6 +10,8 @@ angular.module('Main', [])
                 $scope.questionnaires = res[0];
                 countVotes(res[0], res[1], res[2]);
                 $scope.$apply();
+                $scope.currentUser = res[4];
+                console.log($scope.currentUser);
             }
         })
 
@@ -23,7 +25,10 @@ angular.module('Main', [])
                         q.tests.push(t);
                         if(t.votes){
                             var res = t.votes.split(',');
-                            if (indexOf())
+                            if(res.indexOf($scope.currentUser)){
+                                console.log('q blocked');
+                                q.voted = true;
+                            }
                             res.splice(0, 1);
                             q.votes += res.length;
                             t.votesCount = res.length;
@@ -35,6 +40,10 @@ angular.module('Main', [])
                         q.defects.push(d)
                         if(d.votes){
                             var res = d.votes.split(',');
+                            if(res.indexOf($scope.currentUser)){
+                                console.log('q blocked');
+                                q.voted = true;
+                            }
                             res.splice(0, 1);
                             q.votes += res.length;
                             d.votesCount = res.length;
@@ -214,6 +223,9 @@ angular.module('Main', [])
                 success: function (res) {
                     getObjectIndexByValue($scope.questionnaires, 'id', currentQuestionnaire.id, function(c){
                         $scope.questionnaires[c].votes += 1;
+                        $scope.questionnaires[c].voted = true;
+                        $scope.$apply();
+
                     })
                 }
             })

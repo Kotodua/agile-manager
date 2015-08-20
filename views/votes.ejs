@@ -43,10 +43,10 @@
                     <div class="col-md-1">{{questionnaire.votes}}</div>
                     <div class="col-md-1">{{questionnaire.status}}</div>
                     <div class="col-md-5">
-                        <input id="results-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Results" ng-click="showForm(questionnaire.id, 'results')"/>
-                        <input id="vote-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Vote"  ng-click="showForm(questionnaire.id, 'vote')"/>
+                        <input id="results-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Results" ng-disabled="!questionnaire.voted" ng-click="showForm(questionnaire.id, 'results')"/>
+                        <input id="vote-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Vote" ng-disabled="questionnaire.voted"  ng-click="showForm(questionnaire.id, 'vote')"/>
                         <% if(req.session.admin == 'SA'){ %>
-                        <input id="delete-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Delete" ng-click="deleteQuestionnaire(questionnaire.id)"/>
+                        <input id="delete-btn-{{questionnaire.id}}" class="a-inside remove" type="button" value="Delete" ng-click="deleteQuestionnaire(questionnaire.id)"/>
                         <input id="edit-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Edit" ng-click="showForm(questionnaire.id, 'edit')"/>
                         <input id="start-btn-{{questionnaire.id}}" class="a-inside edit" type="button" value="Start" />
                         <%}%>

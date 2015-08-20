@@ -34,6 +34,7 @@ Vote.prototype = {
             arrayOfResults[0].forEach(function(q){
                 resData.push(q);
             })
+            arrayOfResults.push(req.session.user);
             res.send(arrayOfResults);
         });
     },
