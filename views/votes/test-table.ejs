@@ -25,7 +25,9 @@
         <label for="creator-{{test.id}}">Creator</label>
     </div>
     <div class="col-md-2">
+
         <input id="creator-{{test.id}}" ng-model="test.cid"/>
+        <select id="creator-{{test.id}}" ng-options="user.pname group by user.role for user in usersOriginal track by user.id" ng-model="test.cid"></select>
     </div>
     <div class="col-md-1">
         <label for="qcid-{{test.id}}">QC ID</label>
@@ -34,3 +36,4 @@
         <input id="qcid-{{defect.id}}" ng-model="test.qcid"/>
     </div>
 </div>
+<h5>------------------------------------------------------------------------------------------</h5>

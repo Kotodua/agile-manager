@@ -20,6 +20,7 @@
     </div>
     <div class="col-md-2">
         <input id="reporter-{{defect.id}}" ng-model="defect.rid"/>
+        <select id="reporter-{{defect.id}}" ng-options="user.pname group by user.role for user in usersOriginal track by user.id" ng-model="defect.rid"></select>
     </div>
     <div class="col-md-1">
         <label for="jiraid-{{defect.id}}">JIRA ID</label>

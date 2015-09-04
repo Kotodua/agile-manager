@@ -1,6 +1,7 @@
 angular.module('Main', [])
     .controller('mainCtrl', function($scope){
         mainURL = config.url + "/api/votes";
+        $scope.users = {};
 
         $.ajax({
             type: "GET",
@@ -8,10 +9,15 @@ angular.module('Main', [])
             url: mainURL + '/getQuestionnaires',
             success: function (res) {
                 $scope.questionnaires = res[0];
+                $scope.usersOriginal = res[3];
+                res[3].forEach(function(e){
+                    console.log(e);
+                    $scope.users[e.id] = e.pname;
+                })
                 countVotes(res[0], res[1], res[2]);
                 $scope.$apply();
                 $scope.currentUser = res[4];
-                console.log($scope.currentUser);
+
             }
         })
 
@@ -22,11 +28,11 @@ angular.module('Main', [])
                 q.tests = [];
                 tests.forEach(function(t){
                     if(q.id == t.qid){
+                        t.uname = $scope.users[t.cid];
                         q.tests.push(t);
                         if(t.votes){
                             var res = t.votes.split(',');
                             if(res.indexOf($scope.currentUser)){
-                                console.log('q blocked');
                                 q.voted = true;
                             }
                             res.splice(0, 1);
@@ -37,11 +43,12 @@ angular.module('Main', [])
                 })
                 defects.forEach(function(d){
                     if(q.id == d.qid){
+                        d.uname = $scope.users[d.rid];
+                        console.log('NAME '+d.uname);
                         q.defects.push(d)
                         if(d.votes){
                             var res = d.votes.split(',');
                             if(res.indexOf($scope.currentUser)){
-                                console.log('q blocked');
                                 q.voted = true;
                             }
                             res.splice(0, 1);
@@ -50,7 +57,6 @@ angular.module('Main', [])
                         }
                     }
                 })
-                console.log('q.votes '+q.votes);
                 q.votes /= 6;
             })
         }
@@ -73,7 +79,6 @@ angular.module('Main', [])
                 success: function (res) {
                     $scope.questionnaires.push({id: res.insertId, title: title, status: 'New', defects: [], tests: [], votes: 0});
                     $scope.$apply();
-                    console.log('ins. id: '+res.insertId);
                 }
             })
         }
@@ -93,6 +98,15 @@ angular.module('Main', [])
                     $scope.$apply();
                 }
             })
+        }
+
+        $scope.currentUserItem = function(id){
+            return id == $scope.currentUser;
+        }
+
+        $scope.getUserNameById = function(uid){
+            var user = search($scope.users, 'id', uid);
+            return user.pname;
         }
 
         var removeFromArray = function(arr, id){
@@ -156,10 +170,15 @@ angular.module('Main', [])
             objToSend.defects.forEach(function(d){
                 delete d.checked;
                 delete d.class;
+                delete d.uname;
+                d.rid = d.rid.id;
             })
+
             objToSend.tests.forEach(function(t){
-                delete t.checked
+                delete t.checked;
                 delete t.class;
+                delete t.uname;
+                t.cid = t.cid.id;
             })
 
             $.ajax({
@@ -168,7 +187,6 @@ angular.module('Main', [])
                 dataType: "json",
                 url: mainURL + '/'+id,
                 success: function (res) {
-                    console.log(res);
                 }
             })
         }

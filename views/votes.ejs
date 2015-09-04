@@ -81,7 +81,7 @@
                     <th>Votes</th>
                     <tr ng-repeat="defect in currentQuestionnaire.defects">
                         <td style="width:7%">{{defect.jid}}</td>
-                        <td style="width:5%">{{defect.rid}}</td>
+                        <td style="width:5%">{{defect.pname}}</td>
                         <td style="width:5%">{{defect.votesCount}}</td>
                     </tr>
                 </table>
@@ -92,7 +92,7 @@
                     <th>Votes</th>
                     <tr ng-repeat="test in currentQuestionnaire.tests">
                         <td style="width:7%">{{test.qcid}}</td>
-                        <td style="width:5%">{{test.cid}}</td>
+                        <td style="width:5%">{{test.pname}}</td>
                         <td style="width:5%">{{test.votesCount}}</td>
                     </tr>
                 </table>
@@ -111,14 +111,14 @@
                     <th>JIRA ID</th>
                     <th>Status</th>
                     <tr ng-repeat="defect in currentQuestionnaire.defects" ng-class="defect.class">
-                            <td  style="width:3%" ng-class="defect.class"><input type="checkbox" ng-model="defect.checked" ng-disabled="!defect.checked && currentQuestionnaire.selMaxDefects" ng-change="checkedDefect(defect.id)"/></td>
+                            <td style="width:3%" ng-class="defect.class"><input type="checkbox" ng-model="defect.checked" ng-disabled="!defect.checked && currentQuestionnaire.selMaxDefects || currentUserItem(defect.rid)" ng-change="checkedDefect(defect.id)"/></td>
                             <td style="width:5%">{{defect.id}}</td>
                             <td style="width:30%">{{defect.summary}}</td>
-                            <td style="width:30%"><textarea rows="6">{{defect.description}}</textarea></td>
-                            <td style="width:5%">{{defect.rid}}</td>
+                            <td style="width:30%"><textarea rows="6" disabled="true">{{defect.description}}</textarea></td>
+                            <td style="width:5%">{{defect.uname}}</td>
                             <td style="width:7%">{{defect.jid}}</td>
                             <td style="width:8%">{{defect.status}}</td>
-                        </tr>
+                    </tr>
                 </table>
 
                 <h1>Tests</h1>
@@ -131,13 +131,13 @@
                     <th>QC ID</th>
                     <th>Creator</th>
                         <tr ng-repeat="test in currentQuestionnaire.tests">
-                            <td  style="width:3%" ng-class="test.class"><input type="checkbox" ng-model="test.checked" ng-disabled="!test.checked && currentQuestionnaire.selMaxTests" ng-change="checkedTest(test.id)"/></td>
+                            <td  style="width:3%" ng-class="test.class"><input type="checkbox" ng-model="test.checked" ng-disabled="!test.checked && currentQuestionnaire.selMaxTests  || currentUserItem(test.cid)" ng-change="checkedTest(test.id)"/></td>
                             <td style="width:5%">{{test.id}}</td>
                             <td style="width:10%">{{test.name}}</td>
-                            <td style="width:30%">{{test.steps}}</td>
-                            <td style="width:30%">{{test.er}}</td>
+                            <td style="width:30%"><textarea rows="6" disabled="true">{{test.steps}}</textarea></td>
+                            <td style="width:30%"><textarea rows="6" disabled="true">{{test.er}}</textarea></td>
                             <td style="width:5%">{{test.qcid}}</td>
-                            <td>{{test.cid}}</td>
+                            <td>{{test.uname}}</td>
                         </tr>
                 </table>
                 <input id="apply-vote-btn" class="a-inside edit" type="button" value="Vote" ng-click="applyVote(currentQuestionnaire)"/>
